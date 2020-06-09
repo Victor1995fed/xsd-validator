@@ -20,7 +20,7 @@ Route::get('/', function () {
 Route::get('validator', 'ValidatorController@index');
 
 Route::post('validator', 'ValidatorController@check');
-
+Route::post('test', 'ValidatorController@test');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -14,38 +14,87 @@
 </head>
 <body>
 
-<div class="container float-left">
+<div class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>Валидатор XSD</h1>{{--Загрузка архива--}}
-            <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data">
+            <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data" id="validatorXsd">
                 {{--    @csrf--}}
-                <label for="xsd">Архив с XSD</label><br>
-                <input type="file" name="zip"><br>
-                <div class="xml">
-                    <textarea name="xml" id="xml-field"></textarea><br>
+                <div class="form-group">
+                    <label for="xsd">Архив с XSD</label>
+                    <input id="xsdFile" type="file" class="form-control-file" name="zip">
                 </div>
-                <label for="main-xsd">Название файла с корневой   xsd в архиве</label><br>
-                <input type="text" name="main-xsd"><br>
-                <button type="submit" class="btn btn-primary">Проверить</button>
-            </form></div>
+                <div class="form-group">
+                    <label for="xml-field">XML для проверки</label>
+                    <div class="xml">
+                        <textarea name="xml" id="xml-field"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                <label for="xsdName">Название корневой xsd в архиве</label>
+                   <input type="text" class="form-control" id="#xsdName" name="main-xsd">
+                </div>
+                <button type="button" id="submitAjax" class="btn btn-primary">Проверить</button>
+
+            </form>
+            <div id="result_success" class="result displayNone"></div>
+            <div id="result_error" class="result displayNone"></div>
+        </div>
     </div>
 </div>
 
 
-
+<script src="{{ asset('js/lib/jQuery.js') }}"></script>
 <script>
-    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('xml-field'), {
+    let myCodeMirror = CodeMirror.fromTextArea(document.getElementById('xml-field'), {
         lineNumbers: true,               // показывать номера строк
         matchBrackets: true,             // подсвечивать парные скобки
         mode: 'application/xml', // стиль подсветки
         indentUnit: 4                    // размер табуляции
     });
 
+
+    $('#submitAjax').click(function () {
+        $('.result').empty();
+        $('.result').addClass('displayNone');
+        let data = new FormData();
+        data.append('xml', myCodeMirror.getValue());
+        data.append('main-xsd', $("input[name='main-xsd']").val());
+        data.append('zip', $('input[type=file]')[0].files[0]);
+        $.ajax({
+            type: 'POST',
+            url: '{{url("validator")}}',
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            data: data,
+            success: function(data){
+                // let result =jQuery.parseJSON( data);
+                if(data.status == true) {
+                    $('#result_success').removeClass('displayNone');
+                    $('#result_success').html(data.message);
+                }
+                else {
+                    $('#result_error').removeClass('displayNone');
+                    $('#result_error').html(data.message+"<p>"+data.errors+"</p>");
+                }
+
+            },
+
+            error: function (request, error) {
+                console.log(arguments);
+                alert(" Ошибка: " + request.responseText);
+            },
+        });
+
+    })
 </script>
 <style>
     input {
         margin-bottom: 10px;
+        max-width: 400px;
     }
 
     textarea {
@@ -58,6 +107,31 @@
 .xml {
     width: 100%;
 }
+
+    h1 {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    label {
+        font-weight:600;
+    }
+
+    #result_success {
+        border: 1px solid green;
+    }
+
+    #result_error {
+        border: 1px solid red;
+    }
+    .displayNone {
+        display: none;
+    }
+
+    .result {
+        margin-top: 10px;
+        border-radius: 5px;
+        padding: 5px;
+    }
 </style>
 </body>
 
