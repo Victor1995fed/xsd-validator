@@ -54,6 +54,12 @@
 
 <script src="{{ asset('js/lib/jQuery.js') }}"></script>
 <script>
+    $("#validatorXsd").keydown(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    })
     const markers = [];
     function highlightText(myCodeMirror, line)
     {
@@ -89,6 +95,7 @@
         data.append('main-xsd', $("input[name='main-xsd']").val());
         data.append('zip', $('input[type=file]')[0].files[0]);
         $('.spinner-border').removeClass('displayNone');
+        $('#submitAjax').prop( "disabled", true );
         setTimeout(function () {
             $.ajax({
                 type: 'POST',
@@ -100,7 +107,8 @@
                 timeout: 600000,
                 data: data,
                 complete: function() {
-                        $('.spinner-border').addClass('displayNone');
+                    $('.spinner-border').addClass('displayNone');
+                    $('#submitAjax').prop( "disabled", false );
                 },
                 success: function(data){
                     if(data.status == true) {
