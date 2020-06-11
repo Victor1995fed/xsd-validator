@@ -65,12 +65,12 @@ class ValidatorController extends Controller
                 if ($validated) {
                     return [
                         'status'=>true,
-                        'message'=>'Xml соответствует схеме'
+                        'message'=>'XML соответствует схеме'
                     ];
                 } else {
                     return [
                         'status'=>false,
-                        'message'=>'Xml не соответствует схеме. Обнаружены следующие ошибки',
+                        'message'=>'XML не соответствует схеме. Обнаружены следующие ошибки',
                         'errors' => implode("|", $validator->displayErrors())
                     ];
 //                   return print_r($validator->displayErrors(), 1);

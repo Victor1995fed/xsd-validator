@@ -17,7 +17,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Валидатор XSD</h1>{{--Загрузка архива--}}
+            <h1>Валидатор XML по XSD</h1>{{--Загрузка архива--}}
             <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data" id="validatorXsd">
                 {{--    @csrf--}}
                 <div class="form-group">
@@ -37,8 +37,16 @@
                 <button type="button" id="submitAjax" class="btn btn-primary">Проверить</button>
 
             </form>
-            <div id="result_success" class="result displayNone"></div>
-            <div id="result_error" class="result displayNone"></div>
+          <div class="result-response">
+        
+<div class="alert alert-success result displayNone" role="alert" id="result_success" >
+</div>
+            <!-- <div id="result_success" class="result displayNone"></div> -->
+            <!-- <div id="result_error" class="result displayNone"></div> -->
+            <div class="alert alert-danger result displayNone" role="alert" id="result_error" >
+  
+</div>
+        </div>
         </div>
     </div>
 </div>
@@ -53,6 +61,7 @@
         indentUnit: 4                    // размер табуляции
     });
 
+    myCodeMirror.setSize(null, "550px");
 
     $('#submitAjax').click(function () {
         $('.result').empty();
@@ -78,14 +87,17 @@
                 }
                 else {
                     $('#result_error').removeClass('displayNone');
-                    $('#result_error').html(data.message+"<p>"+data.errors+"</p>");
+                    $('#result_error').html(data.message+": <p>"+data.errors+"</p>");
                 }
 
             },
 
             error: function (request, error) {
-                console.log(arguments);
-                alert(" Ошибка: " + request.responseText);
+        
+                   $('#result_error').removeClass('displayNone');
+                    $('#result_error').html("Ошибка " + request.status+": <p>"+request.responseText+"</p>");
+                // console.log(arguments);
+                // alert(" Ошибка: " + request.responseText);
             },
         });
 
@@ -99,14 +111,13 @@
 
     textarea {
         width: 100%;
-        height: 500px;
         overflow-y: scroll;
-        resize: none; /* Remove this if you want the user to resize the textarea */
+        resize: none; 
 
     }
-.xml {
-    width: 100%;
-}
+    .xml {
+        width: 100%;
+    }
 
     h1 {
         margin-bottom: 40px;
@@ -129,10 +140,13 @@
 
     .result {
         margin-top: 10px;
-        border-radius: 5px;
-        padding: 5px;
+    }
+
+    .result-response {
+        min-height: 50px;
     }
 </style>
+
 </body>
 
 </html>
