@@ -1,58 +1,71 @@
-<!doctype html>
-<html>
-<head>
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('assets/lib/codemirror.js') }}"></script>
-    <script src="{{ asset('assets/mode/xml/xml.js') }}"></script>
-{{--    <link rel="stylesheet" href="lib/codemirror.css">--}}
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+@include('layouts.head')
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- HEADER MOBILE-->
+@include('layouts.header-mobile')
+<!-- END HEADER MOBILE-->
+
+    <!-- MENU SIDEBAR-->
+@include('layouts.aside')
+<!-- END MENU SIDEBAR-->
     <link href="{{ asset('assets/lib/codemirror.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/theme/darcula.css') }}" rel="stylesheet">
-</head>
-<body>
+    <script src="{{ asset('assets/lib/codemirror.js') }}"></script>
+    <script src="{{ asset('assets/mode/xml/xml.js') }}"></script>
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+    @include('layouts.header-desktop')
+    <!-- HEADER DESKTOP-->
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Валидатор XML по XSD</h1>{{--Загрузка архива--}}
-            <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data" id="validatorXsd">
-                {{--    @csrf--}}
-                <div class="form-group">
-                    <label for="xsd">Архив с XSD</label>
-                    <input id="xsdFile" type="file" class="form-control-file" name="zip">
-                </div>
-                <div class="form-group">
-                    <label for="xml-field">XML для проверки</label>
-                    <div class="xml">
-                        <textarea name="xml" id="xml-field"></textarea>
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Валидатор XML по XSD</h1>{{--Загрузка архива--}}
+                    <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data" id="validatorXsd">
+                        {{--    @csrf--}}
+                        <div class="form-group">
+                            <label for="xsd">Архив с XSD</label>
+                            <input id="xsdFile" type="file" class="form-control-file" name="zip">
+                        </div>
+                        <div class="form-group">
+                            <label for="xml-field">XML для проверки</label>
+                            <div class="xml">
+                                <textarea name="xml" id="xml-field"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="xsdName">Название корневой xsd в архиве</label>
+                            <input type="text" class="form-control" id="#xsdName" name="main-xsd">
+                        </div>
+                        <button class="btn btn-primary" id="submitAjax" type="button">
+                            <span class="spinner-border spinner-border-sm displayNone" role="status" aria-hidden="true"></span>
+                            Проверить
+                        </button>
+
+                    </form>
+                    <div class="result-response">
+
+                        <div class="alert alert-success result displayNone" role="alert" id="result_success" >
+                        </div>
+                        <div class="alert alert-danger result displayNone" role="alert" id="result_error" >
+
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                <label for="xsdName">Название корневой xsd в архиве</label>
-                   <input type="text" class="form-control" id="#xsdName" name="main-xsd">
-                </div>
-                <button class="btn btn-primary" id="submitAjax" type="button">
-                    <span class="spinner-border spinner-border-sm displayNone" role="status" aria-hidden="true"></span>
-                    Проверить
-                </button>
-
-            </form>
-          <div class="result-response">
-
-<div class="alert alert-success result displayNone" role="alert" id="result_success" >
-</div>
-            <div class="alert alert-danger result displayNone" role="alert" id="result_error" >
-
-</div>
+            </div>
+            </div>
         </div>
-        </div>
+        <!-- END MAIN CONTENT-->
+        <!-- END PAGE CONTAINER-->
     </div>
+
 </div>
-
-
-<script src="{{ asset('js/lib/jQuery.js') }}"></script>
+@include('layouts.scripts')
 <script>
     $("#validatorXsd").keydown(function(event) {
         if (event.keyCode == 13) {
@@ -191,5 +204,4 @@
 </body>
 
 </html>
-
-
+<!-- end document-->
