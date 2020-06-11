@@ -111,9 +111,16 @@
                         $('#result_error').removeClass('displayNone');
                         let html = ''
                         let i = 1
+                        let line = '';
                         for (var key in data.errors) {
+                            if(data.errors[key].line == "-1") {
+                                line = '';
+                            }
+                            else {
+                                line = 'Строка: <a href="#" class="highlight-text">'+data.errors[key].line+'</a>';
+                            }
                             highlightText(myCodeMirror, Number(data.errors[key].line))
-                            html = html + '<p>'+i+'. Ошибка: '+data.errors[key].code+' '+data.errors[key].message+' Строка: '+'<a href="#" class="highlight-text">'+data.errors[key].line+'</a></p>'
+                            html = html + '<p>'+i+'. Ошибка: '+data.errors[key].code+' '+data.errors[key].message+line+'</p>'
                             i++
                         }
                         $('#result_error').html(html);
