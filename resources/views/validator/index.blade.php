@@ -7,15 +7,13 @@
 @include('layouts.header-mobile')
 <!-- END HEADER MOBILE-->
 
-    <!-- MENU SIDEBAR-->
-@include('layouts.aside')
 <!-- END MENU SIDEBAR-->
     <link href="{{ asset('assets/lib/codemirror.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/theme/darcula.css') }}" rel="stylesheet">
     <script src="{{ asset('assets/lib/codemirror.js') }}"></script>
     <script src="{{ asset('assets/mode/xml/xml.js') }}"></script>
     <!-- PAGE CONTAINER-->
-    <div class="page-container">
+    <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
     @include('layouts.header-desktop')
     <!-- HEADER DESKTOP-->

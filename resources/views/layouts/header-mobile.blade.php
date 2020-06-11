@@ -1,9 +1,10 @@
-<header class="header-mobile d-block d-lg-none">
+<!-- HEADER MOBILE-->
+<header class="header-mobile header-mobile-2 d-block d-lg-none">
     <div class="header-mobile__bar">
         <div class="container-fluid">
             <div class="header-mobile-inner">
                 <a class="logo" href="index.html">
-                    <img src="images/icon/logo.png" alt="CoolAdmin" />
+                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
                 </a>
                 <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -16,13 +17,27 @@
     <nav class="navbar-mobile">
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
-                <li>
-                    <a href="{{url('/')}}">
-                        <i class="fas fa-chart-bar"></i>Главная</a>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <li>
+                            <a href="index.html">Dashboard 1</a>
+                        </li>
+                        <li>
+                            <a href="index2.html">Dashboard 2</a>
+                        </li>
+                        <li>
+                            <a href="index3.html">Dashboard 3</a>
+                        </li>
+                        <li>
+                            <a href="index4.html">Dashboard 4</a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <a href="{{url('validator')}}">
-                        <i class="fas fa-chart-bar"></i>Валидатор по XSD</a>
+                    <a href="chart.html">
+                        <i class="fas fa-chart-bar"></i>Charts</a>
                 </li>
                 <li>
                     <a href="table.html">

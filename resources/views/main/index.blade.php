@@ -8,11 +8,11 @@
     <!-- END HEADER MOBILE-->
 
     <!-- MENU SIDEBAR-->
-    @include('layouts.aside')
+{{--    @include('layouts.aside')--}}
     <!-- END MENU SIDEBAR-->
 
     <!-- PAGE CONTAINER-->
-    <div class="page-container">
+    <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
     @include('layouts.header-desktop')
         <!-- HEADER DESKTOP-->
