@@ -3,8 +3,12 @@
     <div class="header-mobile__bar">
         <div class="container-fluid">
             <div class="header-mobile-inner">
-                <a class="logo" href="index.html">
-                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                <a href="{{url('/')}}" class="logo">
+
+                    {{--                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />--}}
+                    {{--                    <img src="images/icon/fenix-logo.png" alt="CoolAdmin" />--}}
+                    <img src="{{asset('images/icon/fenix-logo-v4.png')}}" alt="Феникс" />
+                    <span style="margin-left: 10px; color: #ccc">PHOENIX</span>
                 </a>
                 <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">

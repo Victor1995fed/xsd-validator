@@ -23,7 +23,10 @@
             <div class="section__content section__content--p30">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Валидатор XML по XSD</h1>{{--Загрузка архива--}}
+                    <div class="col-md-12">
+                        <h1 class="title-4">Валидатор XML по XSD</h1>
+                        <hr class="line-seprate">
+                    </div>
                     <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data" id="validatorXsd">
                         {{--    @csrf--}}
                         <div class="form-group">

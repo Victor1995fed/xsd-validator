@@ -2,22 +2,26 @@
     <div class="section__content section__content--p35">
         <div class="header3-wrap">
             <div class="header__logo">
-                <a href="#">
-                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                <a href="{{url('/')}}">
+
+{{--                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />--}}
+{{--                    <img src="images/icon/fenix-logo.png" alt="CoolAdmin" />--}}
+                    <img src="{{asset('images/icon/fenix-logo-v4.png')}}" alt="Феникс" />
+                    <span style="margin-left: 10px; color: #ccc">PHOENIX</span>
                 </a>
             </div>
             <div class="header__navbar">
                 <ul class="list-unstyled">
                     <li>
                         <a href="{{url('/')}}">
-                            <i class="fas fa-shopping-basket"></i>
+                            <i class="fas fa-th"></i>
                             <span class="bot-line"></span>Главная</a>
                     </li>
 
 
                     <li class="has-sub">
                         <a href="#">
-                            <i class="fas fa-copy"></i>
+                            <i class="fas fa-file-text"></i>
                             <span class="bot-line"></span>XSD</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li>
@@ -30,6 +34,11 @@
                                 <a href="{{url('validator')}}">Бытрая проверка по XSD</a>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="{{url('/')}}">
+                            <i class="fas fa-question"></i>
+                            <span class="bot-line"></span>Помощь</a>
                     </li>
                 </ul>
             </div>
