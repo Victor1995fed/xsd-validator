@@ -38,13 +38,13 @@
 
             </form>
           <div class="result-response">
-        
+
 <div class="alert alert-success result displayNone" role="alert" id="result_success" >
 </div>
             <!-- <div id="result_success" class="result displayNone"></div> -->
             <!-- <div id="result_error" class="result displayNone"></div> -->
             <div class="alert alert-danger result displayNone" role="alert" id="result_error" >
-  
+
 </div>
         </div>
         </div>
@@ -54,6 +54,19 @@
 
 <script src="{{ asset('js/lib/jQuery.js') }}"></script>
 <script>
+    const markers = [];
+    function highlightText(myCodeMirror, line)
+    {
+        let lineInside = line - 1
+        let tokens = myCodeMirror.getLineTokens(1, true);
+        let start = CodeMirror.Pos(lineInside, tokens[0].start);
+        let end = CodeMirror.Pos(lineInside, tokens[0].end);
+        let markOptions =
+            {
+                css: "background-color: #f9d6d5"
+            };
+        markers.push(myCodeMirror.markText(start, end, markOptions));
+    }
     let myCodeMirror = CodeMirror.fromTextArea(document.getElementById('xml-field'), {
         lineNumbers: true,               // показывать номера строк
         matchBrackets: true,             // подсвечивать парные скобки
@@ -61,9 +74,13 @@
         indentUnit: 4                    // размер табуляции
     });
 
+    $('.result').on('click', '.highlight-text', function() {
+        let line = Number($(this).text()) - 1
+        myCodeMirror.setCursor( line,0)
+    });
     myCodeMirror.setSize(null, "550px");
-
     $('#submitAjax').click(function () {
+        markers.forEach(marker => marker.clear());
         $('.result').empty();
         $('.result').addClass('displayNone');
         let data = new FormData();
@@ -87,17 +104,22 @@
                 }
                 else {
                     $('#result_error').removeClass('displayNone');
-                    $('#result_error').html(data.message+": <p>"+data.errors+"</p>");
+                    let html = ''
+                    let i = 1
+                    for (var key in data.errors) {
+                        highlightText(myCodeMirror, Number(data.errors[key].line))
+                        html = html + '<p>'+i+'. Ошибка: '+data.errors[key].code+' '+data.errors[key].message+' Строка: '+'<a href="#" class="highlight-text">'+data.errors[key].line+'</a></p>'
+                        i++
+                    }
+                    $('#result_error').html(html);
                 }
 
             },
 
             error: function (request, error) {
-        
+
                    $('#result_error').removeClass('displayNone');
                     $('#result_error').html("Ошибка " + request.status+": <p>"+request.responseText+"</p>");
-                // console.log(arguments);
-                // alert(" Ошибка: " + request.responseText);
             },
         });
 
@@ -112,7 +134,7 @@
     textarea {
         width: 100%;
         overflow-y: scroll;
-        resize: none; 
+        resize: none;
 
     }
     .xml {

@@ -21,6 +21,8 @@ class XsdValidator
      * @var array
      */
     public $errorDetails;
+
+    public $errorMessages;
     /**
      * Validation Class constructor Instantiating DOMDocument
      *
@@ -44,12 +46,18 @@ class XsdValidator
     /**
      * @return array
      */
-    private function libxmlDisplayErrors()
+    private function libxmlGetErrors()
     {
         $errors = libxml_get_errors();
         $result    = [];
         foreach ($errors as $error) {
-            $result[] = $this->libxmlDisplayError($error);
+            $result[] = [
+                'code' => $error->code,
+                'file' => $error->file,
+                'line' => $error->line,
+                'message' => $error->message
+            ];
+//            $this->libxmlDisplayError($error);
         }
         libxml_clear_errors();
         return $result;
@@ -83,7 +91,7 @@ class XsdValidator
 
         $this->handler->loadXML($contents, LIBXML_NOBLANKS);
         if (!$this->handler->schemaValidate($this->feedSchema)) {
-            $this->errorDetails = $this->libxmlDisplayErrors();
+            $this->errorDetails = $this->libxmlGetErrors();
             $this->feedErrors   = 1;
         } else {
             //The file is valid
@@ -114,7 +122,7 @@ class XsdValidator
 
         $this->handler->loadXML($contents, LIBXML_NOBLANKS);
         if (!$this->handler->schemaValidate($this->feedSchema)) {
-            $this->errorDetails = $this->libxmlDisplayErrors();
+            $this->errorDetails = $this->libxmlGetErrors();
             $this->feedErrors   = 1;
         } else {
             //The file is valid
@@ -155,8 +163,16 @@ class XsdValidator
      *
      * @return array
      */
-    public function displayErrors()
+    public function getErrors()
     {
         return $this->errorDetails;
+    }
+
+    public function getErrorsMessage()
+    {
+        foreach ($this->errorDetails as $error) {
+            $this->errorMessages[] = $error['message'];
+        }
+        return $this->errorMessages;
     }
 }

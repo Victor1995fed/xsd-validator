@@ -71,9 +71,8 @@ class ValidatorController extends Controller
                     return [
                         'status'=>false,
                         'message'=>'XML не соответствует схеме. Обнаружены следующие ошибки',
-                        'errors' => implode("|", $validator->displayErrors())
+                        'errors' => $validator->getErrors()
                     ];
-//                   return print_r($validator->displayErrors(), 1);
                 }
             } else {
                 throw new \Exception('Ошибка при  разборе архива',500);
