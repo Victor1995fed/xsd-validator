@@ -34,20 +34,20 @@
                             <input id="xsdFile" type="file" class="form-control-file" name="zip">
                         </div>
                         <div class="form-group">
+                            <label for="xsdName">Название корневой xsd в архиве</label>
+                            <input type="text" class="form-control" id="#xsdName" name="main-xsd">
+                        </div>
+                        <div class="form-group">
                             <label for="xml-field">XML для проверки</label>
                             <div class="xml">
                                 <textarea name="xml" id="xml-field"></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="xsdName">Название корневой xsd в архиве</label>
-                            <input type="text" class="form-control" id="#xsdName" name="main-xsd">
-                        </div>
+
                         <button class="btn btn-primary" id="submitAjax" type="button">
                             <span class="spinner-border spinner-border-sm displayNone" role="status" aria-hidden="true"></span>
                             Проверить
                         </button>
-
                     </form>
                     <div class="result-response">
 
@@ -58,7 +58,15 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Copyright © 2018 Colorlib. Все права защищены. Использовался шаблон от <a href="https://colorlib.com">Colorlib</a>.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- END MAIN CONTENT-->

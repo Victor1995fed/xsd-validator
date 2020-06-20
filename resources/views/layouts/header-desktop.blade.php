@@ -40,6 +40,7 @@
                             <i class="fas fa-question"></i>
                             <span class="bot-line"></span>Помощь</a>
                     </li>
+
                 </ul>
             </div>
             <div class="header__tool">
@@ -121,10 +122,10 @@
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
                         <div class="image">
-                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                            <img src="{{asset('images/icon/ava-v1.png')}}" alt="John Doe" />
                         </div>
                         <div class="content">
-                            <a class="js-acc-btn" href="#">john doe</a>
+                            <a class="js-acc-btn" href="#">Super User</a>
                         </div>
                         <div class="account-dropdown js-dropdown">
                             <div class="info clearfix">

@@ -24,3 +24,5 @@ Route::post('test', 'ValidatorController@test');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('/xsd', 'XsdController');
