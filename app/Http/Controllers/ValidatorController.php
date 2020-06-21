@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Constants\Storage as StorageConstants;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -52,7 +53,7 @@ class ValidatorController extends Controller
         try{
             $file = $request->file('zip');
             $zip = new \ZipArchive;
-            $pathDirectory = base_path().'/upload/'.Str::uuid(); //upload заменить константой
+            $pathDirectory = base_path().'/'.StorageConstants::TEMPORARY_STORAGE_PATH.'/'.Str::uuid();
             $rootXsd = $request['main-xsd'];
             if ($zip->open($file->getPathname()) === true) {
                 $zip->extractTo($pathDirectory);

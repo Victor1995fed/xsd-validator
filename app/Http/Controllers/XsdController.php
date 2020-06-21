@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Storage;
+use App\Modules\File;
 use App\Xsd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 
 class XsdController extends Controller
 {
@@ -40,8 +44,20 @@ class XsdController extends Controller
     {
 
         DB::beginTransaction();
-        try{
-            //Сохранение файлов
+        try {
+            $request['user_id'] = 1; //TODO:: Пока без авторизации
+
+            if($xsd = Xsd::create($request->all())) {
+                if($request->hasFile('xsd-file')) {
+                    //Сохранение файла
+                    $file = File::upload($request->file('xsd-file'),Storage::LONG_TERM_FILE);
+                    $xsd->files()->save($file);
+                }
+                else
+                    throw new \Exception('Не передан файл с xsd');
+            }
+            else
+                 throw new \Exception('Ошибка обработки пользовательских данных');
 
 
 
@@ -52,7 +68,7 @@ class XsdController extends Controller
             throw new \Exception($e->getMessage());
         }
         DB::commit();
-        return redirect()->route('training.show',$training->id);
+        return $xsd->id;
     }
 
     /**
