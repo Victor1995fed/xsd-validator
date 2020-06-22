@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\Storage;
 use App\Modules\File;
+use Illuminate\Support\Facades\File as FacadesFile;
 use App\Modules\XsdValidator;
 use App\Xsd;
 use Illuminate\Http\Request;
@@ -136,6 +137,19 @@ class XsdController extends Controller
 
     public function runTestXml(Request $request, $id)
     {
+        $messages = [
+            'xml.required' => 'Заполните xml для проверки',
+        ];
+        $validator = Validator::make($request->all(), [
+            'xml' => 'required',
+        ],$messages);
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'message' => $validator->messages()
+            ];
+            return response()->json($response, 400 , [], JSON_UNESCAPED_UNICODE);
+        }
         //TODO:: Перенести в отдельный модуль
         $xsdModel = Xsd::with('files')->findOrFail($id);
         try{
@@ -152,7 +166,7 @@ class XsdController extends Controller
                 $validator = new XsdValidator;
                 $validator->feedSchema =$pathDirectory.'/'.$rootXsd;
                 $validated = $validator->validateFeedsStr($request['xml']);
-                \Illuminate\Support\Facades\File::deleteDirectory($pathDirectory);
+                FacadesFile::deleteDirectory($pathDirectory);
 
                 if ($validated) {
                     return [
@@ -172,7 +186,7 @@ class XsdController extends Controller
 
         }
         catch (\Exception $e) {
-            File::deleteDirectory($pathDirectory);
+            FacadesFile::deleteDirectory($pathDirectory);
             throw new \Exception($e->getMessage(),$e->getCode());
         }
     }
