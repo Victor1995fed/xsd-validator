@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="e872e9b7-3445-43de-b5c7-dc73db55847c" name="kvm-serverv">
+      <webServer id="e872e9b7-3445-43de-b5c7-dc73db55847c" name="kvm-server">
         <fileTransfer accessType="SFTP" host="78.24.221.163" port="22" sshConfigId="d9088aef-8cc7-4a43-b1ff-b964817623ec" sshConfig="root@78.24.221.163:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />

@@ -25,47 +25,47 @@
                     Введите данные для XSD
                 </div>
                 <div class="card-body card-block">
-                    <form action = "{{url("xsd")}}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <form action = "{{url("xsd")}}" method="post" id="save-xsd" enctype="multipart/form-data" class="form-horizontal">
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-input" class=" form-control-label">Название схемы</label>
+                                <label for="title" class=" form-control-label">Название схемы</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="text-input"  class="form-control">
+                                <input type="text" id="title" name="title"  class="form-control">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label">Архив с xsd</label>
+                                <label for="xsd-file" class=" form-control-label">Архив с xsd</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="file" id="file-input" name="file-input" class="form-control-file">
+                                <input type="file" id="xsd-file" name="xsd-file" class="form-control-file">
                             </div>
                         </div>
 
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-input" class=" form-control-label">Путь к корневой схеме в архиве</label>
+                                <label for="root_xsd" class=" form-control-label">Путь к корневой схеме в архиве</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="text-input"  class="form-control">
+                                <input type="text" id="root_xsd" name="root_xsd"  class="form-control">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="textarea-input" class=" form-control-label">Описание(не обязательно)</label>
+                                <label for="description" class="form-control-label">Описание(не обязательно)</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="textarea-input" id="textarea-input" rows="9" class="form-control"></textarea>
+                                <textarea name="description" id="description" rows="9" class="form-control"></textarea>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">
+                    <button type="submit" form="save-xsd" class="btn btn-primary btn-sm">
                         <i class="fa fa-dot-circle-o"></i> Сохранить
                     </button>
-                    <button type="reset" class="btn btn-danger btn-sm">
+                    <button type="reset" onclick="history.back();" class="btn btn-danger btn-sm">
                         <i class="fa fa-ban"></i> Отменить
                     </button>
                 </div>

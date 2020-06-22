@@ -26,3 +26,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/xsd', 'XsdController');
+Route::get('/file/{uuid}', 'FileController@download');
+Route::get('/xsd/test/{id}', 'XsdController@testXml');
+Route::post('/xsd/test/{id}', 'XsdController@runTestXml');

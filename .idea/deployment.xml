@@ -30,7 +30,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="kvm-serverv">
+      <paths name="kvm-server">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

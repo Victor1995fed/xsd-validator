@@ -25,21 +25,42 @@
                             <span class="bot-line"></span>XSD</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li>
-                                <a href="login.html">Мои</a>
+                                <a href="{{url('/xsd')}}">Список</a>
                             </li>
-                            <li>
-                                <a href="register.html">Публичные</a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="register.html">Публичные</a>--}}
+{{--                            </li>--}}
                             <li>
                                 <a href="{{url('validator')}}">Бытрая проверка по XSD</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="{{url('/')}}">
-                            <i class="fas fa-question"></i>
-                            <span class="bot-line"></span>Помощь</a>
-                    </li>
+{{--                    <li class="has-sub">--}}
+{{--                        <a href="#">--}}
+{{--                            <i class="fas fa-file-text"></i>--}}
+{{--                            <span class="bot-line"></span>Генератор форм</a>--}}
+{{--                        <ul class="header3-sub-list list-unstyled">--}}
+{{--                            <li>--}}
+{{--                                <a href="{{url('/xsd')}}">Мои</a>--}}
+{{--                            </li>--}}
+{{--                            <li>--}}
+{{--                                <a href="register.html">Публичные</a>--}}
+{{--                            </li>--}}
+{{--                            <li>--}}
+{{--                                <a href="{{url('validator')}}">Бытрая генерация</a>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <a href="{{url('/')}}">--}}
+{{--                            <i class="fas fa-info"></i>--}}
+{{--                            <span class="bot-line"></span>Новости</a>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <a href="{{url('/')}}">--}}
+{{--                            <i class="fas fa-question"></i>--}}
+{{--                            <span class="bot-line"></span>Помощь</a>--}}
+{{--                    </li>--}}
 
                 </ul>
             </div>
