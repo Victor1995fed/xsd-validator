@@ -79,6 +79,7 @@
                     </button>
                 </div>
             </div>
+            @include('layouts.footer')
         </div>
 
     </div>

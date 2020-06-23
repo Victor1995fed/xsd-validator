@@ -67,9 +67,9 @@
                         <div class="button-action">
                             <a class="btn btn-primary btn-sm" href="{{url("xsd/test").'/'.$xsd->id}}">
                                 <i class="fa fa-code"></i>&nbsp; Тестировать XML</a>
-                            <a  class="btn btn-success btn-sm">
+                            <a href="{{url("xsd/$xsd->id/edit")}}" class="btn btn-success btn-sm">
                                 <i class="fa fa-cog"></i>&nbsp; Изменить</a>
-                            <a  class="btn btn-danger btn-sm">
+                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">
                                 <i class="zmdi zmdi-delete"></i>&nbsp; Удалить</a>
                         </div>
 
@@ -78,6 +78,7 @@
                     </div>
                 </div>
             </div>
+            @include('layouts.modal-delete',['text' => "Вы точно хотите удалить?"])
         </div>
 
     </div>

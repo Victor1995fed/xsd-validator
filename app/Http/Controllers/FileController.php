@@ -6,12 +6,14 @@ use App\Constants\Storage;
 use App\Constants\Storage as StorageConstants;
 use App\File;
 use App\Modules\XsdValidator;
+use App\Traits\ZipHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
+    use ZipHelper;
 
     public function download($uuid)
     {
@@ -43,19 +45,7 @@ class FileController extends Controller
         }
         try{
             $file = $request->file('zip');
-            $zip = new \ZipArchive;
-            $listFiles = [];
-            if ($zip->open($file->getPathname()) === true) {
-                for( $i = 0; $i < $zip->numFiles; $i++ ){
-                    $stat = $zip->statIndex( $i );
-                    $listFiles[] = basename( $stat['name'] );
-                }
-                return $listFiles;
-
-            } else {
-                throw new \Exception('Ошибка при  разборе архива',500);
-            }
-
+            return $this->getListFiles($file->getPathname());
         }
         catch (\Exception $e) {
             throw new \Exception($e->getMessage(),$e->getCode());

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('main.index');
-});
+Route::get('/', 'MainController@index');
 
 Route::get('validator', 'ValidatorController@index');
 

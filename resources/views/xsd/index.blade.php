@@ -89,7 +89,7 @@
                                         <a href="{{url("xsd").'/'.$xsdOne->id.'/edit'}}"  class="item change" data-toggle="tooltip" data-placement="top" title="" data-original-title="Изменить">
                                             <i class="fa fa-cog"></i>
                                         </a>
-                                        <a href="{{url("xsd").'/'.$xsdOne->id}}"  class="item delete"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Удалить">
+                                        <a href="#"  class="item delete" data-xsd-id= "{{$xsdOne->id}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Удалить"  data-target="#deleteModal">
                                             <i class="zmdi zmdi-delete"></i>
                                         </a>
                                     </div>
@@ -104,6 +104,8 @@
             </div>
         </div>
 
+        @include('layouts.modal-delete',['text' => "Вы точно хотите удалить?"])
+
     </div>
     <style>
         .table-data-feature a.delete i  {
@@ -117,7 +119,13 @@
 
     </style>
 @include('layouts.scripts')
-
+    <script>
+        let removeAgree = $('#agree')
+        $(".delete").click(function() {
+            let xsdId = $(this).attr('data-xsd-id')
+            removeAgree.attr('action','{{url('/xsd/')}}/'+xsdId)
+        });
+    </script>
 </body>
 
 </html>

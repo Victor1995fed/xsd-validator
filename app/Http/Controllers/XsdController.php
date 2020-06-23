@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Constants\Storage;
 use App\Modules\File;
+use App\File as ModelFile;
+use App\Traits\ZipHelper;
 use Illuminate\Support\Facades\File as FacadesFile;
 use App\Modules\XsdValidator;
 use App\Xsd;
@@ -15,6 +17,7 @@ use phpDocumentor\Reflection\DocBlock\Serializer;
 
 class XsdController extends Controller
 {
+    use ZipHelper;
     /**
      * Display a listing of the resource.
      *
@@ -101,7 +104,14 @@ class XsdController extends Controller
      */
     public function edit($id)
     {
-        //
+        $xsd = Xsd::with('files')->findOrFail($id);
+        $file = $xsd->files->first();
+        $listFilesZip = $this->getListFiles(base_path().'/'.Storage::LONG_STORAGE_PATH.'/'.$file->url);
+        return view('xsd.edit',  [
+            'xsd' =>  $xsd,
+            'listFilesZip' => $listFilesZip
+        ]);
+
     }
 
     /**
@@ -113,7 +123,31 @@ class XsdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $xsd = Xsd::with('files')->findOrFail($id);
+        $request['description'] = $request['description'] ?? $xsd->description;
+        $idFiles = $this->getIdFiles($xsd->files);
+        DB::beginTransaction();
+        try {
+            if($xsd->fill($request->all())->save()){
+                //Если загружен новый файл
+                if($request->hasFile('xsd-file')){
+                    $xsd->files()->detach($idFiles);
+                    $file = File::upload($request->file('xsd-file'),Storage::LONG_TERM_FILE);
+                    //Сохранение связи
+                    $xsd->files()->save($file);
+                }
+            }
+            else
+                throw new \Exception('Ощибка при обновлени данных');
+
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('xsd.show',$xsd->id);
     }
 
     /**
@@ -124,7 +158,23 @@ class XsdController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $xsd = Xsd::with('files')->findOrFail($id);
+        $idFiles = $this->getIdFiles($xsd->files);
+        //destroy  relations
+        $xsd->files()->detach($idFiles);
+        //FIXME:: Удаляются связи, но не файлы, т.к. файл может иметь еще одну связь с другой xsd (доработать логику)
+        //ModelFile::destroy($idFiles);
+        $xsd->delete();
+        return redirect()->route('xsd.index');
+    }
+
+    private function getIdFiles( $files ):array
+    {
+        $idFiles = [];
+        foreach ($files as $fileOne) {
+            $idFiles[] = $fileOne->id;
+        }
+        return  $idFiles;
     }
 
     public function testXml($id)
@@ -181,7 +231,7 @@ class XsdController extends Controller
                     ];
                 }
             } else {
-                throw new \Exception('Ошибка при  разборе архива',500);
+                throw new \Exception('Ошибка при разборе архива',500);
             }
 
         }
