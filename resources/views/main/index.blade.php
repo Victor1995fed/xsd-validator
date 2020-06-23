@@ -41,30 +41,30 @@
                                             <span>Загружено схем</span>
                                         </div>
                                     </div>
-                                    <div class="overview-chart" style="height: 50px">
+                                    <div class="overview-chart">
 {{--                                        <canvas id="widgetChart1"></canvas>--}}
                                     </div>
                                 </div>
                             </div>
                         </div>
-{{--                        <div class="col-sm-6 col-lg-3">--}}
-{{--                            <div class="overview-item overview-item--c2">--}}
-{{--                                <div class="overview__inner">--}}
-{{--                                    <div class="overview-box clearfix">--}}
-{{--                                        <div class="icon">--}}
-{{--                                            <i class="zmdi zmdi-account-o"></i>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="text">--}}
-{{--                                            <h2>5</h2>--}}
-{{--                                            <span>Пользователей</span>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="overview-chart">--}}
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="overview-item overview-item--c2">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="zmdi zmdi-account-o"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>{{$countUsers}}</h2>
+                                            <span>Пользователей</span>
+                                        </div>
+                                    </div>
+                                    <div class="overview-chart" >
 {{--                                        <canvas id="widgetChart2"></canvas>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 {{--                        <div class="col-sm-6 col-lg-3">--}}
 {{--                            <div class="overview-item overview-item--c3">--}}
 {{--                                <div class="overview__inner">--}}

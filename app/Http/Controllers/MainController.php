@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Xsd;
 use Illuminate\Http\Request;
 
@@ -9,9 +10,16 @@ class MainController extends Controller
 {
     public function index()
     {
-        $countXsd = Xsd::count();
          return view('main.index', [
-             'countXsd' => $countXsd
+             'countXsd' => Xsd::count(),
+             'countUsers' => User::count()
          ]);
+    }
+
+    public function help()
+    {
+        return view('main.help', [
+
+        ]);
     }
 }

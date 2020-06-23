@@ -33,6 +33,12 @@
                         </ul>
                     </li>
 
+                    <li>
+                        <a href="{{url('/help')}}">
+                            <i class="fas fa-info"></i>
+                            <span class="bot-line"></span>Помощь</a>
+                    </li>
+
                 </ul>
             </div>
 
