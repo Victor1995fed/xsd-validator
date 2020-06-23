@@ -42,15 +42,24 @@
                                 <input type="file" id="xsd-file" name="xsd-file" class="form-control-file">
                             </div>
                         </div>
-
-                        <div class="row form-group">
+                        <div class="row form-group" id="main-xsd-div">
                             <div class="col col-md-3">
-                                <label for="root_xsd" class=" form-control-label">Путь к корневой схеме в архиве</label>
+                                <label for="xsdName">Название корневой xsd в архиве</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="root_xsd" name="root_xsd"  class="form-control">
+                                <select class="form-control" id="xsdName" name="root_xsd">
+
+                                </select>
                             </div>
                         </div>
+{{--                        <div class="row form-group">--}}
+{{--                            <div class="col col-md-3">--}}
+{{--                                <label for="root_xsd" class=" form-control-label">Путь к корневой схеме в архиве</label>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-12 col-md-9">--}}
+{{--                                <input type="text" id="root_xsd" name="root_xsd"  class="form-control">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="description" class="form-control-label">Описание(не обязательно)</label>
@@ -75,6 +84,48 @@
     </div>
 @include('layouts.scripts')
 
+<script>
+    //TODO:: Произвести рефактор кода
+    //Событие загрузки файла
+    let selectRootXsd = $("#xsdName")
+    let divSelect = $("#main-xsd-div")
+    divSelect.hide()
+    $("#xsd-file").change(function () {
+        if (this.files.length > 0) {
+            divSelect.hide()
+            $("#xsdName").empty()
+            //Загружаем на сервер
+            let zip = new FormData();
+            zip.append('zip', $('input[type=file]')[0].files[0]);
+            $.ajax({
+                type: 'POST',
+                url: '{{url("file/get-list-zip")}}',
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                data: zip,
+                complete: function() {
+                    // alert('готово')
+                },
+                success: function(data){
+                    divSelect.show()
+                    //Заполнение данными
+                    $.each(data,function(key, value)
+                    {
+                        // console.warn(key+value)
+                        $("#xsdName").append('<option value=' + value + '>' + value + '</option>');
+                    });
+                    console.log(data)
+                },
+                error: function (request, error) {
+                    alert(request.responseText)
+                },
+            });
+        }
+    });
+</script>
 </body>
 
 </html>

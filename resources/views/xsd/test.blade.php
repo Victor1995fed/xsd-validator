@@ -24,14 +24,16 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-12">
-                            <h1 class="title-4">Тестирование <mark >{{$xsd->title}}</mark></h1>
+                            <h1 class="title-4">Тестирование <a href="{{url("xsd/$xsd->id")}}">{{$xsd->title}}</a></h1>
                             <hr class="line-seprate">
                         </div>
                         <form action = "{{url("validator")}}"  method="post" enctype="multipart/form-data" id="validatorXsd">
                             {{--    @csrf--}}
                             <div class="form-group">
                                 <label for="xsd">Архив с XSD</label>
-                                <input type="text" disabled value="{{$xsd->files[0]->title ?? ''}}" class="form-control" id="#xsdName" name="main-xsd">
+                                <input type="text" disabled value="{{$xsd->files[0]->title ?? ''}}" class="form-control" id="#xsdName" name="main-xsd"><a href="{{url("file").'/'.$xsd->files[0]->uuid}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Скачать">
+                                    <i class="fa fa-download"></i>
+                                </a>
 {{--                                <input id="xsdFile" disabled class="form-control-file" name="zip">--}}
                             </div>
                             <div class="form-group">

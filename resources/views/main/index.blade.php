@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="overview-wrap">
-                                <h2 class="title-1">overview</h2>
+                                <h2 class="title-1">Главная</h2>
                                 <button class="au-btn au-btn-icon au-btn--blue">
                                     <i class="zmdi zmdi-plus"></i>add item</button>
                             </div>
@@ -36,11 +36,11 @@
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">
-                                            <i class="zmdi zmdi-account-o"></i>
+                                            <i class="fa fa-file-text"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>10368</h2>
-                                            <span>members online</span>
+                                            <h2>103</h2>
+                                            <span>Загружено схем</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -54,11 +54,11 @@
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">
-                                            <i class="zmdi zmdi-shopping-cart"></i>
+                                            <i class="zmdi zmdi-account-o"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>388,688</h2>
-                                            <span>items solid</span>
+                                            <h2>5</h2>
+                                            <span>Пользователей</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -72,11 +72,11 @@
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">
-                                            <i class="zmdi zmdi-calendar-note"></i>
+                                            <i class="fa  fa-comment"></i>
                                         </div>
                                         <div class="text">
                                             <h2>1,086</h2>
-                                            <span>this week</span>
+                                            <span>Комментариев </span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -90,11 +90,11 @@
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">
-                                            <i class="zmdi zmdi-money"></i>
+                                            <i class="fa   fa-desktop"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>$1,060,386</h2>
-                                            <span>total earnings</span>
+                                            <h2>500</h2>
+                                            <span>Показов за сегодня</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">

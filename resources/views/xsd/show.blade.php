@@ -20,37 +20,50 @@
 
         <!-- MAIN CONTENT-->
         <div class="main-content">
+
+                <div class="container custom-container" >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="title-5" >Просмотр xsd-схемы
+                            </h4>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+                </div>
+
             <div class="col-lg-12">
+
                 <div class="card">
                     <div class="card-header"><strong class="card-title">{{$xsd->title}}</strong></div>
                     <div class="card-body card-block">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Архив</h4>
+
+                        <div>
+                            <p><i class="fa fa-calendar"></i> <strong>Обновлено: </strong> {{$xsd->updated_at}}</p>
+                        </div>
+                        <hr>
+                            @if($xsd->description != '')
+                            <div>
+                                <p><i class="fa fa-info-circle"></i> <strong>Описание:</strong> {{$xsd->description}}</p>
                             </div>
-                            <div class="card-body">
+                            @endif
+
+
+                        <hr>
                                 @foreach ($xsd->files as $file)
-                                    <p class="muted">{{$file->title}}</p>
+                            <p><i class="fa fa-file-text"></i> <strong>Файл xsd:</strong> {{$file->title}}</p>
                                     <div>
-                                        <a href="{{url("file").'/'.$file->uuid}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Скачать">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
+
+{{--                                        <a href="{{url("file").'/'.$file->uuid}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Смотреть">--}}
+{{--                                            <i class="fa fa-eye"></i>--}}
+{{--                                        </a>--}}
                                         <a href="{{url("file").'/'.$file->uuid}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Скачать">
                                             <i class="fa fa-download"></i>
                                         </a>
                                     </div>
                                 @endforeach
 
+                                    <hr>
 
-
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <h5 class="mb-3">Описание</h5>
-                            <div class="jumbotron">
-                                {{$xsd->description}}
-                            </div>
-                        </div>
                         <div class="button-action">
                             <a class="btn btn-primary btn-sm" href="{{url("xsd/test").'/'.$xsd->id}}">
                                 <i class="fa fa-code"></i>&nbsp; Тестировать XML</a>
@@ -75,6 +88,9 @@
         }
         .button-action a:hover {
             color: #fff;
+        }
+        .custom-container {
+            margin: 0;
         }
     </style>
 @include('layouts.scripts')

@@ -29,3 +29,4 @@ Route::resource('/xsd', 'XsdController');
 Route::get('/file/{uuid}', 'FileController@download');
 Route::get('/xsd/test/{id}', 'XsdController@testXml');
 Route::post('/xsd/test/{id}', 'XsdController@runTestXml');
+Route::post('/file/get-list-zip', 'FileController@getListFilesZip');

@@ -33,9 +33,15 @@
                             <label for="xsd">Архив с XSD</label>
                             <input id="xsdFile" type="file" class="form-control-file" name="zip">
                         </div>
-                        <div class="form-group">
-                            <label for="xsdName">Название корневой xsd в архиве</label>
-                            <input type="text" class="form-control" id="#xsdName" name="main-xsd">
+                        <div class="row form-group" id="main-xsd-div">
+                            <div class="col col-md-12">
+                                <label for="xsdName">Название корневой xsd в архиве</label>
+                            </div>
+                            <div class="col-md-6">
+                            <select class="form-control" id="xsdName" name="main-xsd">
+
+                            </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="xml-field">XML для проверки</label>
@@ -76,6 +82,48 @@
 </div>
 @include('layouts.scripts')
 <script>
+
+    //TODO:: Произвести рефактор кода
+    //Событие загрузки файла
+    let selectRootXsd = $("#xsdName")
+    let divSelect = $("#main-xsd-div")
+    divSelect.hide()
+    $("#xsdFile").change(function () {
+        if (this.files.length > 0) {
+            divSelect.hide()
+            $("#xsdName").empty()
+            //Загружаем на сервер
+            let zip = new FormData();
+            zip.append('zip', $('input[type=file]')[0].files[0]);
+            $.ajax({
+                type: 'POST',
+                url: '{{url("file/get-list-zip")}}',
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                data: zip,
+                complete: function() {
+                    // alert('готово')
+                },
+                success: function(data){
+                    divSelect.show()
+                    //Заполнение данными
+                    $.each(data,function(key, value)
+                    {
+                        // console.warn(key+value)
+                        $("#xsdName").append('<option value=' + value + '>' + value + '</option>');
+                    });
+                    console.log(data)
+                },
+                error: function (request, error) {
+                    alert(request.responseText)
+                },
+            });
+        }
+    });
+
     $("#validatorXsd").keydown(function(event) {
         if (event.keyCode == 13) {
             event.preventDefault();
@@ -114,7 +162,7 @@
         $('.result').addClass('displayNone');
         let data = new FormData();
         data.append('xml', myCodeMirror.getValue());
-        data.append('main-xsd', $("input[name='main-xsd']").val());
+        data.append('main-xsd', $("select[name='main-xsd']").val());
         data.append('zip', $('input[type=file]')[0].files[0]);
         $('.spinner-border').removeClass('displayNone');
         $('#submitAjax').prop( "disabled", true );
