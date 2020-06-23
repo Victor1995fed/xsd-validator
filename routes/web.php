@@ -14,12 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'MainController@index');
-
-Route::get('validator', 'ValidatorController@index');
+Route::get('/', 'MainController@index');
 
 Route::post('validator', 'ValidatorController@check');
-Route::post('test', 'ValidatorController@test');
-Auth::routes();
+Route::get('validator', 'ValidatorController@index');
+//Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -28,3 +27,7 @@ Route::get('/file/{uuid}', 'FileController@download');
 Route::get('/xsd/test/{id}', 'XsdController@testXml');
 Route::post('/xsd/test/{id}', 'XsdController@runTestXml');
 Route::post('/file/get-list-zip', 'FileController@getListFilesZip');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
