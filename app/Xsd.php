@@ -8,7 +8,7 @@ class Xsd extends Model
 {
     protected $table = 'xsd';
 
-    protected $fillable = ['title', 'root_xsd', 'user_id', 'description'];
+    protected $fillable = ['title', 'root_xsd', 'user_id', 'description', 'public'];
 
 
     /**

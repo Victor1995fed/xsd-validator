@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/xsd', 'XsdController');
 Route::get('/file/{uuid}', 'FileController@download');
 Route::get('/xsd/test/{id}', 'XsdController@testXml');
+Route::get('/xsd-public', 'XsdController@indexPublic');
 Route::post('/xsd/test/{id}', 'XsdController@runTestXml');
 Route::post('/file/get-list-zip', 'FileController@getListFilesZip');
 

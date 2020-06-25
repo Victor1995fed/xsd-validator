@@ -24,11 +24,17 @@
                             <i class="fas fa-file-text"></i>
                             <span class="bot-line"></span>XSD</a>
                         <ul class="header3-sub-list list-unstyled">
+                            @if (Auth::check())
+                                <li>
+                                    <a href="{{url('/xsd')}}">Мои</a>
+                                </li>
+                            @endif
+
                             <li>
-                                <a href="{{url('/xsd')}}">Список</a>
+                                <a href="{{url('/xsd-public')}}">Опубликованные</a>
                             </li>
                             <li>
-                                <a href="{{url('validator')}}">Бытрая проверка по XSD</a>
+                                <a href="{{url('validator')}}">Быстрая проверка по XSD</a>
                             </li>
                         </ul>
                     </li>
@@ -102,7 +108,7 @@
                                                      document.getElementById('logout-form').submit();">
 
                                         <i class="zmdi zmdi-power"></i>Выйти</a>
-                                    </a>
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>

@@ -68,6 +68,19 @@
                                 <textarea name="description" id="description" rows="9" class="form-control"></textarea>
                             </div>
                         </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="switch-public" class="form-control-label">Опубликовать</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <label class="switch switch-3d switch-success mr-3">
+                                    <input id="switch-public" type="checkbox" name="public" class="switch-input">
+                                    <span class="switch-label"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+
+                        </div>
                     </form>
                 </div>
                 <div class="card-footer">

@@ -6,6 +6,7 @@ use App\Constants\Storage;
 use App\Modules\File;
 use App\File as ModelFile;
 use App\Traits\ZipHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File as FacadesFile;
 use App\Modules\XsdValidator;
 use App\Xsd;
@@ -18,6 +19,11 @@ use phpDocumentor\Reflection\DocBlock\Serializer;
 class XsdController extends Controller
 {
     use ZipHelper;
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['show','indexPublic','testXml','runTestXml']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,10 +31,25 @@ class XsdController extends Controller
      */
     public function index(Request $request)
     {
+        $id = Auth::id();
         if(isset($request->page) && ( int )$request->page > 0)
             $page = (int)--$request->page;
         return view('xsd.index', [
-            'xsd' =>  Xsd::with('files')->paginate(10,['*'],'page', $page ?? 0)
+            'xsd' =>  Xsd::with('files')->where('user_id', $id)->paginate(10,['*'],'page', $page ?? 0)
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource public
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexPublic(Request $request)
+    {
+        if(isset($request->page) && ( int )$request->page > 0)
+            $page = (int)--$request->page;
+        return view('xsd.index', [
+            'xsd' =>  Xsd::with('files')->where('public', 1)->paginate(10,['*'],'page', $page ?? 0)
         ]);
     }
 
@@ -51,12 +72,11 @@ class XsdController extends Controller
      */
     public function store(Request $request)
     {
-        $request['description'] = $request['description'] ?? '';
-
         DB::beginTransaction();
         try {
-            $request['user_id'] = 1; //TODO:: Пока без авторизации
-
+            $request['description'] = $request['description'] ?? '';
+            $request['user_id'] = Auth::id();
+            $request['public'] = isset($request['public']) ? 1 : 0;
             if($xsd = Xsd::create($request->all())) {
                 if($request->hasFile('xsd-file')) {
                     //Сохранение файла
@@ -125,6 +145,7 @@ class XsdController extends Controller
     {
         $xsd = Xsd::with('files')->findOrFail($id);
         $request['description'] = $request['description'] ?? $xsd->description;
+        $request['public'] = isset($request['public']) ? 1 : 0;
         $idFiles = $this->getIdFiles($xsd->files);
         DB::beginTransaction();
         try {
@@ -168,6 +189,12 @@ class XsdController extends Controller
         return redirect()->route('xsd.index');
     }
 
+    /**
+     * Получает id файлов
+     *
+     * @param  object  $files
+     * @return array
+     */
     private function getIdFiles( $files ):array
     {
         $idFiles = [];
@@ -240,4 +267,5 @@ class XsdController extends Controller
             throw new \Exception($e->getMessage(),$e->getCode());
         }
     }
+
 }

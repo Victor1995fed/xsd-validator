@@ -89,7 +89,7 @@
                                         <a href="{{url("xsd").'/'.$xsdOne->id.'/edit'}}"  class="item change" data-toggle="tooltip" data-placement="top" title="" data-original-title="Изменить">
                                             <i class="fa fa-cog"></i>
                                         </a>
-                                        <a href="#"  class="item delete" data-xsd-id= "{{$xsdOne->id}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Удалить"  data-target="#deleteModal">
+                                        <a href="#"  class="item delete" data-xsd-id= "{{$xsdOne->id}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Удалить"   data-target="#deleteModal">
                                             <i class="zmdi zmdi-delete"></i>
                                         </a>
                                     </div>
