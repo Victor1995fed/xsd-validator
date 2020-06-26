@@ -32,12 +32,19 @@ class XsdController extends Controller
     public function index(Request $request)
     {
         $id = Auth::id();
+        if($request->exists('sort') && array_search($sortAttr = str_replace('-','',$request['sort']), Xsd::$sortable) !== false){
+            $sortType = strripos($request['sort'],'-') === false ? 'asc' : 'desc';
+            $xsd = Xsd::with('files')->where('user_id', $id)->orderBy($sortAttr,$sortType)->paginate(Xsd::$pageSize);
+        }
+        else
+            $xsd = Xsd::with('files')->where('user_id', $id)->paginate(Xsd::$pageSize );
 
-//        if(isset($request->page) && ( int )$request->page > 0)
-//            $page = (int)--$request->page;
-        $xsd = Xsd::with('files')->where('user_id', $id)->paginate(5 );
         return view('xsd.index', [
             'xsd' =>  $xsd,
+            'params' => [
+                'sortType' => $sortType ?? null,
+                'sortAttr' => $sortAttr ?? null
+            ]
         ]);
     }
 
@@ -48,10 +55,8 @@ class XsdController extends Controller
      */
     public function indexPublic(Request $request)
     {
-        if(isset($request->page) && ( int )$request->page > 0)
-            $page = (int)--$request->page;
         return view('xsd.index', [
-            'xsd' =>  Xsd::with('files')->where('public', 1)->paginate(10,['*'],'page', $page ?? 0)
+            'xsd' =>  Xsd::with('files')->where('public', 1)->paginate(10)
         ]);
     }
 

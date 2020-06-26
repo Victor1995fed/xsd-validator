@@ -10,7 +10,8 @@ class Xsd extends Model
 
     protected $fillable = ['title', 'root_xsd', 'user_id', 'description', 'public'];
 
-
+    public static $sortable = ['title','description','updated_at'];
+    public static $pageSize = 2;
     /**
      * Связь с files
      */

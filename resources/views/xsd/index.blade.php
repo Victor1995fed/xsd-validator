@@ -59,9 +59,11 @@
                                     <span class="au-checkmark"></span>
                                 </label>
                             </th>
-                            <th>Название</th>
-                            <th>Описание</th>
-                            <th>Обновлено</th>
+{{--                            {{$sortName = Request::get('sort')}}--}}
+{{--                            {{$sortType = Request::get('sort')}}--}}
+                            <th> <a class="sort-link" data-name="title" href="#" data-sort-type="asc">Название</a><span class="html-content"></span></th>
+                            <th> <a class="sort-link" data-name="description" href="#" data-sort-type="asc">Описание</a> <span class="html-content"></span></th>
+                            <th> <a class="sort-link" data-name="updated_at" href="#" data-sort-type="asc">Обновлено</a> <span class="html-content"></span></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -123,6 +125,7 @@
                                                 </li>
 
                     </ul>
+{{--                    TODO:: Допилить указание сортировки при переходе между страницами--}}
                 </nav>
              </div>
             @endif
@@ -149,11 +152,54 @@
     </style>
 @include('layouts.scripts')
     <script>
+        @if(isset($params['sortType'],$params['sortAttr']) && $params['sortType'] !== null && $params['sortAttr'] !== null)
+            let sortType = '{{$params['sortType']}}'
+            let sortAttr = '{{$params['sortAttr']}}'
+            let sortHtml = '&#8659;'
+        if(sortType == 'desc'){
+             sortHtml = '&#8657;'
+        }
+
+        $('a[data-name='+sortAttr+']').attr('data-sort-type',sortType);
+        $('a[data-name='+sortAttr+']').siblings('.html-content').html(sortHtml);
+        @endif
         let removeAgree = $('#agree')
         $(".delete").click(function() {
             let xsdId = $(this).attr('data-xsd-id')
             removeAgree.attr('action','{{url('/xsd/')}}/'+xsdId)
         });
+
+        $(".sort-link").click(function (e) {
+            e.preventDefault()
+            let  url   = window.location.pathname;
+            let typeSort = changeTypeSort($(this).attr('data-sort-type'))
+            let page = getUrlParameter('page');
+            page = page === undefined ? '' : '&page='+page
+            // debugger
+            $(this).attr('href',url+'?sort='+typeSort+$(this).attr('data-name')+page)
+            window.location.href=$(this).attr('href');
+        })
+
+        function changeTypeSort(typeSort) {
+            if(typeSort == 'asc')
+                return '-'
+            else
+                return ''
+        }
+
+        function getUrlParameter(sParam) {
+            let sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+        };
     </script>
 </body>
 
