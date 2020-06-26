@@ -56,7 +56,7 @@ class XsdController extends Controller
     public function indexPublic(Request $request)
     {
         return view('xsd.index', [
-            'xsd' =>  Xsd::with('files')->where('public', 1)->paginate(10)
+            'xsd' =>  Xsd::with('files')->where('public', 1)->paginate(Xsd::$pageSize)
         ]);
     }
 

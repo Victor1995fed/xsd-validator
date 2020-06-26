@@ -110,18 +110,18 @@
                 <nav  class="pagination">
                     <ul class=" pagination justify-content-center">
                                                 <li class="page-item  {{($xsd->currentPage() == 1 ? 'disabled' : '')}}">
-                                                    <a class="page-link" href="{{url('/xsd?page=').($xsd->currentPage() - 1)}}" tabindex="-1"><</a>
+                                                    <a class="page-link" href="{{Request::url().'?page='.($xsd->currentPage() - 1)}}" tabindex="-1"><</a>
                                                 </li>
                         @for($i = 1; $i <= $xsd->lastPage(); $i++  )
                                                     @if($xsd->currentPage() == $i)
                                                     <li class="page-item active"><a class="page-link" href="{{url("/xsd?page=$i")}}">{{$i}}</a></li>
                             @else
-                                <li class="page-item"><a class="page-link" href="{{url("/xsd?page=$i")}}">{{$i}}</a></li>
+                                <li class="page-item"><a class="page-link" href="{{Request::url()."?page=$i"}}">{{$i}}</a></li>
                                                     @endif
 
                         @endfor
                         <li class="page-item {{($xsd->currentPage() == $xsd->lastPage() ? 'disabled' : '')}}" >
-                                                    <a class="page-link"  href="{{url('/xsd?page=').($xsd->currentPage() + 1)}}"> > </a>
+                                                    <a class="page-link"  href="{{Request::url().'?page='.($xsd->currentPage() + 1)}}"> > </a>
                                                 </li>
 
                     </ul>
