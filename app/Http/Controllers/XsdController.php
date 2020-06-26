@@ -32,10 +32,12 @@ class XsdController extends Controller
     public function index(Request $request)
     {
         $id = Auth::id();
-        if(isset($request->page) && ( int )$request->page > 0)
-            $page = (int)--$request->page;
+
+//        if(isset($request->page) && ( int )$request->page > 0)
+//            $page = (int)--$request->page;
+        $xsd = Xsd::with('files')->where('user_id', $id)->paginate(5 );
         return view('xsd.index', [
-            'xsd' =>  Xsd::with('files')->where('user_id', $id)->paginate(10,['*'],'page', $page ?? 0)
+            'xsd' =>  $xsd,
         ]);
     }
 

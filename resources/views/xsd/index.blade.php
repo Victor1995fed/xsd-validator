@@ -99,9 +99,33 @@
 
                         </tbody>
                     </table>
+
                 </div>
                 <!-- END DATA TABLE -->
             </div>
+            @if($xsd->lastPage() > 1)
+            <div class="col-md-12">
+                <nav  class="pagination">
+                    <ul class=" pagination justify-content-center">
+                                                <li class="page-item  {{($xsd->currentPage() == 1 ? 'disabled' : '')}}">
+                                                    <a class="page-link" href="{{url('/xsd?page=').($xsd->currentPage() - 1)}}" tabindex="-1"><</a>
+                                                </li>
+                        @for($i = 1; $i <= $xsd->lastPage(); $i++  )
+                                                    @if($xsd->currentPage() == $i)
+                                                    <li class="page-item active"><a class="page-link" href="{{url("/xsd?page=$i")}}">{{$i}}</a></li>
+                            @else
+                                <li class="page-item"><a class="page-link" href="{{url("/xsd?page=$i")}}">{{$i}}</a></li>
+                                                    @endif
+
+                        @endfor
+                        <li class="page-item {{($xsd->currentPage() == $xsd->lastPage() ? 'disabled' : '')}}" >
+                                                    <a class="page-link"  href="{{url('/xsd?page=').($xsd->currentPage() + 1)}}"> > </a>
+                                                </li>
+
+                    </ul>
+                </nav>
+             </div>
+            @endif
         </div>
 
         @include('layouts.modal-delete',['text' => "Вы точно хотите удалить?"])
@@ -112,9 +136,14 @@
             color: #f00;
 
         }
-        .table-data-feature a.see i, .table-data-feature a.change i  {
-            color: #3490dc;
-
+        .table-data-feature a.see i  {
+            color: #63c76a;
+        }
+         .table-data-feature a.change i  {
+             color: #3490dc;
+        }
+        .pagination {
+            margin-top: 1px;
         }
 
     </style>
