@@ -132,6 +132,7 @@ class XsdController extends Controller
     public function edit($id)
     {
         $xsd = Xsd::with('files')->findOrFail($id);
+        $this->checkAccess($xsd);
         $file = $xsd->files->first();
         $listFilesZip = $this->getListFiles(base_path().'/'.Storage::LONG_STORAGE_PATH.'/'.$file->url);
         return view('xsd.edit',  [
@@ -151,6 +152,7 @@ class XsdController extends Controller
     public function update(Request $request, $id)
     {
         $xsd = Xsd::with('files')->findOrFail($id);
+        $this->checkAccess($xsd);
         $request['description'] = $request['description'] ?? $xsd->description;
         $request['public'] = isset($request['public']) ? 1 : 0;
         $idFiles = $this->getIdFiles($xsd->files);
@@ -186,7 +188,9 @@ class XsdController extends Controller
      */
     public function destroy($id)
     {
+
         $xsd = Xsd::with('files')->findOrFail($id);
+        $this->checkAccess($xsd);
         $idFiles = $this->getIdFiles($xsd->files);
         //destroy  relations
         $xsd->files()->detach($idFiles);

@@ -8,10 +8,6 @@
 <!-- END HEADER MOBILE-->
 
     <!-- END MENU SIDEBAR-->
-    <link href="{{ asset('assets/lib/codemirror.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/theme/darcula.css') }}" rel="stylesheet">
-    <script src="{{ asset('assets/lib/codemirror.js') }}"></script>
-    <script src="{{ asset('assets/mode/xml/xml.js') }}"></script>
     <!-- PAGE CONTAINER-->
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -50,58 +46,61 @@
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
-                    <table class="table table-data2">
-                        <thead>
-                        <tr>
-                            <th>
-                                <label class="au-checkbox">
-                                    <input type="checkbox">
-                                    <span class="au-checkmark"></span>
-                                </label>
-                            </th>
-{{--                            {{$sortName = Request::get('sort')}}--}}
-{{--                            {{$sortType = Request::get('sort')}}--}}
-                            <th> <a class="sort-link" data-name="title" href="#" data-sort-type="asc">Название</a><span class="html-content"></span></th>
-                            <th> <a class="sort-link" data-name="description" href="#" data-sort-type="asc">Описание</a> <span class="html-content"></span></th>
-                            <th> <a class="sort-link" data-name="updated_at" href="#" data-sort-type="asc">Обновлено</a> <span class="html-content"></span></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($xsd as $xsdOne)
-                            <tr class="tr-shadow">
-                                <td>
+                    @if(count($xsd) > 0)
+                        <table class="table table-data2">
+                            <thead>
+                            <tr>
+                                <th>
                                     <label class="au-checkbox">
                                         <input type="checkbox">
                                         <span class="au-checkmark"></span>
                                     </label>
-                                </td>
-                                <td>{{$xsdOne->title}}</td>
-
-                                <td>{{mb_strimwidth($xsdOne->description, 0, 40, "...")}}</td>
-                                <td>{{$xsdOne->created_at}}</td>
-                                <td>
-                                    <div class="table-data-feature">
-                                        <a href="{{url("xsd/test").'/'.$xsdOne->id}}"  class="item test" data-toggle="tooltip" data-placement="top" title="" data-original-title="Тестировать xml">
-                                            <i class="fa fa-code"></i>
-                                        </a>
-                                        <a href="{{url("xsd").'/'.$xsdOne->id}}"  class="item see" data-toggle="tooltip" data-placement="top" title="" data-original-title="Посмотреть">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a href="{{url("xsd").'/'.$xsdOne->id.'/edit'}}"  class="item change" data-toggle="tooltip" data-placement="top" title="" data-original-title="Изменить">
-                                            <i class="fa fa-cog"></i>
-                                        </a>
-                                        <a href="#"  class="item delete" data-xsd-id= "{{$xsdOne->id}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Удалить"   data-target="#deleteModal">
-                                            <i class="zmdi zmdi-delete"></i>
-                                        </a>
-                                    </div>
-                                </td>
+                                </th>
+                                {{--                            {{$sortName = Request::get('sort')}}--}}
+                                {{--                            {{$sortType = Request::get('sort')}}--}}
+                                <th> <a class="sort-link" data-name="title" href="#" data-sort-type="asc">Название</a><span class="html-content"></span></th>
+                                <th> <a class="sort-link" data-name="description" href="#" data-sort-type="asc">Описание</a> <span class="html-content"></span></th>
+                                <th> <a class="sort-link" data-name="updated_at" href="#" data-sort-type="asc">Обновлено</a> <span class="html-content"></span></th>
+                                <th></th>
                             </tr>
-                        @endforeach
+                            </thead>
+                            <tbody>
+                            @foreach ($xsd as $xsdOne)
+                                <tr class="tr-shadow">
+                                    <td>
+                                        <label class="au-checkbox">
+                                            <input type="checkbox">
+                                            <span class="au-checkmark"></span>
+                                        </label>
+                                    </td>
+                                    <td>{{$xsdOne->title}}</td>
 
-                        </tbody>
-                    </table>
+                                    <td>{{mb_strimwidth($xsdOne->description, 0, 40, "...")}}</td>
+                                    <td>{{$xsdOne->created_at}}</td>
+                                    <td>
+                                        <div class="table-data-feature">
+                                            <a href="{{url("xsd/test").'/'.$xsdOne->id}}"  class="item test" data-toggle="tooltip" data-placement="top" title="" data-original-title="Тестировать xml">
+                                                <i class="fa fa-code"></i>
+                                            </a>
+                                            <a href="{{url("xsd").'/'.$xsdOne->id}}"  class="item see" data-toggle="tooltip" data-placement="top" title="" data-original-title="Посмотреть">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            <a href="{{url("xsd").'/'.$xsdOne->id.'/edit'}}"  class="item change" data-toggle="tooltip" data-placement="top" title="" data-original-title="Изменить">
+                                                <i class="fa fa-cog"></i>
+                                            </a>
+                                            <a href="#"  class="item delete" data-xsd-id= "{{$xsdOne->id}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Удалить"   data-target="#deleteModal">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
 
+                            </tbody>
+                        </table>
+                    @else
+                        <p>Ничего не найдено</p>
+                    @endif
                 </div>
                 <!-- END DATA TABLE -->
             </div>
@@ -131,7 +130,7 @@
             @endif
         </div>
 
-        @include('layouts.modal-delete',['text' => "Вы точно хотите удалить?"])
+        @include('layouts.modal-delete',['textHeader' => "Вы точно хотите удалить?", 'textBody'=>"XSD будет удалена безвозвратно"])
 
     </div>
     <style>

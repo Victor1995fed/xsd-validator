@@ -3,9 +3,6 @@
         <div class="header3-wrap">
             <div class="header__logo">
                 <a href="{{url('/')}}">
-
-{{--                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />--}}
-{{--                    <img src="images/icon/fenix-logo.png" alt="CoolAdmin" />--}}
                     <img src="{{asset('images/icon/fenix-logo-v4.png')}}" alt="Феникс" />
                     <span style="margin-left: 10px; color: #ccc">PHOENIX</span>
                 </a>
@@ -17,8 +14,6 @@
                             <i class="fas fa-th"></i>
                             <span class="bot-line"></span>Главная</a>
                     </li>
-
-
                     <li class="has-sub">
                         <a href="#">
                             <i class="fas fa-file-text"></i>
@@ -38,6 +33,12 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="{{url('/tag')}}">
+                            <i class="fas fa-bookmark"></i>
+                            <span class="bot-line"></span>Метки</a>
+                    </li>
+
 
                     <li>
                         <a href="{{url('/help')}}">
@@ -79,19 +80,6 @@
                                 <a class="js-acc-btn" href="#">{{Auth::user()->name}}</a>
                             </div>
                             <div class="account-dropdown js-dropdown">
-{{--                                <div class="info clearfix">--}}
-{{--                                    <div class="image">--}}
-{{--                                        <a href="#">--}}
-{{--                                            <img src="{{asset('images/icon/ava-v1.png')}}"/>--}}
-{{--                                        </a>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="content">--}}
-{{--                                        <h5 class="name">--}}
-{{--                                            <a href="#">{{Auth::user()->name}}</a>--}}
-{{--                                        </h5>--}}
-{{--                                        <span class="email">{{Auth::user()->email}}</span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
                                         <a href="#">
@@ -112,8 +100,6 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-{{--                                    <a href="#">--}}
-
                                 </div>
                             </div>
                         </div>

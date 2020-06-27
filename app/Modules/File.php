@@ -27,7 +27,7 @@ class File {
             $file->move($pathDir,$fileName);
             return "$pathDir/$fileName";
         }
-
+        //Сохранение файла с записью в БД
         elseif ($typeSave == Storage::LONG_TERM_FILE) {
             if($fileIsset = self::getFile($fileHash)) {
                 return $fileIsset;
