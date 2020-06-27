@@ -24,7 +24,11 @@
                     <div class="card-body">
                         <ul class="list-group">
                             @foreach ($tag as $tagOne)
-                                <li class="list-group-item">#<a href="{{url("xsd?tag=$tagOne->id")}}">{{$tagOne->title}}</a>   <a href="#"  class="item change" data-toggle="tooltip" data-placement="top" title="" data-original-title="Изменить">
+                                <li class="list-group-item">#<a href="{{url("xsd?tag=$tagOne->id")}}">{{$tagOne->title}}</a>
+{{--                                    <a href="#"  class="item change" data-toggle="tooltip" data-placement="top" title="" data-original-title="Изменить">--}}
+{{--                                        <i class="fa fa-cog"></i>--}}
+{{--                                    </a>--}}
+                                    <a href="#"  class="item change" data-tag-id="{{$tagOne->id}}" data-tag-title= "{{$tagOne->title}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Изменить"   data-target="#updateTagModal">
                                         <i class="fa fa-cog"></i>
                                     </a>
                                     <a href="#"  class="item delete" data-tag-id= "{{$tagOne->id}}"  data-toggle="modal" data-placement="top" title="" data-original-title="Удалить"   data-target="#deleteModal">
@@ -44,6 +48,7 @@
 
         @include('layouts.modal-delete',['textHeader' => "Вы точно хотите удалить?", 'textBody'=>'Метка будет удалена, привязанные к ней данные не будут тронуты'])
         @include('layouts.modal-create-tag',['textHeader' => "Создание метки", 'textBody'=>''])
+        @include('layouts.modal-edit-tag',['textHeader' => "Изменение метки", 'textBody'=>''])
 
     </div>
     <style>
@@ -65,6 +70,14 @@
         $(".delete").click(function() {
             let tagId = $(this).attr('data-tag-id')
             removeAgree.attr('action','{{url('/tag/')}}/'+tagId)
+        });
+
+        let updateForm = $('#updateForm')
+        let titleTag = $('#updateForm input[name="title"]')
+        $(".change").click(function() {
+            titleTag.val($(this).attr('data-tag-title'))
+            let tagId = $(this).attr('data-tag-id')
+            updateForm.attr('action','{{url('/tag/')}}/'+tagId)
         });
     </script>
 </body>

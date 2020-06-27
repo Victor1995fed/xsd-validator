@@ -8,6 +8,7 @@
 <!-- END HEADER MOBILE-->
 
     <!-- END MENU SIDEBAR-->
+    <link href="{{ asset('css/bootstrap-select.css') }}" rel="stylesheet">
     <!-- PAGE CONTAINER-->
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -78,8 +79,25 @@
                                     <span class="switch-handle"></span>
                                 </label>
                             </div>
-
                         </div>
+
+                        @if(count($tags) > 0)
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label for="xsd-file" class=" form-control-label">Метки</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <select class="selectpicker" name="tags[]" multiple data-live-search="true" title="Выберите метки ...">
+                                        @foreach($tags as $tag)
+                                            <option {{ in_array($tag->id,  $choiceTag) === true ? 'selected' : ''}} value="{{$tag->id}}">{{$tag->title}}</option>
+                                        @endforeach
+
+                                    </select>
+
+
+                                </div>
+                            </div>
+                        @endif
                     </form>
                 </div>
                 <div class="card-footer">
@@ -96,10 +114,9 @@
 
     </div>
     @include('layouts.scripts')
-
+    <script src="{{ asset('js/bootstrap-select.js') }}"></script>
     <script>
-
-
+        $('.selectpicker').selectpicker();
         //TODO:: Произвести рефактор кода
         //Событие загрузки файла
         let selectRootXsd = $("#xsdName")

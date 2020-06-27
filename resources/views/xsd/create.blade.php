@@ -8,10 +8,8 @@
 <!-- END HEADER MOBILE-->
 
     <!-- END MENU SIDEBAR-->
-    <link href="{{ asset('assets/lib/codemirror.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/theme/darcula.css') }}" rel="stylesheet">
-    <script src="{{ asset('assets/lib/codemirror.js') }}"></script>
-    <script src="{{ asset('assets/mode/xml/xml.js') }}"></script>
+    <link href="{{ asset('css/bootstrap-select.css') }}" rel="stylesheet">
+
     <!-- PAGE CONTAINER-->
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -26,6 +24,7 @@
                 </div>
                 <div class="card-body card-block">
                     <form action = "{{url("xsd")}}" method="post" id="save-xsd" enctype="multipart/form-data" class="form-horizontal">
+                        @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="title" class=" form-control-label">Название схемы</label>
@@ -34,6 +33,7 @@
                                 <input type="text" id="title" name="title"  class="form-control">
                             </div>
                         </div>
+
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="xsd-file" class=" form-control-label">Архив с xsd</label>
@@ -81,6 +81,23 @@
                             </div>
 
                         </div>
+                        @if(count($tags) > 0)
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label for="xsd-file" class=" form-control-label">Метки</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <select class="selectpicker" name="tags[]" multiple data-live-search="true" title="Выберите метки ...">
+                                        @foreach($tags as $tag)
+                                            <option value="{{$tag->id}}">{{$tag->title}}</option>
+                                        @endforeach
+
+                                    </select>
+
+
+                                </div>
+                            </div>
+                        @endif
                     </form>
                 </div>
                 <div class="card-footer">
@@ -97,8 +114,9 @@
 
     </div>
 @include('layouts.scripts')
-
+    <script src="{{ asset('js/bootstrap-select.js') }}"></script>
 <script>
+        $('.selectpicker').selectpicker();
     //TODO:: Произвести рефактор кода
     //Событие загрузки файла
     let selectRootXsd = $("#xsdName")

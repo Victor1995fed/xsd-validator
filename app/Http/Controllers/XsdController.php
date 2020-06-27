@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\Storage;
 use App\Modules\File;
 use App\File as ModelFile;
+use App\Tag;
 use App\Traits\ZipHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File as FacadesFile;
@@ -68,7 +69,9 @@ class XsdController extends Controller
      */
     public function create()
     {
-        return view('xsd.create');
+        return view('xsd.create', [
+            'tags' => Tag::all()
+        ]);
     }
 
     /**
@@ -79,12 +82,15 @@ class XsdController extends Controller
      */
     public function store(Request $request)
     {
+
         DB::beginTransaction();
         try {
             $request['description'] = $request['description'] ?? '';
             $request['user_id'] = Auth::id();
             $request['public'] = isset($request['public']) ? 1 : 0;
             if($xsd = Xsd::create($request->all())) {
+                //Сохранение меток
+                $xsd->tags()->attach($request->tags);
                 if($request->hasFile('xsd-file')) {
                     //Сохранение файла
                     $file = File::upload($request->file('xsd-file'),Storage::LONG_TERM_FILE);
@@ -131,13 +137,16 @@ class XsdController extends Controller
      */
     public function edit($id)
     {
-        $xsd = Xsd::with('files')->findOrFail($id);
+        $xsd = Xsd::with('files', 'tags')->findOrFail($id);
+        $tagsId =  $xsd->getIdTags($xsd->tags);
         $this->checkAccess($xsd);
         $file = $xsd->files->first();
         $listFilesZip = $this->getListFiles(base_path().'/'.Storage::LONG_STORAGE_PATH.'/'.$file->url);
         return view('xsd.edit',  [
             'xsd' =>  $xsd,
-            'listFilesZip' => $listFilesZip
+            'listFilesZip' => $listFilesZip,
+            'tags' => Tag::all(),
+            'choiceTag' => $tagsId
         ]);
 
     }
@@ -159,6 +168,9 @@ class XsdController extends Controller
         DB::beginTransaction();
         try {
             if($xsd->fill($request->all())->save()){
+                //Загрузка новых меток
+                $xsd->tags()->detach();
+                $xsd->tags()->attach($request->tags);
                 //Если загружен новый файл
                 if($request->hasFile('xsd-file')){
                     $xsd->files()->detach($idFiles);

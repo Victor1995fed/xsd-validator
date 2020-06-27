@@ -85,7 +85,13 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        $this->checkAccess($tag);
+        if($tag->fill($request->all())->save())
+            return redirect()->route('tag.index');
+
+        else
+            throw new \Exception('Ошибка при сохранении');
     }
 
     /**
@@ -99,6 +105,7 @@ class TagController extends Controller
         $tag = Tag::findOrFail($id);
         $this->checkAccess($tag);
         $tag->delete();
+        $tag->xsd()->detach();
         return redirect()->route('tag.index');
     }
 }
