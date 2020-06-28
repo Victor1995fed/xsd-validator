@@ -87,7 +87,7 @@
                                     <label for="xsd-file" class=" form-control-label">Метки</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select class="selectpicker" name="tags[]" multiple data-live-search="true" title="Выберите метки ...">
+                                    <select class="selectpicker"  name="tags[]" multiple data-live-search="true" title="Выберите метки ...">
                                         @foreach($tags as $tag)
                                             <option value="{{$tag->id}}">{{$tag->title}}</option>
                                         @endforeach

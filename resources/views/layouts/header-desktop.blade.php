@@ -26,7 +26,7 @@
                             @endif
 
                             <li>
-                                <a href="{{url('/xsd-public')}}">Опубликованные</a>
+                                <a href="{{url('/xsd')}}">Опубликованные</a>
                             </li>
                             <li>
                                 <a href="{{url('validator')}}">Быстрая проверка по XSD</a>

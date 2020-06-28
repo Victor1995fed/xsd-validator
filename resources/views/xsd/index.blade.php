@@ -61,6 +61,7 @@
                                 <th> <a class="sort-link" data-name="title" href="#" data-sort-type="asc">Название</a><span class="html-content"></span></th>
                                 <th> <a class="sort-link" data-name="description" href="#" data-sort-type="asc">Описание</a> <span class="html-content"></span></th>
                                 <th> <a class="sort-link" data-name="updated_at" href="#" data-sort-type="asc">Обновлено</a> <span class="html-content"></span></th>
+                                <th>Дополнительно</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -77,6 +78,15 @@
 
                                     <td>{{mb_strimwidth($xsdOne->description, 0, 40, "...")}}</td>
                                     <td>{{$xsdOne->created_at}}</td>
+                                    <td>
+                                       <p>Опубликовано: {{$xsdOne->public == 1 ? 'Да': 'Нет'}}</p>
+                                       <p>Метки:
+                                           @foreach($xsdOne->tags as $tagOne)
+                                               <a href="#">{{$tagOne->title}}</a>
+                                           @endforeach
+                                           </p>
+
+                                    </td>
                                     <td>
                                         <div class="table-data-feature">
                                             <a href="{{url("xsd/test").'/'.$xsdOne->id}}"  class="item test" data-toggle="tooltip" data-placement="top" title="" data-original-title="Тестировать xml">

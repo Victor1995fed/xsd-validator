@@ -7,6 +7,7 @@ use App\Modules\File;
 use App\File as ModelFile;
 use App\Tag;
 use App\Traits\ZipHelper;
+use App\XsdSearch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File as FacadesFile;
 use App\Modules\XsdValidator;
@@ -23,7 +24,7 @@ class XsdController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show','indexPublic','testXml','runTestXml']]);
+        $this->middleware('auth', ['except' => ['show','indexPublic','testXml','runTestXml', 'index']]);
     }
     /**
      * Display a listing of the resource.
@@ -32,13 +33,10 @@ class XsdController extends Controller
      */
     public function index(Request $request)
     {
-        $id = Auth::id();
-        if($request->exists('sort') && array_search($sortAttr = str_replace('-','',$request['sort']), Xsd::$sortable) !== false){
-            $sortType = strripos($request['sort'],'-') === false ? 'asc' : 'desc';
-            $xsd = Xsd::with('files')->where('user_id', $id)->orderBy($sortAttr,$sortType)->paginate(Xsd::$pageSize);
-        }
-        else
-            $xsd = Xsd::with('files')->where('user_id', $id)->paginate(Xsd::$pageSize );
+
+        $xsdSearch = new XsdSearch();
+        $xsdSearch->params = $request->all();
+        $xsd = $xsdSearch->getXsdList();
 
         return view('xsd.index', [
             'xsd' =>  $xsd,

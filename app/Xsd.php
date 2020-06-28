@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Xsd extends Model
 {
@@ -10,8 +11,7 @@ class Xsd extends Model
 
     protected $fillable = ['title', 'root_xsd', 'user_id', 'description', 'public'];
 
-    public static $sortable = ['title','description','updated_at'];
-    public static $pageSize = 5;
+
     /**
      * Связь с files
      */
@@ -31,7 +31,7 @@ class Xsd extends Model
     /**
      * Получить только id меток
      */
-    public function getIdTags( $tags):array
+    public function getIdTags($tags):array
     {
         $tagsId = [];
         foreach ($tags as $tag){
