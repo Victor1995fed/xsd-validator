@@ -11,7 +11,7 @@ class XsdSearch extends Xsd
 
     public  $sortable = ['title','description','updated_at'];
     public  $paramsCondition = ['user_id','public'];
-    public  $pageSize = 5;
+    public  $pageSize = 2;
 
     public $params = [];
     public $paramSortName = 'sort';
@@ -72,7 +72,6 @@ class XsdSearch extends Xsd
         $tagCondition = $this->tagConditions();
         if(empty($tagCondition))
             $xsd = $this->with('files','tags')->where($conditions)->orderBy($sort['sortAttr'], $sort['sortType'])->paginate($this->pageSize);
-
         //Если есть выбор по тегам
         else
             $xsd = $this->whereHas('tags', function ($query) {

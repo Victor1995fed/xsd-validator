@@ -40,10 +40,11 @@ class XsdController extends Controller
 
         return view('xsd.index', [
             'xsd' =>  $xsd,
-            'params' => [
-                'sortType' => $sortType ?? null,
-                'sortAttr' => $sortAttr ?? null
-            ]
+            'tags'=>Tag::all()
+//            'params' => [
+//                'sortType' => $sortType ?? null,
+//                'sortAttr' => $sortAttr ?? null
+//            ]
         ]);
     }
 

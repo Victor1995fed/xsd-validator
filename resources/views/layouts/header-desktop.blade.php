@@ -21,12 +21,12 @@
                         <ul class="header3-sub-list list-unstyled">
                             @if (Auth::check())
                                 <li>
-                                    <a href="{{url('/xsd')}}">Мои</a>
+                                    <a href="{{url('/xsd?user_id='.Auth::id())}}">Мои</a>
                                 </li>
                             @endif
 
                             <li>
-                                <a href="{{url('/xsd')}}">Опубликованные</a>
+                                <a href="{{url('/xsd?public=1')}}">Опубликованные</a>
                             </li>
                             <li>
                                 <a href="{{url('validator')}}">Быстрая проверка по XSD</a>
