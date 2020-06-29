@@ -10,8 +10,6 @@ abstract class QuerySearch
     protected $request;
 
 
-
-
     public function __construct($model,$request)
     {
         $this->model = $model;

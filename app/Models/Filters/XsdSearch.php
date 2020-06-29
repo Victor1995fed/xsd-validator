@@ -17,8 +17,7 @@ class XsdSearch extends QuerySearch
         'sortType' => 'asc',
         'sortAttr' => 'id'
     ];
-
-    public static $pageSize = 2;
+    public static $pageSize = 10;
     //Переменные, которые разрешены в запросе
     protected $queryAccess = ['user_id', 'tag', 'public','sort'];
 
@@ -80,8 +79,6 @@ class XsdSearch extends QuerySearch
         else
             return $this->sortDefault;
     }
-
-
 
 
 }

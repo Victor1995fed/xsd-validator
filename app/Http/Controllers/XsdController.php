@@ -35,11 +35,9 @@ class XsdController extends Controller
         $xsd = Xsd::with('files','tags');
         $xsd = (new XsdSearch($xsd,$request))
             ->apply()
-            ->paginate(XsdSearch::$pageSize);
+            ->paginate(XsdSearch::$pageSize)
+            ->appends($request->except('page'));
 
-        $xsd->appends($request->except('page'))->links();
-
-//        return $xsd;
         return view('xsd.index', [
             'xsd' =>  $xsd,
             'tags'=>Tag::all()
