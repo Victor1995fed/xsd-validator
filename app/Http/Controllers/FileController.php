@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\Storage;
 use App\Constants\Storage as StorageConstants;
-use App\File;
+use App\Models\File;
 use App\Modules\XsdValidator;
 use App\Traits\ZipHelper;
 use Illuminate\Http\Request;

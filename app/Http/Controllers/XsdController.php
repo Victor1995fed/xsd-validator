@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Constants\Storage;
 use App\Modules\File;
-use App\File as ModelFile;
-use App\Tag;
+use App\Models\Tag;
 use App\Traits\ZipHelper;
-use App\XsdSearch;
+use App\Models\Filters\XsdSearch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File as FacadesFile;
 use App\Modules\XsdValidator;
-use App\Xsd;
+use App\Models\Xsd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -33,18 +32,13 @@ class XsdController extends Controller
      */
     public function index(Request $request)
     {
-
-        $xsdSearch = new XsdSearch();
-        $xsdSearch->params = $request->all();
-        $xsd = $xsdSearch->getXsdList();
-
+        $xsd = Xsd::with('files','tags');
+        $xsd = (new XsdSearch($xsd,$request))
+            ->apply()
+            ->paginate(XsdSearch::$pageSize);
         return view('xsd.index', [
             'xsd' =>  $xsd,
             'tags'=>Tag::all()
-//            'params' => [
-//                'sortType' => $sortType ?? null,
-//                'sortAttr' => $sortAttr ?? null
-//            ]
         ]);
     }
 

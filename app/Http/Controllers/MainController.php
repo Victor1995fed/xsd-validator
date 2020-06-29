@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Xsd;
+use App\Models\User;
+use App\Models\Xsd;
 use Illuminate\Http\Request;
 
 class MainController extends Controller

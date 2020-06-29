@@ -113,6 +113,7 @@
         </div>
 
     </div>
+
 @include('layouts.scripts')
     <script src="{{ asset('js/bootstrap-select.js') }}"></script>
 <script>

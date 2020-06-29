@@ -21,26 +21,26 @@
                 <h3 class="title-5 m-b-35">Список  XSD</h3>
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--md">
-                            <select class="js-select2" name="property">
-                                <option value="0" selected="selected">Все метки</option>
+                        <div class="rs-select2--light rs-select2--md" id="tags-select">
+                            <select class="js-select2" name="tagsSelect">
+                                <option {{(Request::get('tag')   == null) ? "selected=\"selected\"" : '' }} value="0">Все метки</option>
                                 @foreach($tags as $tag)
-                                    <option value="{{$tag->id}}">{{$tag->title}}</option>
+                                    <option {{(Request::get('tag')   == $tag->id) ? "selected=\"selected\"" : '' }} value="{{$tag->id}}">{{$tag->title}}</option>
                                 @endforeach
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>
                         @if (Auth::check())
                         <div class="rs-select2--light rs-select2--md">
-                            <select class="js-select2" name="property">
-                                <option selected="selected">Все</option>
-                                <option value="{{Auth::id()}}">Мои</option>
-                                <option value="">Опубликованные</option>
+                            <select class="js-select2" name="typeXsdSelect">
+                                <option {{(Request::get('page')   == null) ? "selected=\"selected\"" : '' }} value="0">Все</option>
+                                <option {{(Request::get('user_id')   == Auth::id()) ? "selected=\"selected\"" : '' }} value="{{Auth::id()}}">Мои</option>
+                                <option {{(Request::get('public')   == 1) ? "selected=\"selected\"" : '' }} value="public">Опубликованные</option>
                             </select>
                             <div class="dropDownSelect2"></div>
                         </div>
                         @endif
-                        <button class="au-btn-filter">
+                        <button class="au-btn-filter" id="applyFilter">
                             <i class="zmdi zmdi-filter-list"></i>Применить</button>
                     </div>
                     <div class="table-data__tool-right float-right">
@@ -83,7 +83,7 @@
                                        <p>Опубликовано: {{$xsdOne->public == 1 ? 'Да': 'Нет'}}</p>
                                        <p>Метки:
                                            @foreach($xsdOne->tags as $tagOne)
-                                               <a href="#"> #{{$tagOne->title}} </a>
+                                               <a href="{{url("xsd").'?tag='.$tagOne->id}}"> #{{$tagOne->title}} </a>
                                            @endforeach
                                            </p>
 
@@ -135,7 +135,6 @@
                                                 </li>
 
                     </ul>
-{{--                    TODO:: Допилить указание сортировки при переходе между страницами--}}
                 </nav>
              </div>
             @endif
@@ -144,7 +143,12 @@
         @include('layouts.modal-delete',['textHeader' => "Вы точно хотите удалить?", 'textBody'=>"XSD будет удалена безвозвратно"])
 
     </div>
+    <script src="{{asset('js/filters/helper.js')}}"></script>
     <style>
+        #tags-select {
+            width: 260px!important;
+        }
+
         .table-data-feature a.delete i  {
             color: #f00;
 
@@ -162,8 +166,15 @@
     </style>
 @include('layouts.scripts')
     <script>
+
+
+    // let urlParamsNew = getUrlVars()
+    // let objFilter = new XsdFilter(urlParamsNew)
+    // //Применить фильтры
+    // objFilter.apply()
+//TODO:: Улучшить код, написать отдельные функции-класс для фильтрации
+//    ***************************
 let urlParams = getUrlVars()
-//Добавление стрелок в зависимости от типа сортировки
 let sortData = getSort(urlParams)
 if(sortData){
     let sortTitle = sortData.title.replace(/-/g, "")
@@ -200,14 +211,13 @@ delete urlParams["sort"];
     }
 });
 
-
-
 let removeAgree = $('#agree')
 $(".delete").click(function() {
     let xsdId = $(this).attr('data-xsd-id')
     removeAgree.attr('action','{{url('/xsd/')}}/'+xsdId)
 });
 
+//Обработка события по клику на элимент сортировки
 $(".sort-link").click(function (e) {
     e.preventDefault()
     let typeSort = changeTypeSort($(this).attr('data-sort-type'))
@@ -221,77 +231,45 @@ $(".sort-link").click(function (e) {
     window.location.href=$(this).attr('href');
 })
 
-function changeTypeSort(typeSort) {
-    if(typeSort == 'asc')
-        return '-'
-    else
-        return ''
-}
+//Событие при нажатии кнопки применить
+    $('#applyFilter').click(function (e) {
+        // let urlParams = getUrlVars()
+        let pathUrl = window.location.pathname
+        //Добавление параметров и отправка
+        let typeXsdSelect = $('select[name="typeXsdSelect"]').val()
+        let tagsSelect = $('select[name="tagsSelect"]').val()
+        let arrListParams = []
+        switch (typeXsdSelect) {
+            case('public'):
+                arrListParams['public'] = 1;
+                break;
 
-function getUrlParameter(sParam) {
-    let sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
+            case('0'):
+                break;
+            case(undefined):
 
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                break;
+            default:
+                arrListParams['user_id'] = typeXsdSelect;
+                break;
         }
-    }
-};
 
-// Read a page's GET URL variables and return them as an associative array.
-function getUrlVars()
-{
-    let vars = [], hash;
-    let hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    if(hashes[0] == window.location.href || hashes[0] == '')
-        return []
-    for(let i = 0; i < hashes.length; i++)
-    {
-        hash = hashes[i].split('=');
-        // vars.push(hash[0]);
-        vars[hash[0]] = hash[1];
-    }
-    return  vars;
-}
-
-function getSort(urlParams) {
-    let objSort = {}
-    if ('sort' in urlParams && typeof urlParams['sort'] == 'string'){
-        objSort.title = urlParams['sort']
-        objSort.type = getTypeSort(urlParams['sort'])
-        return objSort;
-    }
-    else
-        return false
-}
-
-function getTypeSort(str) {
-   return (str[0] == '-') ? 'desc' : 'asc'
-}
-
-//TODO::Переписать все со входом в единственную функцию по генерации url
-function genUrl(except) {
-    let pathUrl = window.location.pathname
-    let urlParams = getUrlVars()
-    if(except !== undefined){
-        delete urlParams[except];
-    }
-    for (let prop in urlParams) {
+        if(tagsSelect != 0) {
+            arrListParams['tag'] = tagsSelect
+        }
         let first = true
-        if(first){
-            pathUrl = pathUrl+'?'+prop+'='+urlParams[prop]
+        for (let prop in arrListParams) {
+            if(first){
+                pathUrl = pathUrl+'?'+prop+'='+arrListParams[prop]
+            }
+            else{
+                pathUrl = pathUrl+'&'+prop+'='+arrListParams[prop]
+            }
+            first = false
         }
-        else {
-            pathUrl = pathUrl+'&'+prop+'='+urlParams[prop]
-        }
-        first = false
-    }
-    return pathUrl
-}
+        window.location.href=pathUrl;
+    })
+
 
     </script>
 </body>

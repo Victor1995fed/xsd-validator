@@ -4,7 +4,7 @@ namespace App\Modules;
 use App\Constants\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
-use App\File as ModelFile;
+use App\Models\File as ModelFile;
 
 class File {
 
