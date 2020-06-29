@@ -118,7 +118,11 @@ class XsdController extends Controller
      */
     public function show($id)
     {
-        $xsd = Xsd::with('files')->findOrFail($id);
+        $xsd = Xsd::with('files')->where(function($query){
+            $query->where('user_id', '=',Auth::id())
+                ->orWhere('public', '=', 1);
+        })->findOrFail($id);
+
         return view('xsd.show', [
             'xsd' =>  $xsd
         ]);
