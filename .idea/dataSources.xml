@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/validator-xsd?serverTimezone=UTC</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="kvm-server" uuid="2dca0116-7805-409d-9623-4a89924aab5a">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://http://78.24.221.163/:3306/er</jdbc-url>
+    </data-source>
   </component>
 </project>

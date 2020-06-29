@@ -78,7 +78,7 @@
                                     <td>{{$xsdOne->title}}</td>
 
                                     <td>{{mb_strimwidth($xsdOne->description, 0, 40, "...")}}</td>
-                                    <td>{{$xsdOne->created_at}}</td>
+                                    <td>{{$xsdOne->updated_at}}</td>
                                     <td>
                                        <p>Опубликовано: {{$xsdOne->public == 1 ? 'Да': 'Нет'}}</p>
                                        <p>Метки:
@@ -119,19 +119,18 @@
             <div class="col-md-12">
                 <nav  class="pagination">
                     <ul class=" pagination justify-content-center">
-                                                <li class="page-item  {{($xsd->currentPage() == 1 ? 'disabled' : '')}}">
-                                                    <a class="page-link" href="{{Request::url().'?page='.($xsd->currentPage() - 1)}}" tabindex="-1"><</a>
+                                                <li class="page-item  {{($xsd->onFirstPage() ? 'disabled' : '')}}">
+                                                    <a class="page-link" href="{{$xsd->previousPageUrl()}}" tabindex="-1"><</a>
                                                 </li>
                         @for($i = 1; $i <= $xsd->lastPage(); $i++  )
                                                     @if($xsd->currentPage() == $i)
-                                                    <li class="page-item active"><a class="page-link" href="{{url("/xsd?page=$i")}}">{{$i}}</a></li>
+                                                    <li class="page-item active"><a class="page-link" href="{{$xsd->url($xsd->currentPage())}}">{{$i}}</a></li>
                             @else
-                                <li class="page-item"><a class="page-link" href="{{Request::url()."?page=$i"}}">{{$i}}</a></li>
+                                <li class="page-item"><a class="page-link" href="{{$xsd->url($i)}}">{{$i}}</a></li>
                                                     @endif
-
                         @endfor
-                        <li class="page-item {{($xsd->currentPage() == $xsd->lastPage() ? 'disabled' : '')}}" >
-                                                    <a class="page-link"  href="{{Request::url().'?page='.($xsd->currentPage() + 1)}}"> > </a>
+                        <li class="page-item {{($xsd->nextPageUrl() == null ? 'disabled' : '')}}" >
+                                                    <a class="page-link"  href="{{$xsd->nextPageUrl()}}"> > </a>
                                                 </li>
 
                     </ul>
@@ -166,14 +165,8 @@
     </style>
 @include('layouts.scripts')
     <script>
-
-
-    // let urlParamsNew = getUrlVars()
-    // let objFilter = new XsdFilter(urlParamsNew)
-    // //Применить фильтры
-    // objFilter.apply()
 //TODO:: Улучшить код, написать отдельные функции-класс для фильтрации
-//    ***************************
+
 let urlParams = getUrlVars()
 let sortData = getSort(urlParams)
 if(sortData){
@@ -186,17 +179,10 @@ if(sortData){
     $('a[data-name='+sortTitle+']').siblings('.html-content').html(sortHtml);
 }
 
-//Заполнение ссылок навигации параметрами, которые переданы в url
-delete urlParams["page"];
-$('a.page-link').map(function(){
-    for (let prop in urlParams) {
-        let curentHref = $(this).attr('href')
-        $(this).attr('href',curentHref+'&'+prop+'='+urlParams[prop])
-    }
-});
 
 //Заполнение ссылок сортировки параметрами, которые переданы в url
 delete urlParams["sort"];
+delete urlParams["page"];
  $('a.sort-link').map(function(){
      let first = true
     for (let prop in urlParams) {
@@ -217,7 +203,7 @@ $(".delete").click(function() {
     removeAgree.attr('action','{{url('/xsd/')}}/'+xsdId)
 });
 
-//Обработка события по клику на элимент сортировки
+//Обработка события по клику на элемент сортировки
 $(".sort-link").click(function (e) {
     e.preventDefault()
     let typeSort = changeTypeSort($(this).attr('data-sort-type'))
@@ -231,9 +217,8 @@ $(".sort-link").click(function (e) {
     window.location.href=$(this).attr('href');
 })
 
-//Событие при нажатии кнопки применить
+//Событие при нажатии кнопки применить фильтр
     $('#applyFilter').click(function (e) {
-        // let urlParams = getUrlVars()
         let pathUrl = window.location.pathname
         //Добавление параметров и отправка
         let typeXsdSelect = $('select[name="typeXsdSelect"]').val()
