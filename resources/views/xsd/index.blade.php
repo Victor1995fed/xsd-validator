@@ -86,6 +86,7 @@
                                                <a href="{{url("xsd").'?tag='.$tagOne->id}}"> #{{$tagOne->title}} </a>
                                            @endforeach
                                            </p>
+                                        <p>Автор: <a href="{{url("xsd").'?user_id='.$xsdOne->users->id}}">{{$xsdOne->users->name}}</a></p>
 
                                     </td>
                                     <td>

@@ -32,12 +32,12 @@ class XsdController extends Controller
      */
     public function index(Request $request)
     {
-        $xsd = Xsd::with('files','tags');
+        $xsd = Xsd::with('files','tags','users');
+
         $xsd = (new XsdSearch($xsd,$request))
             ->apply()
             ->paginate(XsdSearch::$pageSize)
             ->appends($request->except('page'));
-
         return view('xsd.index', [
             'xsd' =>  $xsd,
             'tags'=>Tag::all()

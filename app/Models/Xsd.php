@@ -28,6 +28,14 @@ class Xsd extends Model
         return $this->belongsToMany(Tag::class,'xsd_tags','xsd_id','tag_id');
     }
 
+    /*
+     * Связь с пользователем
+     * */
+
+    public function users()
+    {
+        return $this->belongsTo('App\Models\User','user_id');
+    }
     /**
      * Получить только id меток
      */
