@@ -64,7 +64,7 @@
                                 <label for="description" class="form-control-label">Описание(не обязательно)</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="description" id="description" value="{{$xsd->description}}" rows="9" class="form-control"></textarea>
+                                <textarea name="description" id="description" value="{{$xsd->description}}" rows="9" class="form-control">{{$xsd->description}}</textarea>
                             </div>
                         </div>
 

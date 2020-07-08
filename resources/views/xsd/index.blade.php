@@ -19,6 +19,34 @@
             <div class="col-md-12">
                 <!-- DATA TABLE -->
                 <h3 class="title-5 m-b-35">Список  XSD</h3>
+                <section class="au-breadcrumb2">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="au-breadcrumb-content">
+                                    <div class="au-breadcrumb-left">
+{{--                                        <span class="au-breadcrumb-span">You are here:</span>--}}
+{{--                                        <ul class="list-unstyled list-inline au-breadcrumb__list">--}}
+{{--                                            <li class="list-inline-item active">--}}
+{{--                                                <a href="#">Home</a>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="list-inline-item seprate">--}}
+{{--                                                <span>/</span>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="list-inline-item">Dashboard</li>--}}
+{{--                                        </ul>--}}
+                                    </div>
+                                    <form class="au-form-icon--sm" id="form-search-xsd" action="" method="get">
+                                        <input class="au-input--w300 au-input--style2" value="{{Request::get('search')}}" name="search-xsd" type="text" placeholder="Поиск схемы по названию...">
+                                        <button class="au-btn--submit2" type="button" id="runSearch">
+                                            <i class="zmdi zmdi-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
                         <div class="rs-select2--light rs-select2--md" id="tags-select">
@@ -218,45 +246,58 @@ $(".sort-link").click(function (e) {
     window.location.href=$(this).attr('href');
 })
 
+function runFilter(){
+    let pathUrl = window.location.pathname
+    //Добавление параметров и отправка
+    let typeXsdSelect = $('select[name="typeXsdSelect"]').val()
+    let tagsSelect = $('select[name="tagsSelect"]').val()
+    let textSearch = $('input[name="search-xsd"]').val()
+    let arrListParams = []
+    switch (typeXsdSelect) {
+        case('public'):
+            arrListParams['public'] = 1;
+            break;
+
+        case('0'):
+            break;
+        case(undefined):
+
+            break;
+        default:
+            arrListParams['user_id'] = typeXsdSelect;
+            break;
+    }
+
+    if(tagsSelect != 0) {
+        arrListParams['tag'] = tagsSelect
+    }
+    if(textSearch != ''){
+        arrListParams['search'] = textSearch
+    }
+    let first = true
+    for (let prop in arrListParams) {
+        if(first){
+            pathUrl = pathUrl+'?'+prop+'='+arrListParams[prop]
+        }
+        else{
+            pathUrl = pathUrl+'&'+prop+'='+arrListParams[prop]
+        }
+        first = false
+    }
+    window.location.href=pathUrl;
+}
 //Событие при нажатии кнопки применить фильтр
-    $('#applyFilter').click(function (e) {
-        let pathUrl = window.location.pathname
-        //Добавление параметров и отправка
-        let typeXsdSelect = $('select[name="typeXsdSelect"]').val()
-        let tagsSelect = $('select[name="tagsSelect"]').val()
-        let arrListParams = []
-        switch (typeXsdSelect) {
-            case('public'):
-                arrListParams['public'] = 1;
-                break;
-
-            case('0'):
-                break;
-            case(undefined):
-
-                break;
-            default:
-                arrListParams['user_id'] = typeXsdSelect;
-                break;
-        }
-
-        if(tagsSelect != 0) {
-            arrListParams['tag'] = tagsSelect
-        }
-        let first = true
-        for (let prop in arrListParams) {
-            if(first){
-                pathUrl = pathUrl+'?'+prop+'='+arrListParams[prop]
-            }
-            else{
-                pathUrl = pathUrl+'&'+prop+'='+arrListParams[prop]
-            }
-            first = false
-        }
-        window.location.href=pathUrl;
+    $('#applyFilter, #runSearch').click(function (e) {
+        runFilter()
     })
 
-
+$('#form-search-xsd').on('keyup keypress', function(e) {
+    let keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+        e.preventDefault();
+        runFilter()
+    }
+});
     </script>
 </body>
 

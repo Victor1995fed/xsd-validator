@@ -19,7 +19,7 @@ class XsdSearch extends QuerySearch
     ];
     public static $pageSize = 10;
     //Переменные, которые разрешены в запросе
-    protected $queryAccess = ['user_id', 'tag', 'public','sort'];
+    protected $queryAccess = ['user_id', 'tag', 'public','sort','search'];
 
     //Список полей для сортировки
     protected $sortParameters = ['title', 'description', 'updated_at'];
@@ -78,6 +78,11 @@ class XsdSearch extends QuerySearch
         }
         else
             return $this->sortDefault;
+    }
+
+    public function search($value)
+    {
+        $this->model->where('title','like',"%$value%");
     }
 
 
