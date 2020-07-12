@@ -21,99 +21,77 @@
     <nav class="navbar-mobile">
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fas fa-th"></i>
+                        <span class="bot-line"></span>Главная</a>
+                </li>
                 <li class="has-sub">
                     <a class="js-arrow" href="#">
-                        <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                        <i class="fas fa-copy"></i>XSD</a>
                     <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        @if (Auth::check())
+                            <li>
+                                <a href="{{url('/xsd?user_id='.Auth::id())}}">Мои</a>
+                            </li>
+                        @endif
+
                         <li>
-                            <a href="index.html">Dashboard 1</a>
+                            <a href="{{url('/xsd?public=1')}}">Опубликованные</a>
                         </li>
                         <li>
-                            <a href="index2.html">Dashboard 2</a>
-                        </li>
-                        <li>
-                            <a href="index3.html">Dashboard 3</a>
-                        </li>
-                        <li>
-                            <a href="index4.html">Dashboard 4</a>
+                            <a href="{{url('validator')}}">Быстрая проверка по XSD</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="chart.html">
-                        <i class="fas fa-chart-bar"></i>Charts</a>
+                    <a href="{{url('/tag')}}">
+                        <i class="fas fa-bookmark"></i>
+                        <span class="bot-line"></span>Метки</a>
                 </li>
                 <li>
-                    <a href="table.html">
-                        <i class="fas fa-table"></i>Tables</a>
-                </li>
-                <li>
-                    <a href="form.html">
-                        <i class="far fa-check-square"></i>Forms</a>
-                </li>
-                <li>
-                    <a href="calendar.html">
-                        <i class="fas fa-calendar-alt"></i>Calendar</a>
-                </li>
-                <li>
-                    <a href="map.html">
-                        <i class="fas fa-map-marker-alt"></i>Maps</a>
-                </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-copy"></i>Pages</a>
-                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                        <li>
-                            <a href="login.html">Login</a>
-                        </li>
-                        <li>
-                            <a href="register.html">Register</a>
-                        </li>
-                        <li>
-                            <a href="forget-pass.html">Forget Password</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-desktop"></i>UI Elements</a>
-                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                        <li>
-                            <a href="button.html">Button</a>
-                        </li>
-                        <li>
-                            <a href="badge.html">Badges</a>
-                        </li>
-                        <li>
-                            <a href="tab.html">Tabs</a>
-                        </li>
-                        <li>
-                            <a href="card.html">Cards</a>
-                        </li>
-                        <li>
-                            <a href="alert.html">Alerts</a>
-                        </li>
-                        <li>
-                            <a href="progress-bar.html">Progress Bars</a>
-                        </li>
-                        <li>
-                            <a href="modal.html">Modals</a>
-                        </li>
-                        <li>
-                            <a href="switch.html">Switchs</a>
-                        </li>
-                        <li>
-                            <a href="grid.html">Grids</a>
-                        </li>
-                        <li>
-                            <a href="fontawesome.html">Fontawesome Icon</a>
-                        </li>
-                        <li>
-                            <a href="typo.html">Typography</a>
-                        </li>
-                    </ul>
+                    <a href="{{url('/help')}}">
+                        <i class="fas fa-info"></i>
+                        <span class="bot-line"></span>Помощь</a>
                 </li>
             </ul>
         </div>
     </nav>
 </header>
+<div class="sub-header-mobile-2 d-block d-lg-none">
+    <div class="header__tool">
+        <div class="account-wrap">
+            <div class="account-item account-item--style2 clearfix js-item-menu">
+                <div class="image">
+                    <img src="{{asset('images/icon/ava-v1.png')}}" alt="John Doe" />
+                </div>
+                <div class="content">
+                    <a class="js-acc-btn" href="#">{{Auth::user()->name}}</a>
+                </div>
+                <div class="account-dropdown js-dropdown">
+                    <div class="account-dropdown__body">
+                        <div class="account-dropdown__item">
+                            <a href="#">
+                                <i class="zmdi zmdi-account"></i>Аккаунт</a>
+                        </div>
+                        <div class="account-dropdown__item">
+                            <a href="#">
+                                <i class="zmdi zmdi-settings"></i>Настройки</a>
+                        </div>
+                    </div>
+                    <div class="account-dropdown__footer">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+
+                            <i class="zmdi zmdi-power"></i>Выйти</a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
