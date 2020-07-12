@@ -55,6 +55,8 @@
                             Проверить
                         </button>
                     </form>
+                    <div id="alert-errors" style="margin-top: 10px"></div>
+
                     <div class="result-response">
 
                         <div class="alert alert-success result displayNone" role="alert" id="result_success" >
@@ -150,6 +152,7 @@
     });
     myCodeMirror.setSize(null, "550px");
     $('#submitAjax').click(function () {
+        $("#alert-errors").empty()
         myCodeMirror.setValue(myCodeMirror.getValue().trim())
         markers.forEach(marker => marker.clear());
         $('.result').empty();
@@ -201,8 +204,18 @@
                 },
 
                 error: function (request, error) {
-                    $('#result_error').removeClass('displayNone');
-                    $('#result_error').html("Ошибка " + request.status+": <p>"+request.responseText+"</p>");
+
+                    if(request.status == 422 || request.status == 400){
+
+                        for (let prop in request.responseJSON.errors) {
+                            $('#alert-errors').append( '<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"> <span class="badge badge-pill badge-danger">Ошибка</span> '+request.responseJSON.errors[prop]+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>')
+                        }
+                    }
+                    else {
+                        $('#result_error').removeClass('displayNone');
+                        $('#result_error').html("Ошибка " + request.status+": <p>"+request.responseText+"</p>");
+                    }
+
                 },
             });
         }, 200);

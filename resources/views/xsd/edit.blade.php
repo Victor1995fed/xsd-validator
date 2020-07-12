@@ -21,6 +21,17 @@
                 <div class="card-header">
                     Введите данные для XSD
                 </div>
+                @if($errors->any())
+                    @foreach($errors->all() as $error)
+                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                            <span class="badge badge-pill badge-danger">Ошибка</span>
+                            {{$error}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endforeach
+                @endif
                 <div class="card-body card-block">
                     <form action = "{{url("xsd/$xsd->id")}}" method="post" id="save-xsd" enctype="multipart/form-data" class="form-horizontal">
                         @csrf

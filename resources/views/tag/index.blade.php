@@ -18,6 +18,7 @@
             <div class="col-md-12">
                 <h3 class="title-5 m-b-35">Метки</h3>
                 <div class="card">
+
                     <div class="card-header">
                         <strong>Список доступных меток </strong>
                     </div>
@@ -43,7 +44,19 @@
                     <a href="#" data-toggle="modal" data-placement="top" title="" data-original-title="Создать"   data-target="#createTagModal" class="au-btn au-btn-icon au-btn--green au-btn--small">
                         <i class="zmdi zmdi-plus"></i>Добавить метку</a>
                 </div>
+
             </div>
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                        <span class="badge badge-pill badge-danger">Ошибка</span>
+                        {{$error}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endforeach
+            @endif
         </div>
 
         @include('layouts.modal-delete',['textHeader' => "Вы точно хотите удалить?", 'textBody'=>'Метка будет удалена, привязанные к ней данные не будут тронуты'])

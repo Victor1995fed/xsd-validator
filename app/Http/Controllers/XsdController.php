@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Storage;
+use App\Http\Requests\Xsd\StoreXsd;
+use App\Http\Requests\Xsd\UpdateXsd;
 use App\Modules\File;
 use App\Models\Tag;
 use App\Traits\ZipHelper;
@@ -75,7 +77,7 @@ class XsdController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreXsd $request)
     {
 
         DB::beginTransaction();
@@ -157,7 +159,7 @@ class XsdController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateXsd $request, $id)
     {
         $xsd = Xsd::with('files')->findOrFail($id);
         $this->checkAccess($xsd);

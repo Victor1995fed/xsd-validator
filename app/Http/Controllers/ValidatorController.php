@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Validate\CheckValidate;
 use App\Modules\XsdValidator;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
@@ -26,30 +27,8 @@ class ValidatorController extends Controller
         return 'df';
     }
 
-    public function check(Request $request)
+    public function check(CheckValidate $request)
     {
-        $messages = [
-            'xml.required' => 'Заполните xml для проверки',
-            'zip.required' => 'Загрузите архив с xsd',
-            'main-xsd.required' => 'Укажите имя корневой xsd',
-        ];
-        $validator = Validator::make($request->all(), [
-            'main-xsd' => 'required|max:255',
-            'zip' => 'required|max:20000|mimes:zip',
-            'xml' => 'required',
-        ],$messages);
-
-        if ($validator->fails()) {
-            $response = [
-                'success' => false,
-                'message' => $validator->messages()
-            ];
-            return response()->json($response, 400 , [], JSON_UNESCAPED_UNICODE);
-            return $validator->errors();
-            return redirect('post/create')
-                ->withErrors($validator)
-                ->withInput();
-        }
         try{
             $file = $request->file('zip');
             $zip = new \ZipArchive;
