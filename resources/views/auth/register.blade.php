@@ -69,13 +69,31 @@
 {{--                                        <input type="checkbox" name="aggree">Agree the terms and policy--}}
 {{--                                    </label>--}}
 {{--                                </div>--}}
+                            <!-- добавление элемента div -->
+{{--                                {{print_r(Config::get('recaptcha'))}}--}}
+
+                            <!-- добавление элемента div -->
+                                <div class="g-recaptcha" data-sitekey="{{getenv('CAPTCHA_KEY_PUBLIC')}}"></div>
+
+                                <!-- элемент для вывода ошибок -->
+                                <div class="text-danger" id="recaptchaError"></div>
+
+                                <!-- js-скрипт гугл капчи -->
+
+
+
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Зарегистрироваться</button>
-{{--                                <div class="social-login-content">--}}
-{{--                                    <div class="social-button">--}}
-{{--                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">register with facebook</button>--}}
-{{--                                        <button class="au-btn au-btn--block au-btn--blue2">register with twitter</button>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                @if($errors->any())
+                                    @foreach($errors->all() as $error)
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Ошибка</span>
+                                            {{$error}}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </form>
                             <div class="register-link">
                                 <p>
@@ -90,7 +108,45 @@
         </div>
 
     </div>
+    <style>
+        .g-recaptcha {
+            margin: 10px auto;
+        }
+    </style>
     @include('layouts.scripts')
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+<script>
+    // Работа с виджетом recaptcha
+    // 1. Получить ответ гугл капчи
+    var captcha = grecaptcha.getResponse();
+
+    // 2. Если ответ пустой, то выводим сообщение о том, что пользователь не прошёл тест.
+    // Такую форму не будем отправлять на сервер.
+    if (!captcha.length) {
+        // Выводим сообщение об ошибке
+        $('#recaptchaError').text('* Вы не прошли проверку "Я не робот"');
+    } else {
+        // получаем элемент, содержащий капчу
+        $('#recaptchaError').text('');
+    }
+
+    // 3. Если форма валидна и длина капчи не равно пустой строке, то отправляем форму на сервер (AJAX)
+    if ((formValid) && (captcha.length)) {
+
+        // добавить в formData значение 'g-recaptcha-response'=значение_recaptcha
+        formData.append('g-recaptcha-response', captcha);
+
+    }
+
+    // 4. Если сервер вернул ответ error, то делаем следующее...
+    // Сбрасываем виджет reCaptcha
+    grecaptcha.reset();
+    // Если существует свойство msg у объекта $data, то...
+    if ($data.msg) {
+        // вывести её в элемент у которого id=recaptchaError
+        $('#recaptchaError').text($data.msg);
+    }
+    </script>
 </body>
 
 </html>

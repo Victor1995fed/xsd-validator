@@ -2,6 +2,11 @@
 
 return [
 
+    'recaptcha'=>[
+        'public'=>env('CAPTCHA_KEY_PUBLIC','0324'),
+        'private'=>env('CAPTCHA_KEY_PRIVATE','0234'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -228,5 +233,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
 
 ];
