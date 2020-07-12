@@ -64,24 +64,11 @@
                                     <label>Повторите пароль</label>
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                 </div>
-{{--                                <div class="login-checkbox">--}}
-{{--                                    <label>--}}
-{{--                                        <input type="checkbox" name="aggree">Agree the terms and policy--}}
-{{--                                    </label>--}}
-{{--                                </div>--}}
-                            <!-- добавление элемента div -->
-{{--                                {{print_r(Config::get('recaptcha'))}}--}}
-
-                            <!-- добавление элемента div -->
-                                <div class="g-recaptcha" data-sitekey="{{getenv('CAPTCHA_KEY_PUBLIC')}}"></div>
-
-                                <!-- элемент для вывода ошибок -->
-                                <div class="text-danger" id="recaptchaError"></div>
-
-                                <!-- js-скрипт гугл капчи -->
-
-
-
+                                <div class="form-group">
+                                    <label>Введите капчу</label>
+                                    <p> {!! captcha_img() !!} </p>
+                                    <p><input type="text" name="captcha"></p>
+                                </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Зарегистрироваться</button>
                                 @if($errors->any())
                                     @foreach($errors->all() as $error)
@@ -109,44 +96,12 @@
 
     </div>
     <style>
-        .g-recaptcha {
+        input[name='captcha'] {
             margin: 10px auto;
+            border: 1px solid #ccc;
         }
     </style>
     @include('layouts.scripts')
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-<script>
-    // Работа с виджетом recaptcha
-    // 1. Получить ответ гугл капчи
-    var captcha = grecaptcha.getResponse();
-
-    // 2. Если ответ пустой, то выводим сообщение о том, что пользователь не прошёл тест.
-    // Такую форму не будем отправлять на сервер.
-    if (!captcha.length) {
-        // Выводим сообщение об ошибке
-        $('#recaptchaError').text('* Вы не прошли проверку "Я не робот"');
-    } else {
-        // получаем элемент, содержащий капчу
-        $('#recaptchaError').text('');
-    }
-
-    // 3. Если форма валидна и длина капчи не равно пустой строке, то отправляем форму на сервер (AJAX)
-    if ((formValid) && (captcha.length)) {
-
-        // добавить в formData значение 'g-recaptcha-response'=значение_recaptcha
-        formData.append('g-recaptcha-response', captcha);
-
-    }
-
-    // 4. Если сервер вернул ответ error, то делаем следующее...
-    // Сбрасываем виджет reCaptcha
-    grecaptcha.reset();
-    // Если существует свойство msg у объекта $data, то...
-    if ($data.msg) {
-        // вывести её в элемент у которого id=recaptchaError
-        $('#recaptchaError').text($data.msg);
-    }
-    </script>
 </body>
 
 </html>

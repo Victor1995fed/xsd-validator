@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterUser;
 use App\Models\User;
-use App\Modules\ReCaptcha\ReCaptcha;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -54,11 +52,21 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $message = [
+            'captcha.required' => 'Введите капчу',
+            'name.required' => 'Логин не заполнен',
+            'captcha.captcha' => 'Капча введена неверно',
+            'email.unique' => 'Такой email уже существует',
+            'email.required' => 'E-mail не заполнен',
+            'password.confirmed' => 'Пароли не совпадают',
+            'password.min' => 'Пароль должен содержать минимум 8 символов',
+        ];
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'captcha'=>['required','captcha']
+        ],$message);
     }
 
     /**
@@ -77,32 +85,4 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param  \App\Http\Requests\RegisterUser  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function register(RegisterUser $request)
-    {
-//        return $request;
-
-        $reCaptcha = new ReCaptcha($request['g-recaptcha-response']);
-        if($reCaptcha->isBot()){
-            throw new \Exception('Ошибка проверки капчи',400);
-        }
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        if ($response = $this->registered($request, $user)) {
-            return $response;
-        }
-
-        return $request->wantsJson()
-            ? new Response('', 201)
-            : redirect($this->redirectPath());
-    }
 }
