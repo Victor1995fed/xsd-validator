@@ -272,7 +272,8 @@ class XsdController extends Controller
                 if ($validated) {
                     return [
                         'status'=>true,
-                        'message'=>'XML соответствует схеме'
+                        'message'=>'XML соответствует схеме',
+                        'warning'=>$validator->getWarnings()
                     ];
                 } else {
                     return [

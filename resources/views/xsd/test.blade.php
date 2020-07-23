@@ -55,10 +55,18 @@
                         <div class="result-response">
 
                             <div class="alert alert-success result displayNone" role="alert" id="result_success" >
+                                <span class="badge badge-pill badge-success">Успешно</span>
+                                <div class="content_alert"></div>
                             </div>
                             <div class="alert alert-danger result displayNone" role="alert" id="result_error" >
-
+                                <span class="badge badge-pill badge-danger">Найдены ошибки</span>
+                                <div class="content_alert"></div>
                             </div>
+                            <div class="alert alert-warning result displayNone" role="alert" id="warning_error" >
+                                <span class="badge badge-pill badge-warning">Замечания</span>
+                                <div class="content_alert"></div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -113,7 +121,7 @@
     $('#submitAjax').click(function () {
         myCodeMirror.setValue(myCodeMirror.getValue().trim())
         markers.forEach(marker => marker.clear());
-        $('.result').empty();
+        $('.result .content_alert').empty();
         $('.result').addClass('displayNone');
         let data = new FormData();
         data.append('xml', myCodeMirror.getValue());
@@ -137,7 +145,17 @@
                 success: function(data){
                     if(data.status == true) {
                         $('#result_success').removeClass('displayNone');
-                        $('#result_success').html(data.message);
+                        $('#result_success .content_alert').html(data.message);
+                        let html = '';
+                        let i = 1
+                        if(jQuery.isEmptyObject(data.warning))
+                            return true
+                        for (var key in data.warning) {
+                            html = html + '<p>'+i+'. Warning: '+data.warning[key].code+' '+data.warning[key].message+data.warning[key].line+'</p>'
+                            i++
+                        }
+                        $('#warning_error').removeClass('displayNone');
+                        $('#warning_error .content_alert').html(html);
                     }
                     else {
                         $('#result_error').removeClass('displayNone');
@@ -155,14 +173,14 @@
                             html = html + '<p>'+i+'. Ошибка: '+data.errors[key].code+' '+data.errors[key].message+line+'</p>'
                             i++
                         }
-                        $('#result_error').html(html);
+                        $('#result_error .content_alert').html(html);
                     }
 
                 },
 
                 error: function (request, error) {
                     $('#result_error').removeClass('displayNone');
-                    $('#result_error').html("Ошибка " + request.status+": <p>"+request.responseText+"</p>");
+                    $('#result_error .content_alert').html("Ошибка " + request.status+": <p>"+request.responseText+"</p>");
                 },
             });
         }, 200);

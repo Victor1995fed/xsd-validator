@@ -4,6 +4,8 @@
 namespace App\Modules;
 
 
+use Mockery\Exception;
+
 class XsdValidator
 {
 
@@ -21,6 +23,7 @@ class XsdValidator
      * @var array
      */
     public $errorDetails;
+    public $warningDetails;
 
     public $errorMessages;
     /**
@@ -94,7 +97,7 @@ class XsdValidator
             $this->errorDetails = $this->libxmlGetErrors();
             $this->feedErrors   = 1;
         } else {
-            //The file is valid
+            $this->warningDetails = $this->libxmlGetErrors();
             return true;
         }
     }
@@ -119,15 +122,21 @@ class XsdValidator
             return false;
         }
         libxml_use_internal_errors(true);
-
-        $this->handler->loadXML($contents, LIBXML_NOBLANKS);
-        if (!$this->handler->schemaValidate($this->feedSchema)) {
+        try {
+            $this->handler->loadXML($contents, LIBXML_NOBLANKS);
+            if (!$this->handler->schemaValidate($this->feedSchema)) {
+                throw new \Exception('Errors into xsd or xml');
+            } else {
+                //The file is valid
+                $this->warningDetails = $this->libxmlGetErrors();
+                return true;
+            }
+        }
+        catch (\Exception $e){
             $this->errorDetails = $this->libxmlGetErrors();
             $this->feedErrors   = 1;
-        } else {
-            //The file is valid
-            return true;
         }
+
     }
 
     public function validateFeedsFile($feeds)
@@ -149,6 +158,7 @@ class XsdValidator
         fclose($fp);
 
         $this->handler->loadXML($contents, LIBXML_NOBLANKS);
+//        $this->checkValidXsd();
         if (!$this->handler->schemaValidate($this->feedSchema)) {
             $this->errorDetails = $this->libxmlDisplayErrors();
             $this->feedErrors   = 1;
@@ -157,6 +167,7 @@ class XsdValidator
             return true;
         }
     }
+
 
     /**
      * Display Error if Resource is not validated
@@ -174,5 +185,10 @@ class XsdValidator
             $this->errorMessages[] = $error['message'];
         }
         return $this->errorMessages;
+    }
+
+    public function getWarnings()
+    {
+        return $this->warningDetails;
     }
 }
