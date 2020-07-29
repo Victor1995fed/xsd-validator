@@ -18,5 +18,5 @@ This is a web application from check xml use xsd scheme
 3)run local server 
 <code>php artisan serve</code>
 
-###Sample site
+### Sample site
 [sample site](http://vm1268595.ssd.had.yt/)
