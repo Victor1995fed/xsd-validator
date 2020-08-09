@@ -20,3 +20,6 @@ This is a web application from check xml use xsd scheme
 
 ### Sample site
 [sample site](http://vm1268595.ssd.had.yt/)
+
+
+Версия 1.0.2
