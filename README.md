@@ -22,4 +22,4 @@ This is a web application from check xml use xsd scheme
 [sample site](http://vm1268595.ssd.had.yt/)
 
 
-Версия 1.0.2
+Версия 1.0.2!
