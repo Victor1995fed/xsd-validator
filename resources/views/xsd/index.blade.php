@@ -18,7 +18,7 @@
         <div class="main-content">
             <div class="col-md-12">
                 <!-- DATA TABLE -->
-                <h3 class="title-5 m-b-35">Список  XSD</h3>
+                <h3 class="title-5 m-b-35">Список всех XSD</h3>
                 <section class="au-breadcrumb2">
                     <div class="container">
                         <div class="row">
