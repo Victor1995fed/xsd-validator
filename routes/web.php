@@ -31,6 +31,7 @@ Route::get('/xsd-public', 'XsdController@indexPublic');
 Route::post('/xsd/test/{id}', 'XsdController@runTestXml');
 Route::post('/file/get-list-zip', 'FileController@getListFilesZip');
 
+Route::resource('/xml', 'XmlController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
