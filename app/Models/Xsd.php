@@ -28,6 +28,11 @@ class Xsd extends Model
         return $this->belongsToMany(Tag::class,'xsd_tags','xsd_id','tag_id');
     }
 
+    public function xml()
+    {
+        return $this->belongsToMany(Xml::class,'xsd_xml','xsd_id','xml_id');
+    }
+
     /*
      * Связь с пользователем
      * */

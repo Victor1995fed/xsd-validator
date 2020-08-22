@@ -8,7 +8,7 @@ class Xml extends Model
 {
     protected $table = 'xml';
 
-
+    protected $fillable = ['title',  'user_id', 'content'];
     /**
      * Связь с xsd
      */

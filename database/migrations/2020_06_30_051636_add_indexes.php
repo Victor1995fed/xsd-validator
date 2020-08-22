@@ -38,20 +38,20 @@ class AddIndexes extends Migration
      */
     public function down()
     {
-        Schema::table('xsd', function (Blueprint $table) {
-            $table->dropIndex('idx_xsd_user_id');
-        });
-        Schema::table('tags', function (Blueprint $table) {
-            $table->dropIndex('idx_tags_user_id');
-        });
-
-        Schema::table('xsd_files', function (Blueprint $table) {
-            $table->dropIndex('idx_xsd_files_xsd_id');
-            $table->dropIndex('idx_xsd_files_file_id');
-        });
-        Schema::table('xsd_tags', function (Blueprint $table) {
-            $table->dropIndex('idx_xsd_tags_xsd_id');
-            $table->dropIndex('idx_xsd_tags_tag_id');
-        });
+//        Schema::table('xsd', function (Blueprint $table) {
+//            $table->dropIndex('idx_xsd_user_id');
+//        });
+//        Schema::table('tags', function (Blueprint $table) {
+//            $table->dropIndex('idx_tags_user_id');
+//        });
+//
+//        Schema::table('xsd_files', function (Blueprint $table) {
+//            $table->dropIndex('idx_xsd_files_xsd_id');
+//            $table->dropIndex('idx_xsd_files_file_id');
+//        });
+//        Schema::table('xsd_tags', function (Blueprint $table) {
+//            $table->dropIndex('idx_xsd_tags_xsd_id');
+//            $table->dropIndex('idx_xsd_tags_tag_id');
+//        });
     }
 }

@@ -31,20 +31,20 @@ class XmlController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $request['user_id'] = Auth::id();
-        if($xsd = Xml::create($request->all())) {
-            return redirect()->route('xml.index');
+        if($xml = Xml::create($request->all())) {
+            return response()->json($xml, 200 , [], JSON_UNESCAPED_UNICODE);
         }
         else
             throw new \Exception('Ошибка при сохранении');
@@ -81,7 +81,12 @@ class XmlController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $xml = Xml::findOrFail($id);
+        $this->checkAccess($xml);
+        if($xml->fill($request->all())->save())
+            return response()->json($xml, 200 , [], JSON_UNESCAPED_UNICODE);
+        else
+            throw new \Exception('Ошибка при сохранении');
     }
 
     /**

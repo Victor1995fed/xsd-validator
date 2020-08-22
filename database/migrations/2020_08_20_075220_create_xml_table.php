@@ -19,7 +19,8 @@ class CreateXmlTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->bigInteger('user_id')->unsigned()->default(null);
-            $table->boolean('public');
+            $table->boolean('public')->default(false);
+            $table->string('hash')->default('');
         });
 
         Schema::table('xml', function (Blueprint $table) {

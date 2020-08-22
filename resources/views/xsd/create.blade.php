@@ -63,14 +63,6 @@
                                 </select>
                             </div>
                         </div>
-{{--                        <div class="row form-group">--}}
-{{--                            <div class="col col-md-3">--}}
-{{--                                <label for="root_xsd" class=" form-control-label">Путь к корневой схеме в архиве</label>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-12 col-md-9">--}}
-{{--                                <input type="text" id="root_xsd" name="root_xsd"  class="form-control">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="description" class="form-control-label">Описание(не обязательно)</label>
@@ -89,6 +81,21 @@
                                     <span class="switch-label"></span>
                                     <span class="switch-handle"></span>
                                 </label>
+                            </div>
+
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-12 col-md-9">
+                            <a href="#" data-toggle="modal" data-placement="top"  data-original-title="Создать"   data-target="#XmlModal" id="xmlModalButton" class="btn btn-success btn-sm">
+                                <i class="zmdi zmdi-plus"></i> Добавить XML</a>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="switch-public" class="form-control-label">Добавленные xml</label>
+                            </div>
+                            <div class="col-12 col-md-12  added-xml-div">
                             </div>
 
                         </div>
@@ -122,12 +129,12 @@
             </div>
             @include('layouts.footer')
         </p>
-
     </div>
 
 @include('layouts.scripts')
     <script src="{{ asset('js/bootstrap-select.js') }}"></script>
-<script>
+        @include('layouts.modal-add-xml',['textHeader' => "Создание xml", 'textBody'=>''])
+        <script>
         $('.selectpicker').selectpicker();
     //TODO:: Произвести рефактор кода
     //Событие загрузки файла

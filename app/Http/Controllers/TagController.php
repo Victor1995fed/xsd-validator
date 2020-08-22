@@ -47,7 +47,7 @@ class TagController extends Controller
     {
 
             $request['user_id'] = Auth::id();
-            if($xsd = Tag::create($request->all())) {
+            if($tag = Tag::create($request->all())) {
                 return redirect()->route('tag.index');
             }
             else
