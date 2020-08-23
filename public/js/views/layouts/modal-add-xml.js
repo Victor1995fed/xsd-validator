@@ -67,7 +67,7 @@ $(function() {
      */
     function addXmlForm(xml) {
         let currentXmlLink = objCreateComponent.addedXmlDiv.find('div.xml-link-div-' + xml.id)
-        let htmlData = '<a href="#" class="xml-link" data-id=' + xml.id + ' data-title=' + xml.title + '>' + xml.title + ' <textarea style="display:none;" class="content-xml" type=hidden name=xml-content disabled="disabled" >' + xml.content + '</textarea><input class="id-xml" type=hidden name=xml[] value="' + xml.id + '"></a><button type="button" data-id=' + xml.id + '  class="item btn-sm remove-xml-link" data-toggle="tooltip" data-original-title="Удалить"><i class="fa fa-times"></i></button>'
+        let htmlData = '<a href="#" class="xml-link" data-id=' + xml.id + ' data-title="' + xml.title + '">' + xml.title + ' <textarea style="display:none;" class="content-xml" type=hidden name=xml-content disabled="disabled" >' + xml.content + '</textarea><input class="id-xml" type=hidden name=xml[] value="' + xml.id + '"></a><button type="button" data-id=' + xml.id + '  class="item btn-sm remove-xml-link" data-toggle="tooltip" data-original-title="Удалить"><i class="fa fa-times"></i></button>'
 
         if (currentXmlLink.length) {
             currentXmlLink.empty()
@@ -85,6 +85,7 @@ $(function() {
     });
 
     objCreateComponent.addedXmlDiv.on("click", "button.remove-xml-link", function (e) {
+        $(this).tooltip('hide')
         objCreateComponent.addedXmlDiv.find('div.xml-link-div-' + $(this).attr('data-id')).remove();
     });
     /**
@@ -95,6 +96,7 @@ $(function() {
         let idXml = $(_this).attr('data-id')
         let content = $(_this).children(".content-xml").val()
         let title = $(_this).attr('data-title')
+
         modalXmlElem.modalXml.modal('show');
         formModal.title.val(title)
         formModal.method.val('PUT')

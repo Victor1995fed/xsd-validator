@@ -38,7 +38,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="submit" class="btn btn-primary create-xml-send" form="createXmlForm">Добавить</button>
+                <button type="submit" class="btn btn-primary create-xml-send" form="createXmlForm">Сохранить</button>
             </div>
         </div>
     </div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Xml\StoreXml;
+use App\Http\Requests\Xml\UpdateXml;
 use App\Models\Tag;
 use App\Models\Xml;
 use Illuminate\Http\Request;
@@ -36,11 +38,11 @@ class XmlController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreXml $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function store(Request $request)
+    public function store(StoreXml $request)
     {
         $request['user_id'] = Auth::id();
         if($xml = Xml::create($request->all())) {
@@ -58,7 +60,13 @@ class XmlController extends Controller
      */
     public function show($id)
     {
-        //
+        $xml = Xml::where(function($query){
+            $query->where('user_id', '=',Auth::id())
+                ->orWhere('public', '=', 1);
+        })->findOrFail($id);
+        return response($xml->content, 200, [
+            'Content-Type' => 'application/xml'
+        ]);
     }
 
     /**
@@ -74,12 +82,12 @@ class XmlController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateXml $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function update(Request $request, $id)
+    public function update(UpdateXml $request, $id)
     {
         $xml = Xml::findOrFail($id);
         $this->checkAccess($xml);

@@ -46,11 +46,12 @@
                                     <textarea name="xml" id="xml-field"></textarea>
                                 </div>
                             </div>
-
+                            @include('layouts.list-xml',['type' => "test-page"])
                             <button class="btn btn-primary" id="submitAjax" type="button">
                                 <span class="spinner-border spinner-border-sm displayNone" role="status" aria-hidden="true"></span>
                                 Проверить
                             </button>
+
                         </form>
                         <div class="result-response">
 
@@ -87,6 +88,10 @@
 </div>
 @include('layouts.scripts')
 <script>
+
+    let buttonUploadXml = $('.upload-xml')
+
+
     $("#validatorXsd").keydown(function(event) {
         if (event.keyCode == 13) {
             event.preventDefault();
@@ -112,6 +117,12 @@
         mode: 'application/xml',
         indentUnit: 4
     });
+
+    buttonUploadXml.click(function (e) {
+        e.preventDefault()
+        let xmlData = $(this).siblings('a').children('.content-xml').val()
+        myCodeMirror.setValue(xmlData)
+    })
 
     $('.result').on('click', '.highlight-text', function() {
         let line = Number($(this).text()) - 1

@@ -16,7 +16,6 @@
 
         <!-- MAIN CONTENT-->
         <div class="main-content">
-
                 <div class="container custom-container" >
                     <div class="row">
                         <div class="col-md-12">
@@ -49,9 +48,6 @@
                             <p><i class="fa fa-file-text"></i> <strong>Файл xsd:</strong> {{$file->title}}</p>
                                     <div>
 
-{{--                                        <a href="{{url("file").'/'.$file->uuid}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Смотреть">--}}
-{{--                                            <i class="fa fa-eye"></i>--}}
-{{--                                        </a>--}}
                                         <a href="{{url("file").'/'.$file->uuid}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Скачать">
                                             <i class="fa fa-download"></i>
                                         </a>
@@ -59,19 +55,15 @@
                                 @endforeach
 
                                     <hr>
-                        @if(count($xsd->xml) > 1)
+                        @if(count($xsd->xml) > 0)
                             <p><i class="fa fa-file-text"></i> <strong>XML:</strong></p>
+                            @foreach ($xsd->xml as $xml)
+                                <div class="xml-list">
+                                    <p class="xml-p"><a href="{{url("xml").'/'.$xml->id}}" target="_blank" class="xml-link">{{$xml->title}}</a></p>
+                                </div>
+                            @endforeach
                         @endif
-                        @foreach ($xsd->xml as $xml)
 
-                            <div class="xml-list">
-                                <p class="xml-p"><a href="#" class="xml-link">{{$xml->title}}</a></p>
-                                <a href="{{url("xml").'/'.$xml->id}}" target="_blank" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Тестированть">
-                                    <i class="fa fa-code"></i>
-                                </a>
-
-                            </div>
-                        @endforeach
                         <hr>
                         <div class="button-action">
                             <a class="btn btn-primary btn-sm" href="{{url("xsd/test").'/'.$xsd->id}}">

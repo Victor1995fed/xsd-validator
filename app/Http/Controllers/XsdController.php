@@ -137,7 +137,7 @@ class XsdController extends Controller
      */
     public function edit($id)
     {
-        $xsd = Xsd::with('files', 'tags')->findOrFail($id);
+        $xsd = Xsd::with('files', 'tags', 'xml')->findOrFail($id);
         $tagsId =  $xsd->getIdTags($xsd->tags);
         $this->checkAccess($xsd);
         $file = $xsd->files->first();
@@ -146,7 +146,7 @@ class XsdController extends Controller
             'xsd' =>  $xsd,
             'listFilesZip' => $listFilesZip,
             'tags' => Tag::all(),
-            'choiceTag' => $tagsId
+            'choiceTag' => $tagsId,
         ]);
 
     }
@@ -171,6 +171,9 @@ class XsdController extends Controller
                 //Загрузка новых меток
                 $xsd->tags()->detach();
                 $xsd->tags()->attach($request->tags);
+                //Сохранение новых xml
+                $xsd->xml()->detach();
+                $xsd->xml()->attach($request->xml);
                 //Если загружен новый файл
                 if($request->hasFile('xsd-file')){
                     $xsd->files()->detach($idFiles);
