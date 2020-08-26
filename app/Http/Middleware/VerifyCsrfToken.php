@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         'validator',
         'test',
         'xsd',
-        'file/*'
+        'file/*',
+        'xml/get/format'
     ];
 }

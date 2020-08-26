@@ -32,6 +32,13 @@ Route::post('/xsd/test/{id}', 'XsdController@runTestXml');
 Route::post('/file/get-list-zip', 'FileController@getListFilesZip');
 
 Route::resource('/xml', 'XmlController');
+
+//Convert xml
+Route::post('/xml/get/format', 'XmlController@getFormat');
+Route::get('/xml/get/convert', 'XmlController@converter');
+
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

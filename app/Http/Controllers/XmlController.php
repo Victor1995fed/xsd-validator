@@ -6,15 +6,17 @@ use App\Http\Requests\Xml\StoreXml;
 use App\Http\Requests\Xml\UpdateXml;
 use App\Models\Tag;
 use App\Models\Xml;
+use App\Modules\ConvertXml;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class XmlController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index']]);
+        $this->middleware('auth', ['except' => ['index', 'getFormat']]);
     }
     /**
      * Display a listing of the resource.
@@ -106,5 +108,30 @@ class XmlController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function getFormat(Request $request)
+    {
+        $format = $request->get('format');
+        $clearValue = $request->get('clear_value') == 1;
+        $convert = new ConvertXml($request->getContent(),$request->get('set_value'),$clearValue);
+
+        switch ($format){
+            case 'json':
+                return $convert->convertJson();
+            case 'php_array':
+                return $convert->convertPhpArray();
+            default :
+                return 'Не указан корректный формат (примеры: json, php_array, ...)';
+
+        }
+    }
+
+    public function converter()
+    {
+        return view('xml.convert',  [
+
+        ]);
     }
 }
