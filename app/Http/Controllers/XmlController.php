@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Xml\StoreXml;
 use App\Http\Requests\Xml\UpdateXml;
-use App\Models\Tag;
 use App\Models\Xml;
 use App\Modules\ConvertXml;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class XmlController extends Controller
 {
@@ -113,19 +111,18 @@ class XmlController extends Controller
 
     public function getFormat(Request $request)
     {
-        $format = $request->get('format');
+
         $clearValue = $request->get('clear_value') == 1;
-        $convert = new ConvertXml($request->getContent(),$request->get('set_value'),$clearValue);
 
-        switch ($format){
-            case 'json':
-                return $convert->convertJson();
-            case 'php_array':
-                return $convert->convertPhpArray();
-            default :
-                return 'Не указан корректный формат (примеры: json, php_array, ...)';
-
+        try {
+            $convert = new ConvertXml($request->getContent(),$request->get('set_value'),$clearValue);
+            return $convert->getArray();
         }
+        catch (\Exception $e){
+            return  response()->json($e->getMessage(), 400,[],JSON_UNESCAPED_UNICODE);
+        }
+
+
     }
 
     public function converter()

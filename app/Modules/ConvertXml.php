@@ -46,19 +46,10 @@ class ConvertXml
 
     }
 
-   public function convertJson()
-   {
-        return json_encode($this->array,JSON_UNESCAPED_UNICODE);
-   }
 
-
-
-    public function convertPhpArray()
+    public function getArray()
     {
         return $this->array;
-//          $export = var_export($this->array, true);
-//          return gettype($export);
-        return $this->varexport();
     }
 
     protected function varexport()
