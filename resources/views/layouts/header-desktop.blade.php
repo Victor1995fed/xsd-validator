@@ -31,6 +31,9 @@
                             <li>
                                 <a href="{{url('validator')}}">Быстрая проверка по XSD</a>
                             </li>
+                            <li>
+                                <a href="{{url('form-generation')}}">Генерация формы</a>
+                            </li>
                         </ul>
                     </li>
                     <li>

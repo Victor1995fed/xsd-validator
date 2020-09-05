@@ -20,7 +20,8 @@
       "ext-libxml": "*",
         "ext-dom": "*",
         "ext-json": "*",
-      "ext-simplexml": "*"
+      "ext-simplexml": "*",
+      "ext-zip": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

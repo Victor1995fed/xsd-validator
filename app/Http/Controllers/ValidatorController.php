@@ -24,7 +24,7 @@ class ValidatorController extends Controller
 
     public function test()
     {
-        return 'df';
+        return 1;
     }
 
     public function check(CheckValidate $request)

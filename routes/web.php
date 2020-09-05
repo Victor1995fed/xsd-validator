@@ -36,7 +36,8 @@ Route::resource('/xml', 'XmlController');
 //Convert xml
 Route::post('/xml/get/format', 'XmlController@getFormat');
 Route::get('/xml/get/convert', 'XmlController@converter');
-
+Route::get('/form-generation', 'FormController@main');
+Route::post('/get-form-json', 'FormController@getJson');
 
 
 Auth::routes();
