@@ -198,20 +198,14 @@ class Map extends BaseMap
     }
 
 
-    public static function fieldset($title, $name=null)
+    public static function fieldset($option)
     {
-        if($name === null){
-
-        }
-        return
-            [
-                "xtype"=> "fieldset",
-                "title"=> $title,
-                "name"=> $name,
-                "isPersonField"=> true,
-                "isSoleField"=> true,
-                "isLegalField"=> true
-            ];
+      return  array_merge([
+            "xtype"=> "fieldset",
+        ],
+            self::getBaseTitleLabel($option,'title'),
+            self::getBaseRequesterSettings()
+        );
     }
 
 

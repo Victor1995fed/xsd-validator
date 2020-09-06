@@ -219,12 +219,10 @@ class XsdParser extends \DOMDocument
         }
 
         if($elemnts->getAttribute('type')){
-
             $type = $this->getTypes($elemnts->getAttribute('type'));
         }
         else{
-
-            $type = $this->searchTypeIntoElement($elemnts);
+            $type = 'fieldset';
         }
 
 
@@ -279,7 +277,6 @@ class XsdParser extends \DOMDocument
      */
     public function getRestriction($restriction)
     {
-
         $enumeration = $restriction->getElementsByTagName('enumeration');
         $pattern = $restriction->getElementsByTagName('pattern');
         if( $enumeration->length  > 0 ){

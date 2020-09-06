@@ -104,7 +104,7 @@ class FormOldAis extends BaseCreateForm
     {
         $this->numberCloneablePanel = $this->numberCloneablePanel + 1;
         $newArr = [];
-        $newArr[] = Map::fieldset($value['title'] ?? 'Клонируемая панель',$value['name']);
+        $newArr[] = Map::fieldset($value);
         if(is_array($value['type'])){
             return  Map::cloneablePanel([
                 'title' => $value['title'] ?? 'Клонируемая панель',
@@ -140,7 +140,7 @@ class FormOldAis extends BaseCreateForm
 
                     if(is_array($value['type'])){
                         if(isset($value['title'])){
-                            $newArr[] = Map::fieldset($value['title'], $value['name'] ?? null);
+                            $newArr[] = Map::fieldset($value);
                         }
                         $newArr = array_merge($newArr, $this->createArray($value,$options));
                     }
@@ -196,7 +196,7 @@ class FormOldAis extends BaseCreateForm
     {
         $newArr = [];
         if(isset($choice['title'])){
-            $newArr[] = Map::fieldset($choice['title'], $choice['name'] ?? null);
+            $newArr[] = Map::fieldset($choice);
             $newArr[] = Map::combobox([
                 'name' => $choice['name'] ?? null,
                 'title' => 'Выбор значения для группы '.$choice['title'],
