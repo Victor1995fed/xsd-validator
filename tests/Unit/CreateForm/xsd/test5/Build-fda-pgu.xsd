@@ -1,0 +1,1499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn://x-artefacts-rosavtodor-ru/requests/fda-build/1.0.3"
+	targetNamespace="urn://x-artefacts-rosavtodor-ru/requests/fda-build/1.0.3"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	
+	<xs:annotation>
+		<xs:documentation>
+			Заявление на получение разрешения на строительство объекта
+		</xs:documentation>
+	</xs:annotation>
+  
+	<xs:element name="BuildRequest">
+		<xs:annotation>
+			<xs:documentation>Запрос</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+      <xs:sequence>
+        <xs:element name="OrderId" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Уникальный идентификатор заявления на ЕПГУ</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:choice>
+          <xs:element name="Permission" type="RequestType">
+            <xs:annotation>
+              <xs:documentation>Заявление на получение разрешения на строительство объекта, реконструкцию, а также на ввод в эксплуатацию</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Cancel" type="CancelRequestType">
+            <xs:annotation>
+              <xs:documentation>Отмена заявления</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="env" use="optional" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Среда для отправки сообщений об изменении статуса заявления.
+            DEV
+            UAT
+            EXUAT
+            SVCDEV
+            TCOD
+            PROD
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+	</xs:element>
+
+	<xs:element name="BuildResponse">
+		<xs:annotation>
+			<xs:documentation>Ответ</xs:documentation>
+		</xs:annotation>
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Ответ на заявление о предоставление в пользование земельного участка в границах полосы отвода автомобильной дороги общего пользования федерального значения для размещения объектов дорожного сервиса</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="OrderId" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Номер заявки на портале</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StatusCode" type="xs:int">
+          <xs:annotation>
+            <xs:documentation>Код статуса в ЕПГУ</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Comment" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Комментарий к результату операции</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AppliedDocuments" minOccurs="0">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Результат оказания услуги в виде файлов вложения</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="AppliedDocument" type="AppliedDocumentType" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+	</xs:element>
+
+  <xs:complexType name="RequestType">
+    <xs:annotation>
+      <xs:documentation>Общий вид запроса ЕПГУ</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="GeneralInfo" type="GeneralInfoType"/>
+      <xs:element name="ContactInfo" type="ContactInfoType" minOccurs="0"/>
+      <xs:element name="DeclarantAddress" type="DeclarantAddressType" minOccurs="0"/>
+      <xs:element name="ObjectInfo" type="ObjectInfoType" minOccurs="0"/>
+      <xs:element name="LandInfos" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="LandInfo" type="LandInfoType" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RightDocuments" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RightDocument" type="RightDocumentType" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PlanWorkInfo" type="PlanWorkInfoType" minOccurs="0"/>
+      <xs:element name="InitialPermissionDocument" type="InitialPermissionDocumentType" minOccurs="0"/>
+      <xs:element name="PlanWorkInfoBefore" type="PlanWorkInfoBeforeType" minOccurs="0"/>
+      <xs:element name="CompletedWorkInfo" type="CompletedWorkInfoType" minOccurs="0"/>
+      <xs:element name="ProjectDocumentation" type="ProjectDocumentationType" minOccurs="0"/>
+      <xs:element name="ResponsiblePerson" type="ResponsiblePersonType" minOccurs="0"/>
+      <xs:element name="ContractWork" type="ContractWorkType" minOccurs="0"/>
+      <xs:element name="ObjectIndicators" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ObjectIndicator" type="ObjectIndicatorsType" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AppliedDocuments" minOccurs="0">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>Необходимые документы и материалы</xs:documentation>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element name="AppliedDocument" type="AppliedDocumentType" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AppliedDocumentType">
+    <xs:annotation>
+      <xs:documentation>Документы, прилагаемые к сообщению</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="CodeDocument"  type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name"  type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Имя файла загруженного документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URL"  type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Относительный путь к файлу внутри архива</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="BusinessName"  type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Имя вложения в соответствии с бизнес-правилами</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type"  type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Тип контента (например: application/pdf или любой другой общепринятый MIME-тип)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DigestValue"  type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Хэш файла в соответствии с ГОСТ</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Документы, необходимые для предоставления государственной услуги</xs:documentation>
+        </xs:annotation>
+        <xs:element name="ConstructionDocument" type="BuildBuildRequiredDocumentsType" />
+        <xs:element name="ProlongationDocument" type="BuildBuildProlongationRequiredDocumentsType" />
+        <xs:element name="ExpluatationDocument" type="BuildExpluatationRequiredDocumentsType" />
+        <xs:element name="OtherDocument" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Другой документ</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CancelRequestType">
+    <xs:annotation>
+      <xs:documentation>Общий вид запроса на отмену заявки ЕПГУ</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="OrderId" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Номер заявки на портале</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Reason" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Причина отмены</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="BuildObjectType">
+    <xs:annotation>
+      <xs:documentation>Тип объекта капитального строительства</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ROADS">
+        <xs:annotation>
+          <xs:documentation>Автомобильные дороги либо их участки</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COMMUNICATIONS">
+        <xs:annotation>
+          <xs:documentation>Инженерные коммуникации в границах полосы отвода автомобильной дороги</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ROADSERVICEOBJECTS">
+        <xs:annotation>
+          <xs:documentation>Объекты дорожного сервиса, размещаемые в границах полосы отвода автомобильной дороги общего пользования федерального значения</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ROADINTERSECTIONS">
+        <xs:annotation>
+          <xs:documentation>Пересечения и примыкания к автомобильным дорогам</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PRIVATEROADS">
+        <xs:annotation>
+          <xs:documentation>Частные автомобильные дороги, строительство, реконструкцию которых планируется осуществлять на территории двух и более субъектов Российской Федерации</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OrganType">
+    <xs:annotation>
+      <xs:documentation>Уполномоченный орган, в который направляется заявление</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CENTR">
+        <xs:annotation>
+          <xs:documentation>Росавтодор (в целом)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TAMAN">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог Тамань Федерального дорожного агентства></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DORROS">
+        <xs:annotation>
+          <xs:documentation>ФКУ Дирекция по реализации инвестиционных проектов в дорожном хозяйстве Российской Федерации Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHERNOMOR">
+        <xs:annotation>
+          <xs:documentation>ФКУ Дирекция по строительству и реконструкции автомобильных дорог Черноморского побережья Федерального дорожного агенства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DSDVL">
+        <xs:annotation>
+          <xs:documentation>ФКУ Дирекция по строительству объектов дорожного хозяйства г. Владивостока, как центра международного сотрудничества в Азиатско-Тихоокеанском регионе Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SPB">
+        <xs:annotation>
+          <xs:documentation>ФКУ Дирекция по строительству транспортного обхода города Санкт-Петербург Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DALVOSTOK">
+        <xs:annotation>
+          <xs:documentation>ФКУ Межрегиональная дирекция по дорожному строительству в Дальневосточном регионе России Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="YPRDOR">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной дороги общего пользования федерального значения Вилюй Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KOLYMA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Колыма Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PRIBAYKALIE">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Красноярск - Иркутск Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENISEY">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали М-54 Енисей Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HOLMOGORY">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Москва - Архангельск Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MSK-BOBRUYSK">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Москва - Бобруйск Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KASPIY">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Москва - Волгоград Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MSK-NOVGOROD">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Москва - Нижний Новгород Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RUSSIA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Москва - Санкт-Петербург Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MSK-HARKOV">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Москва - Харьков Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LENA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Невер - Якутск Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VOLGA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Нижний Новгород - Уфа Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UFA-CHELIBINSK">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Самара - Уфа - Челябинск Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KOLA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление автомобильной магистрали Санкт-Петербург - Мурманск Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KAVKAZ">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление ордена Знак Почета Северо-Кавказских автомобильных дорог Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ALTAY">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог Алтай Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHITA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог на территории Забайкальского края Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KAR-CHERKESK">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог на территории Карачаево-Черкесской Республики Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BURIATIA">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог на территории Республики Бурятия Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KUBAN">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог по Краснодарскому краю Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAGADAN">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог по Магаданской области Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SURAL">
+        <xs:annotation>
+          <xs:documentation>ФКУ Управление федеральных автомобильных дорог Южный Урал Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BAYKAL">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Байкал Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="POVOLG">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Большая Волга Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VOLGO-VIATSK">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Волго-Вятского региона Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DAL">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Дальний Восток Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SEVKAV">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Северный Кавказ Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SEVZAP">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Северо-Запад им. Н.В. Смирнова Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SIBIR">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Сибирь Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="URAL">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Урал Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CENTRMAG">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Центральная Россия Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHERNOZEM">
+        <xs:annotation>
+          <xs:documentation>ФКУ Федеральное управление автомобильных дорог Черноземье Федерального дорожного агентства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="GeneralInfoType">
+    <xs:annotation>
+      <xs:documentation>Общая информация</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Goal">
+        <xs:annotation>
+          <xs:documentation>Цель услуги</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Construction">
+              <xs:annotation>
+                <xs:documentation>Получение разрешения на строительство объекта.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Exploitation">
+              <xs:annotation>
+                <xs:documentation>Продление срока действия разрешения на строительство объекта</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Prolongation">
+              <xs:annotation>
+                <xs:documentation>Получение разрешения на ввод объекта в эксплуатацию</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Declarant" type="DeclarantType">
+        <xs:annotation>
+          <xs:documentation>Тип заявителя</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="BuildObject" type="BuildObjectType">
+        <xs:annotation>
+          <xs:documentation>Тип объекта капитального строительства</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="IsRadRoad" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Автомобильная дорога находится в доверительном управлении Государственной компании «Российские автомобильные дороги»</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Organ" type="OrganType" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Уполномоченный орган, в который направляется заявление</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DeclarantFlType">
+    <xs:annotation>
+      <xs:documentation>Сведения о заявителе (ФЛ)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DecLastName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Фамилия</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecFirstName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Имя</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecMiddleName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Отчество</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecIdDocType" type="DocType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Тип документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecIdDocSeria" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Серия документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecIdDocNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecIdDocGiver" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Кем выдан документ</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DecIdDocDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата выдачи документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DeclarantUlType">
+    <xs:annotation>
+      <xs:documentation>Сведения о заявителе (ЮЛ)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="FullName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Полное наименование с указанием организационно-правовой формы</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Inn" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>ИНН</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ManLastName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Фамилия руководителя</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ManFirstName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Имя руководителя</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ManMiddleName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Отчество руководителя</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DeclarantType">
+    <xs:annotation>
+      <xs:documentation>Заявитель</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Person" type="DeclarantFlType">
+        <xs:annotation>
+          <xs:documentation>Физическое лицо</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Organization" type="DeclarantUlType">
+        <xs:annotation>
+          <xs:documentation>Юридическое лицо</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="ContactInfoType">
+    <xs:annotation>
+      <xs:documentation>Контактная информация о заявителе</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ContactNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Контактный телефон (факс)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Адрес электронной почты</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DeclarantAddressType">
+    <xs:annotation>
+      <xs:documentation>Сведения об адресе заявителя</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PostIndex" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Индекс</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Region" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Регион</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="District " type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Район</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="City" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Город</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Town" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Населенный пункт</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Street" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Улица</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="House" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дом</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Building1" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Корпус</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Building2" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Строение</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Apartment" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Квартира/Офис</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ObjectInfoType">
+    <xs:annotation>
+      <xs:documentation>Сведения об объекте капитального строительства</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ObjName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Наименование</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ObjAddress" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Адрес</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="LandAddressType">
+    <xs:annotation>
+      <xs:documentation>
+        Адрес земельного участка
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Region" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Регион</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="District" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Район</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="City" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Город</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LandInfoType">
+    <xs:annotation>
+      <xs:documentation>
+        «Сведения о земельном участке (участках) на котором(ых) планируется выполнение работ»
+        (для «ID цели услуги» = 10001232142)/
+        «Сведения о земельном участке (участках) на котором(ых) выполнялись работы»
+        (для «ID цели услуги» = 10001232143)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="LandAddress" type="LandAddressType" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="CadastralNumber" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Кадастровый номер земельного участка
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:simpleType name="BuildLandRightDocumentType">
+    <xs:annotation>
+      <xs:documentation>Наименования документов, устанавливающих или подтверждающих права на земельный участок</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RENT">
+        <xs:annotation>
+          <xs:documentation>Договор аренды земельного участка</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BUILDACT">
+        <xs:annotation>
+          <xs:documentation>Распорядительный акт о предоставлении земельного участка под строительство</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OPERATIONALMANAGEMENT">
+        <xs:annotation>
+          <xs:documentation>Свидетельство о праве оперативного управления</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PERMANENTUSAGE">
+        <xs:annotation>
+          <xs:documentation>Свидетельство о праве постоянного (бессрочного) пользования</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OWERRIGHTS">
+        <xs:annotation>
+          <xs:documentation>Свидетельство о праве собственности</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SERVITUDE">
+        <xs:annotation>
+          <xs:documentation>Свидетельство об установлении сервитута</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="RightDocumentType">
+    <xs:annotation>
+      <xs:documentation>
+        Документ, устанавливающий или подтверждающий право
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DocTypeClassifier" type="BuildLandRightDocumentType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Наименование документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocTypeOther" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocSeries" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Серия</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата выдачи</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PlanWorkInfoType">
+    <xs:annotation>
+      <xs:documentation>Сведения о планируемых на объекте работах (согласно проекту организации строительства)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WorkType" type="WorkTypeType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Вид планируемых работ</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TermQuantity" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Число</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TermUnits" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Единицы измерения</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InitialPermissionDocumentType">
+    <xs:annotation>
+      <xs:documentation>Первоначально выданное разрешение на строительство</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Date" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата выдачи</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Number" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PlanWorkInfoBeforeType">
+    <xs:annotation>
+      <xs:documentation>Срок, в течение которого планировалось осуществление работ (planWorkInfoBefore)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TermQuantity" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Число</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TermUnits" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Единицы измерения</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Justification" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Обоснование причин продления срока действия разрешения на строительство</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CompletedWorkInfoType">
+    <xs:annotation>
+      <xs:documentation>Сведения о проведенных на объекте работах</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WorkTermFrom" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата начала</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkTermTo" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата окончания</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ProjectDocumentationType">
+    <xs:annotation>
+      <xs:documentation>Сведения о проектной документации  на строительство, реконструкцию объекта капитального строительства</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Contractor" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Контрагент</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ContrDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата заключения контракта</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ContrNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер контракта</xs:documentation>
+        </xs:annotation>
+      </xs:element> 
+      <xs:element name="ProjDocOrgName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Наименование проектной организации, разработавшей проектную документацию</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocumentTypeClassified" type="BuildProjectDocumentationDocumentType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Тип документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocumentTypeOther" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OrgApproverClassified" type="BuildDocumentApprovalOrganizationsType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Кем утверждена документация</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OrgApproverOther" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ApprovedDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата утверждения</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ApprovedNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExpertizeOrgClassified" type="ExploitationGosExpertType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Кем выдано заключение</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExpertizeOrgOther" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExpertizeDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата выдачи</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExpertizeNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExpertizeReestrNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Реестровый номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResponsiblePersonType">
+    <xs:annotation>
+      <xs:documentation>Сведения о лице, ответственном за производство работ</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="RespFullName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Фамилия, имя, отчество</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RespEducation" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Образование</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RespExperience" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Стаж работы в строительстве (лет)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RespOrder" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Реквизиты приказа о назначении</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContractWorkType">
+    <xs:annotation>
+      <xs:documentation>Сведения о подрядных работах</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ContractDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Дата заключения государственного контракта</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ContractNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Номер государственного контракта</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SubcontrOrg" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Подрядная организация</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ObjectIndicatorsType">
+    <xs:annotation>
+      <xs:documentation>Основные показатели объекта (из проектной документации)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ObjIndicatorType" type="BuildMainIndicatorsType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Показатель</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ObjIndicatorTypeOther" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ObjIndicatorValue" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Значение</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="DocType">
+    <xs:annotation>
+      <xs:documentation>Типы документов, удостоверяющих личность</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RF_PASSPORT">
+        <xs:annotation>
+          <xs:documentation>Паспорт гражданина Российской Федерации</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FID_DOC">
+        <xs:annotation>
+          <xs:documentation>Документ иностранного гражданина</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Z_PASSPORT">
+        <xs:annotation>
+          <xs:documentation>Заграничный паспорт гражданина Российской Федерации</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WorkTypeType">
+    <xs:annotation>
+      <xs:documentation>Вид планируемых работ</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Construction">
+        <xs:annotation>
+          <xs:documentation>Строительство</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Reconstruction">
+        <xs:annotation>
+          <xs:documentation>Реконструкция</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BuildDocumentApprovalOrganizationsType">
+    <xs:annotation>
+      <xs:documentation>Органы и организации, утверждающие проектную документацию</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RAD">
+        <xs:annotation>
+          <xs:documentation>Государственная компания "Российские автомобильные дороги"</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FDA">
+        <xs:annotation>
+          <xs:documentation>Федеральное дорожное агентство</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ExploitationGosExpertType">
+    <xs:annotation>
+      <xs:documentation>Органы государственной экспертизы</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EKATERINBURG">
+        <xs:annotation>
+          <xs:documentation>Екатеринбургский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KAZAN">
+        <xs:annotation>
+          <xs:documentation>Казанский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KRASNOYARSK">
+        <xs:annotation>
+          <xs:documentation>Красноярский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OMSK">
+        <xs:annotation>
+          <xs:documentation>Омский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ROSTOV">
+        <xs:annotation>
+          <xs:documentation>Ростовский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="STPETERBURG">
+        <xs:annotation>
+          <xs:documentation>Санкт-Петербургский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SARATOV">
+        <xs:annotation>
+          <xs:documentation>Саратовский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GGE">
+        <xs:annotation>
+          <xs:documentation>ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HABAROV">
+        <xs:annotation>
+          <xs:documentation>Хабаровский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HANTYMANSIYSK">
+        <xs:annotation>
+          <xs:documentation>Ханты-Мансийский филиал ФАУ «Главгосэкспертиза России»</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BuildMainIndicatorsType">
+    <xs:annotation>
+      <xs:documentation>Основные показатели объекта строительства</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CATEGORY">
+        <xs:annotation>
+          <xs:documentation>Категория автомобильной дороги</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GOST">
+        <xs:annotation>
+          <xs:documentation>Класс автомобильной дороги по ГОСТ Р 52398-2005</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LENGTH">
+        <xs:annotation>
+          <xs:documentation>Протяженность (км)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SPEED">
+        <xs:annotation>
+          <xs:documentation>Расчётная скорость (км/ч)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LANES">
+        <xs:annotation>
+          <xs:documentation>Число основных полос движения (шт)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ROADWIDTH">
+        <xs:annotation>
+          <xs:documentation>Ширина полосы движения (м)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TOTALWIDTH">
+        <xs:annotation>
+          <xs:documentation>Ширина проезжей части (м)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BuildBuildRequiredDocumentsType">
+    <xs:annotation>
+      <xs:documentation>Типы документов, необходимых для предоставления государственной услуги «Получение разрешения на строительство объекта»</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GRADPLAN">
+        <xs:annotation>
+          <xs:documentation>градостроительный план земельного участка, выданный не ранее чем за три года до дня представления заявления на получение разрешения на строительство, или в случае выдачи разрешения на строительство линейного объекта реквизиты проекта планировки территории и проекта межевания территории</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RAZRESHNAOTKLON">
+        <xs:annotation>
+          <xs:documentation>разрешение на отклонение от предельных параметров разрешенного строительства, реконструкции (в случае, если застройщику было предоставлено такое разрешение в соответствии со статьей 40 Градостроительного Кодекса РФ)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GGEACT">
+        <xs:annotation>
+          <xs:documentation>Положительное заключение экспертизы проектной документации объекта капитального строительства (применительно к отдельным этапам строительства в случае, предусмотренном частью 12.1 статьи 48 настоящего Кодекса), если такая проектная документация подлежит экспертизе в соответствии со статьей 49 настоящего Кодекса, положительное заключение государственной экспертизы проектной документации в случаях, предусмотренных частью 3.4 статьи 49 настоящего Кодекса, положительное заключение государственной экологической экспертизы проектной документации в случаях, предусмотренных частью 6 статьи 49 настоящего Кодекса</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LANDRIGHT">
+        <xs:annotation>
+          <xs:documentation>Правоустанавливающие документы на земельный участок</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EXPLANATORYNOTE">
+        <xs:annotation>
+          <xs:documentation>Пояснительная записка</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PROJECTDESTROY">
+        <xs:annotation>
+          <xs:documentation>проект организации работ по сносу или демонтажу объектов капитального строительства, их частей</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PROJECTBUID">
+        <xs:annotation>
+          <xs:documentation>проект организации строительства объекта капитального строительства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENGENEERINGDEVICES">
+        <xs:annotation>
+          <xs:documentation>сведения об инженерном оборудовании, сводный план сетей инженерно-технического обеспечения с обозначением мест подключения (технологического присоединения) проектируемого объекта капитального строительства к сетям инженерно-технического обеспечения</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SHEMAPLACE">
+        <xs:annotation>
+          <xs:documentation>схема планировочной организации земельного участка, выполненная в соответствии с информацией, указанной в градостроительном плане земельного участка, с обозначением места размещения объекта капитального строительства, подъездов и проходов к нему, границ зон действия публичных сервитутов, объектов археологического наследия</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SHEMAAPPROVED">
+        <xs:annotation>
+          <xs:documentation>схема планировочной организации земельного участка, подтверждающая расположение линейного объекта в пределах красных линий, утвержденных в составе документации по планировке территории применительно к линейным объектам</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SCHEMAARCHITECT">
+        <xs:annotation>
+          <xs:documentation>архитектурные решения</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MEROP49">
+        <xs:annotation>
+          <xs:documentation>перечень мероприятий по обеспечению доступа инвалидов к объектам здравоохранения, образования, культуры, отдыха, спорта и иным объектам социально-культурного и коммунально-бытового назначения, объектам транспорта, торговли, общественного питания, объектам делового, административного, финансового, религиозного назначения, объектам жилищного фонда в случае строительства, реконструкции указанных объектов при условии, что экспертиза проектной документации указанных объектов не проводилась в соответствии со статьей 49 Градостроительного Кодекса РФ</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HOLDERSCONSENT">
+        <xs:annotation>
+          <xs:documentation>согласие всех правообладателей объекта капитального строительства в случае реконструкции такого объекта</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACRURCOPY">
+        <xs:annotation>
+          <xs:documentation>копия свидетельства об аккредитации юридического лица, выдавшего положительное заключение негосударственной экспертизы проектной документации, в случае, если представлено заключение негосударственной экспертизы проектной документации</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RUSDOCS">
+        <xs:annotation>
+          <xs:documentation>документы, предусмотренные законодательством Российской Федерации об объектах культурного наследия, в случае, если при проведении работ по сохранению объекта культурного наследия затрагиваются конструктивные и другие характеристики надежности и безопасности такого объекта</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BuildBuildProlongationRequiredDocumentsType">
+    <xs:annotation>
+      <xs:documentation>Типы документов, необходимых для предоставления государственной услуги «Продление срока действия разрешения на строительство объекта»</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GRADPLAN">
+        <xs:annotation>
+          <xs:documentation>градостроительный план земельного участка, выданный не ранее чем за три года до дня представления заявления на получение разрешения на строительство, или в случае выдачи разрешения на строительство линейного объекта реквизиты проекта планировки территории и проекта межевания территории</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RAZRESHNAOTKLON">
+        <xs:annotation>
+          <xs:documentation>разрешение на отклонение от предельных параметров разрешенного строительства, реконструкции (в случае, если застройщику было предоставлено такое разрешение в соответствии со статьей 40 Градостроительного Кодекса РФ)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GGEACT">
+        <xs:annotation>
+          <xs:documentation>Положительное заключение экспертизы проектной документации объекта капитального строительства (применительно к отдельным этапам строительства в случае, предусмотренном частью 12.1 статьи 48 настоящего Кодекса), если такая проектная документация подлежит экспертизе в соответствии со статьей 49 настоящего Кодекса, положительное заключение государственной экспертизы проектной документации в случаях, предусмотренных частью 3.4 статьи 49 настоящего Кодекса, положительное заключение государственной экологической экспертизы проектной документации в случаях, предусмотренных частью 6 статьи 49 настоящего Кодекса</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LANDRIGHT">
+        <xs:annotation>
+          <xs:documentation>Правоустанавливающие документы на земельный участок</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EXPLANATORYNOTE">
+        <xs:annotation>
+          <xs:documentation>Пояснительная записка;</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PROJECTDESTROY">
+        <xs:annotation>
+          <xs:documentation>проект организации работ по сносу или демонтажу объектов капитального строительства, их частей</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PROJECTBUID">
+        <xs:annotation>
+          <xs:documentation>проект организации строительства объекта капитального строительства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENGENEERINGDEVICES">
+        <xs:annotation>
+          <xs:documentation>сведения об инженерном оборудовании, сводный план сетей инженерно-технического обеспечения с обозначением мест подключения (технологического присоединения) проектируемого объекта капитального строительства к сетям инженерно-технического обеспечения</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SHEMAPLACE">
+        <xs:annotation>
+          <xs:documentation>схема планировочной организации земельного участка, выполненная в соответствии с информацией, указанной в градостроительном плане земельного участка, с обозначением места размещения объекта капитального строительства, подъездов и проходов к нему, границ зон действия публичных сервитутов, объектов археологического наследия</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SHEMAAPPROVED">
+        <xs:annotation>
+          <xs:documentation>схема планировочной организации земельного участка, подтверждающая расположение линейного объекта в пределах красных линий, утвержденных в составе документации по планировке территории применительно к линейным объектам</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SCHEMAARCHITECT">
+        <xs:annotation>
+          <xs:documentation>архитектурные решения</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MEROP49">
+        <xs:annotation>
+          <xs:documentation>перечень мероприятий по обеспечению доступа инвалидов к объектам здравоохранения, образования, культуры, отдыха, спорта и иным объектам социально-культурного и коммунально-бытового назначения, объектам транспорта, торговли, общественного питания, объектам делового, административного, финансового, религиозного назначения, объектам жилищного фонда в случае строительства, реконструкции указанных объектов при условии, что экспертиза проектной документации указанных объектов не проводилась в соответствии со статьей 49 Градостроительного Кодекса РФ</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HOLDERSCONSENT">
+        <xs:annotation>
+          <xs:documentation>согласие всех правообладателей объекта капитального строительства в случае реконструкции такого объекта</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACRURCOPY">
+        <xs:annotation>
+          <xs:documentation>копия свидетельства об аккредитации юридического лица, выдавшего положительное заключение негосударственной экспертизы проектной документации, в случае, если представлено заключение негосударственной экспертизы проектной документации</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RUSDOCS">
+        <xs:annotation>
+          <xs:documentation>документы, предусмотренные законодательством Российской Федерации об объектах культурного наследия, в случае, если при проведении работ по сохранению объекта культурного наследия затрагиваются конструктивные и другие характеристики надежности и безопасности такого объекта</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BuildExpluatationRequiredDocumentsType">
+    <xs:annotation>
+      <xs:documentation>Типы документов, необходимых для предоставления государственной услуги «Получение разрешения на ввод объекта в эксплуатацию»</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LANDDOC">
+        <xs:annotation>
+          <xs:documentation>Правоустанавливающие документы на земельный участок</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GRADPLAN">
+        <xs:annotation>
+          <xs:documentation>градостроительный план земельного участка, представленный для получения разрешения на строительство, или в случае строительства, реконструкции линейного объекта проект планировки территории и проект межевания территории</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BUILDRIGHT">
+        <xs:annotation>
+          <xs:documentation>разрешение на строительство</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BUILDDOC">
+        <xs:annotation>
+          <xs:documentation>акт приемки объекта капитального строительства (в случае осуществления строительства, реконструкции на основании договора)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RECONSTRUCTIONDOC">
+        <xs:annotation>
+          <xs:documentation>документ, подтверждающий соответствие построенного, реконструированного объекта капитального строительства требованиям технических регламентов и подписанный лицом, осуществляющим строительство</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>  
+      <xs:enumeration value="INDICATORSDOC">
+        <xs:annotation>
+          <xs:documentation>документ, подтверждающий соответствие параметров построенного, реконструированного объекта капитального строительства проектной документации, в том числе требованиям энергетической эффективности и требованиям оснащенности объекта капитального строительства приборами учета используемых энергетических ресурсов, и подписанный лицом, осуществляющим строительство (лицом, осуществляющим строительство, и застройщиком или техническим заказчиком в случае осуществления строительства, реконструкции на основании договора, а также лицом, осуществляющим строительный контроль, в случае осуществления строительного контроля на основании договора), за исключением случаев осуществления строительства, реконструкции объектов индивидуального жилищного строительства</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EXPERTDOC">
+        <xs:annotation>
+          <xs:documentation>документы, подтверждающие соответствие построенного, реконструированного объекта капитального строительства техническим условиям и подписанные представителями организаций, осуществляющих эксплуатацию сетей инженерно-технического обеспечения (при их наличии)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SCHEMADOC">
+        <xs:annotation>
+          <xs:documentation>схема, отображающая расположение построенного, реконструированного объекта капитального строительства, расположение сетей инженерно-технического обеспечения в границах земельного участка и планировочную организацию земельного участка и подписанная лицом, осуществляющим строительство (лицом, осуществляющим строительство, и застройщиком или техническим заказчиком в случае осуществления строительства, реконструкции на основании договора), за исключением случаев строительства, реконструкции линейного объекта</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CONCLUSION">
+        <xs:annotation>
+          <xs:documentation>заключение органа государственного строительного надзора (в случае, если предусмотрено осуществление государственного строительного надзора) о соответствии построенного, реконструированного объекта капитального строительства требованиям технических регламентов и проектной документации, в том числе требованиям энергетической эффективности и требованиям оснащенности объекта капитального строительства приборами учета используемых энергетических ресурсов, заключение федерального государственного экологического надзора в случаях, предусмотренных частью 7 статьи 54 Градостроительного кодекса РФ</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INSURANCE">
+        <xs:annotation>
+          <xs:documentation>документ, подтверждающий заключение договора обязательного страхования гражданской ответственности владельца опасного объекта за причинение вреда в результате аварии на опасном объекте в соответствии с законодательством Российской Федерации об обязательном страховании гражданской ответственности владельца опасного объекта за причинение вреда в результате аварии на опасном объекте</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PERFORMEDDOC">
+        <xs:annotation>
+          <xs:documentation>акт приемки выполненных работ по сохранению объекта культурного наследия, утвержденный соответствующим органом охраны объектов культурного наследия, определенным Федеральным законом от 25 июня 2002 года N 73-ФЗ "Об объектах культурного наследия (памятниках истории и культуры) народов Российской Федерации", при проведении реставрации, консервации, ремонта этого объекта и его приспособления для современного использования</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TECHNICALPLAN">
+        <xs:annotation>
+          <xs:documentation>технический план объекта капитального строительства, подготовленный в соответствии с Федеральным законом от 13 июля 2015 года N 218-ФЗ "О государственной регистрации недвижимости"</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="BuildProjectDocumentationDocumentType">
+    <xs:annotation>
+      <xs:documentation>Тип документа</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation>Иное</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ORDER">
+        <xs:annotation>
+          <xs:documentation>Приказ</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ORDINANCE">
+        <xs:annotation>
+          <xs:documentation>Распоряжение</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

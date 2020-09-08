@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn://x-artefacts-cbr-exporter/root/1.0.0" targetNamespace="urn://x-artefacts-cbr-exporter/root/1.0.0" elementFormDefault="qualified">
+	<xsd:simpleType name="nameType">
+		<xsd:annotation>
+			<xsd:documentation>Полное наименование экспортера</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="500"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="guidType">
+		<xsd:annotation>
+			<xsd:documentation>Идентификатор GUID</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="innType">
+		<xsd:annotation>
+			<xsd:documentation>Формат ИНН</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{10,12}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="envType">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="256"/>
+			<xsd:pattern value="([A-Z0-9_-])+"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="statusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SUCCEEDED"/>
+			<xsd:enumeration value="FAULT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="OrganizationType">
+		<xsd:annotation>
+			<xsd:documentation>Данные об экспортере</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fullname" type="nameType">
+				<xsd:annotation>
+					<xsd:documentation>Полное наименование</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="inn" type="innType">
+				<xsd:annotation>
+					<xsd:documentation>ИНН</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DataPeriodType">
+		<xsd:annotation>
+			<xsd:documentation>Дата за период</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="DateStart" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>Дата начала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DateEnd" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>Дата конца</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:element name="CbrExporterRequest">
+		<xsd:annotation>
+			<xsd:documentation>Запрос</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="RoutingCode" type="envType">
+					<xsd:annotation>
+						<xsd:documentation>Код маршрутизации</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Id" type="guidType">
+					<xsd:annotation>
+						<xsd:documentation>Уникальный идентификатор</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="DateTimeRequest" type="xsd:dateTime">
+					<xsd:annotation>
+						<xsd:documentation>Дата и время формирования</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="DatePeriod" type="DataPeriodType">
+					<xsd:annotation>
+						<xsd:documentation>Период</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="Organization" type="OrganizationType">
+						<xsd:annotation>
+							<xsd:documentation>Экспортеры</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CbrExporterResponse">
+		<xsd:annotation>
+			<xsd:documentation>Ответ на запрос</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>Описание элементов ответа на запрос ВС</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="Id" type="guidType">
+					<xsd:annotation>
+						<xsd:documentation>Идентификатор запроса</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="DateTimeResponse" type="xsd:dateTime">
+					<xsd:annotation>
+						<xsd:documentation>Дата и время ответа на запрос</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Status" type="statusType">
+					<xsd:annotation>
+						<xsd:documentation>Статус выполнения операции</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

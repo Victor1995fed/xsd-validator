@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="1.0">
+    <xs:element name="AppliedDocuments" type="AppliedDocumentsType">
+        <xs:annotation>
+            <xs:documentation>Группа вложений</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="AppliedDocument" type="AppliedDocumentType">
+        <xs:annotation>
+            <xs:documentation>Вложение</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="CodeDocument" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Код документа</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="Name" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Имя файла документа</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="Number" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="URL" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Относительный путь к файлу внутри архива
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="Type" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>MIME-тип контента</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="DigestValue" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Хэш файла в соответствии с ГОСТ</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="BusinessName" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Бизнес-наименование документа</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="AppliedDocumentsType">
+        <xs:sequence>
+            <xs:element ref="AppliedDocument" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AppliedDocumentType">
+        <xs:sequence>
+            <xs:element ref="CodeDocument" minOccurs="0"/>
+            <xs:element ref="Name"/>
+            <xs:element ref="Number" minOccurs="0"/>
+            <xs:element ref="URL"/>
+            <xs:element ref="Type"/>
+            <xs:element ref="BusinessName"/>
+        </xs:sequence>
+        <xs:attribute ref="ID" use="optional"/>
+    </xs:complexType>
+    <xs:attribute name="ID">
+        <xs:annotation>
+            <xs:documentation>Уникальный идентификатор вложения
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:ID"/>
+        </xs:simpleType>
+    </xs:attribute>
+</xs:schema>
+

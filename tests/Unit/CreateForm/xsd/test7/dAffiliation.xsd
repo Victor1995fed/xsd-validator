@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"> 
+    <xs:simpleType name="dAffiliation">
+        <xs:annotation>
+            <xs:documentation>Государтсвенная принадлежность юридического лица</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation>российское юридическое лицо</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation>иностранное юридическое лицо</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+         </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
