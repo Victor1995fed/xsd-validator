@@ -19,12 +19,20 @@ class ParserXsdTest extends TestCase
         $main->joinImportXsd($this->pathXsd);
 
         //Поиск всех ссылок и вставка
-        $searchElemAndGroup = $main->searchElemAndGroup($main->getElementsByAttrName('Application'));
-        $res =  $main->getRef($searchElemAndGroup);
-        $res = $main->sortArray($res);
+        if($mainTag = $main->getElementsByAttrName('Application')){
+            $searchElemAndGroup = $main->searchElemAndGroup($main->getElementsByAttrName('Application'));
+            $res =  $main->getRef($searchElemAndGroup);
+            $res = $main->sortArray($res);
+        }
+        else {
+            throw new \Exception('Не найден элемент с таким именем ');
+        }
 
+//        print_r($res);
         $form = new FormOldAis($res);
-        print_r( $form->getJsonForm());
+        $arrResult = $form->getJsonForm();
+        print_r( json_encode($arrResult, JSON_UNESCAPED_UNICODE));
+
     }
 
 

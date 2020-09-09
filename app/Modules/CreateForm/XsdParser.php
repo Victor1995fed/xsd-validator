@@ -210,12 +210,12 @@ class XsdParser extends \DOMDocument
     {
 
         $cloneablePanel = false;
-        $required = false;
+        $required = true;
         if($elemnts->getAttribute('maxOccurs') == 'unbounded'){
             $cloneablePanel = true;
         }
-        if($elemnts->getAttribute("minOccurs") == '1'){
-            $required = true;
+        if($elemnts->getAttribute("minOccurs") == '0'){
+            $required = false;
         }
 
         if($elemnts->getAttribute('type')){

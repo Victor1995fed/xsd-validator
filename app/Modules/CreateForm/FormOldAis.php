@@ -130,6 +130,7 @@ class FormOldAis extends BaseCreateForm
         $options = [
             'title' => $array['title'] ?? null,
             'name' => $array['name'] ?? null,
+            'required' => $array['required'] ?? false,
         ];
             foreach ($array as $key => $value){
 
@@ -181,7 +182,8 @@ class FormOldAis extends BaseCreateForm
             return Map::$type([
                 'title' =>  $value['title'] ?? $options['title'] ?? $value['name'] ?? 'Имя для поля не ЗАДАНО!',
                 'name' => $value['name'] ?? $options['name'] ?? 'unknown',
-                'restriction' =>$value['choice'] ?? null
+                'restriction' =>$value['choice'] ?? null,
+                'required' => $value['required'] ?? $options['required'] ?? false
             ]);
         }
 

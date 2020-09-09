@@ -30,7 +30,7 @@ class Map extends BaseMap
 
         return array_merge([
             "xtype"=> $type,
-
+            "allowBlank" => !$option['required']
         ],
         self::getBaseTitleLabel($option),
         self::getBaseRequesterSettings()
@@ -54,7 +54,7 @@ class Map extends BaseMap
 
         return array_merge([
             "xtype"=> 'datefield',
-
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -66,8 +66,8 @@ class Map extends BaseMap
     {
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateSnils"
-
+            "vtype" => "validateSnils",
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -79,8 +79,8 @@ class Map extends BaseMap
 
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateOgrnInd"
-
+            "vtype" => "validateOgrnInd",
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -91,8 +91,8 @@ class Map extends BaseMap
     {
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateOgrnLegal"
-
+            "vtype" => "validateOgrnLegal",
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -122,6 +122,7 @@ class Map extends BaseMap
             "queryMode" => "local",
             "displayField" => "value",
             "valueField" => "value",
+            "allowBlank" => !$option['required'],
             "store" => [
                 "fields"=> [
                     "value"
@@ -142,7 +143,8 @@ class Map extends BaseMap
 
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateDigits"
+            "vtype" => "validateDigits",
+            "allowBlank" => !$option['required']
 
         ],
             self::getBaseTitleLabel($option),
@@ -154,8 +156,8 @@ class Map extends BaseMap
     {
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateCyrillic"
-
+            "vtype" => "validateCyrillic",
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -166,8 +168,8 @@ class Map extends BaseMap
     {
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateDigits"
-
+            "vtype" => "validateDigits",
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -178,7 +180,8 @@ class Map extends BaseMap
     {
         return array_merge([
             "xtype"=> 'textfield',
-            "vtype" => "validateDigits"
+            "vtype" => "validateDigits",
+            "allowBlank" => !$option['required']
 
         ],
             self::getBaseTitleLabel($option),
@@ -190,7 +193,7 @@ class Map extends BaseMap
     {
         return array_merge([
             "xtype"=> 'textfield',
-
+            "allowBlank" => !$option['required']
         ],
             self::getBaseTitleLabel($option),
             self::getBaseRequesterSettings()
@@ -215,6 +218,7 @@ class Map extends BaseMap
             [
                 "xtype"=> "textfield",
                 "fieldLabel"=> $option['title'],
+                "allowBlank" => !$option['required'],
                 "name"=> $option['name'],
                 "isPersonField"=> true,
                 "isSoleField"=> false,
