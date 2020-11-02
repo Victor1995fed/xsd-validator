@@ -5,6 +5,7 @@ namespace Tests\Unit\CreateForm;
 use App\Modules\CreateForm\FormOldAis;
 use App\Modules\CreateForm\Map;
 use App\Modules\CreateForm\XsdParser;
+use App\Modules\CreateForm\XsdParserV2;
 use PHPUnit\Framework\TestCase;
 
 class ParserXsdTest extends TestCase
@@ -15,14 +16,15 @@ class ParserXsdTest extends TestCase
     public function testCreateArray()
     {
 
-        $main = new XsdParser("1.0", 'UTF-8',file_get_contents($this->pathXsd));
+        $main = new XsdParserV2("1.0", 'UTF-8',file_get_contents($this->pathXsd));
         $main->joinImportXsd($this->pathXsd);
-
+        $elements = $main->getArrayNodes($main->getElementsByAttrName('RequestDataType'));
         //Поиск всех ссылок и вставка
-        if($mainTag = $main->getElementsByAttrName('Applicant')){
-            $searchElemAndGroup = $main->searchElemAndGroup($main->getElementsByAttrName('Applicant'));
-            $res =  $main->getRef($searchElemAndGroup);
-            $res = $main->sortArray($res);
+        if($mainTag = $main->getElementsByAttrName('RequestDataType')){
+            $searchElemAndGroup = $main->searchElemAndGroup($main->getElementsByAttrName('RequestDataType'));
+
+//            $res =  $main->getRef($searchElemAndGroup);
+//            $res = $main->sortArray($searchElemAndGroup);
         }
         else {
             throw new \Exception('Не найден элемент с таким именем ');

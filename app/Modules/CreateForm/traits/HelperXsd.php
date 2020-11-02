@@ -1,16 +1,18 @@
 <?php
-namespace App\Modules\CreateForm;
 
-class XsdParser extends \DOMDocument
+
+namespace App\Modules\CreateForm\traits;
+
+
+use App\Modules\CreateForm\Map;
+
+trait HelperXsd
 {
 
-    public function __construct($version = '', $encoding = '', $data = '')
+    public function removeNamespace($name)
     {
-        parent::__construct($version, $encoding);
-        if ($data) {
-            $this->loadXML($data);
-            $this->formatOutput = true;
-        }
+        $result =  explode(':',$name);
+        return $result[1] ?? $result[0];
     }
 
     /**
@@ -29,27 +31,7 @@ class XsdParser extends \DOMDocument
         return strtr($title,$tr);
     }
 
-    /**
-     * Поиск элементов и групп
-     * @param null $node
-     * @return array
-     */
-    public function searchElemAndGroup($node = null)
-    {
-        if(!$node){
-            $node = $this;
-        }
-        $newArr = [];
-        foreach ($node->getElementsByTagName('*') as $k => $v){
-            if(in_array($this->trimName($v->nodeName),['group','element']))
-                $newArr[] = $v;
-        }
-        if(empty($newArr) && $node->getAttribute('type') !== null){
-            //Получаем элемент по указанному типу
-             $newArr[] = $this->getElementsByAttrName($this->trimName($node->getAttribute('type')));
-        }
-        return $newArr;
-    }
+
 
     /**
      * Функция возвращает массив дочерних полей(если они есть) и тип поля
@@ -102,13 +84,13 @@ class XsdParser extends \DOMDocument
                     }
                     $newArr[$k] =
                         array_merge(
-                        [
-                            'title' => $title,
-                            'name' => $this->trimName($v->getAttribute('name')),
-                            'tag'=>$v->nodeName
-                        ],
-                        $this->getArrayType($type)
-);
+                            [
+                                'title' => $title,
+                                'name' => $this->trimName($v->getAttribute('name')),
+                                'tag'=>$v->nodeName
+                            ],
+                            $this->getArrayType($type)
+                        );
                 }
                 elseif (in_array($this->trimName($v->nodeName),['group', 'choice'])){
 
@@ -136,18 +118,18 @@ class XsdParser extends \DOMDocument
     public function getAnnotation($elem)
     {
 
-            if($title = $this->getCurrentAnnotation($elem))
-                return $title;
-            else {
-                return $elem->getAttribute('name');
-            }
+        if($title = $this->getCurrentAnnotation($elem))
+            return $title;
+        else {
+            return $elem->getAttribute('name');
+        }
     }
 
 
     protected function getLengthField($name)
     {
         $expName = explode('-',$name);
-            return $expName[1] ?? null;
+        return $expName[1] ?? null;
     }
 
     /**
@@ -198,7 +180,7 @@ class XsdParser extends \DOMDocument
         elseif($this->trimName($elem->nodeName) == 'complexType'){
             return $this->processComplexType($elem);
         }
-            return null;
+        return null;
     }
 
     /**
@@ -221,11 +203,11 @@ class XsdParser extends \DOMDocument
         }
         $simpleContent = $elem->getElementsByTagName('simpleContent');
 
-       if ($simpleContent->length > 0) {
+        if ($simpleContent->length > 0) {
 //           $simpleContent->item(0);
-           $type = $this->processSimpleContent($simpleContent->item(0));
-           return  $type;
-       }
+            $type = $this->processSimpleContent($simpleContent->item(0));
+            return  $type;
+        }
 
         return null;
 
@@ -353,8 +335,8 @@ class XsdParser extends \DOMDocument
                 $choice[] = $v->getAttribute('value').$name;
             }
             return [
-             'type' => 'combobox',
-             'choice'=> $choice
+                'type' => 'combobox',
+                'choice'=> $choice
             ];
         }
         elseif ($pattern->length  > 0){
@@ -433,9 +415,9 @@ class XsdParser extends \DOMDocument
         $choice = $group->getElementsByTagName('choice');
         if($choice->length > 0){
             return
-            [
-                'choiceFields'=>$this->processGroup($choice->item(0))
-            ];
+                [
+                    'choiceFields'=>$this->processGroup($choice->item(0))
+                ];
 
         }
 
@@ -443,9 +425,9 @@ class XsdParser extends \DOMDocument
             $newArr[$k] = array_merge(
                 $this->getArrayType($this->getTypes($v->getAttribute('type'))),
                 [
-                'name' => $this->trimName($v->getAttribute('name')),
+                    'name' => $this->trimName($v->getAttribute('name')),
 
-            ]);
+                ]);
         }
         return  $newArr;
     }
@@ -480,6 +462,7 @@ class XsdParser extends \DOMDocument
         return $name;
     }
 
+
     /**
      * Получает элемент группы по ссылке
      * @param $ref
@@ -487,69 +470,6 @@ class XsdParser extends \DOMDocument
      */
     public function getRefGroup($ref)
     {
-         return $this->getElementsByAttrName($this->trimName($ref),'group');
-    }
-
-
-
-    /**
-     * Объединение xsd
-     * @param $pathXsd
-     */
-    public function joinImportXsd($pathXsd)
-    {
-        $basePath = dirname($pathXsd);
-        $pathXsdList  = $this->searchIncludeXsd($basePath);
-        $importXsd = $this->getIncludeXsd($pathXsdList);
-        foreach ($importXsd as $single) {
-            $this->addXsdScheme($single);
-        }
-    }
-
-    /**
-     * Список подключенных xsd
-     * @param $arrayPath
-     * @return array
-     */
-    protected function getIncludeXsd($arrayPath){
-        $importSchemeArr = [];
-        foreach ($arrayPath as $path){
-            $importScheme = new \DOMDocument("1.0", 'UTF-8');
-            $importScheme->formatOutput = true;
-            $importScheme->load($path);
-            $importSchemeArr[] = $importScheme->documentElement;
-        }
-        return $importSchemeArr;
-    }
-
-    /**
-     * Добавление схемы
-     * @param $addScheme
-     */
-    protected  function addXsdScheme($addScheme)
-    {
-        foreach($addScheme->childNodes as $node)
-        {
-            $importNode = $this->importNode($node,TRUE);
-            $this->documentElement->appendChild($importNode);
-        }
-    }
-
-    /**
-     * Поиск импортируемых схем в главной xsd
-     * @param $basePath
-     * @return array
-     */
-    protected function searchIncludeXsd($basePath)
-    {
-        $importXsd = [];
-        foreach ($this->getElementsByTagName('include') as $singleInclude){
-            $importXsd[] = $basePath.'/'.$singleInclude->getAttribute('schemaLocation');
-        }
-        foreach ($this->getElementsByTagName('import') as $singleInclude){
-            $importXsd[] = $basePath.'/'.$singleInclude->getAttribute('schemaLocation');
-        }
-
-        return $importXsd;
+        return $this->getElementsByAttrName($this->trimName($ref),'group');
     }
 }
