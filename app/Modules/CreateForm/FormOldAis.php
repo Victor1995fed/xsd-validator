@@ -133,30 +133,37 @@ class FormOldAis extends BaseCreateForm
             'required' => $array['required'] ?? false,
         ];
             foreach ($array as $key => $value){
-
+                //TODO:: Убрать дублирование кода
                 if(isset($value['cloneablePanel']) && $value['cloneablePanel']){
                      $newArr[] = $this->processCloneablePanel($value);
                 }
+                elseif (isset($value['name']) && method_exists(new Map(),$value['name'])){
+                    $method = $value['name'];
+                    $newArr[] = Map::$method(
+                        [
+                         'title' =>  $value['title'] ?? $options['title'] ?? $value['name'] ?? 'Имя для поля не ЗАДАНО!',
+                        'name' => $value['name'] ?? $options['name'] ?? 'unknown',
+                        'restriction' =>$value['choice'] ?? null,
+                        'required' => $value['required'] ?? $options['required'] ?? false,
+                        'length' => $value['length'] ?? null
+                        ]);
+                }
                 elseif(isset($value['type'])){
-
-                    if(is_array($value['type'])){
+                    if(isset($value['fields'])){
                         if(isset($value['title'])){
                             $newArr[] = Map::fieldset($value);
                         }
                         $newArr = array_merge($newArr, $this->createArray($value,$options));
                     }
-                    elseif ($value['type'] == 'fields'){
-                        $newArr = array_merge($newArr, $this->createArray($value,$options));
-                    }
+//                    elseif ($value['type'] == 'fields'){
+//                        $newArr = array_merge($newArr, $this->createArray($value,$options));
+//                    }
                     elseif ($value['type'] == 'choice'){
                         $newArr = array_merge($newArr, $this->processChoice($value,$options));
                     }
                     else {
                         $newArr[] =   $this->processType($value,$options);
                     }
-                }
-                elseif (isset($value['fields'])){
-                    $newArr =  array_merge($newArr,$this->createArray($value));
                 }
                 elseif(is_array($value)){
                     $newArr = array_merge($newArr,$this->createArray($value));
@@ -183,7 +190,8 @@ class FormOldAis extends BaseCreateForm
                 'title' =>  $value['title'] ?? $options['title'] ?? $value['name'] ?? 'Имя для поля не ЗАДАНО!',
                 'name' => $value['name'] ?? $options['name'] ?? 'unknown',
                 'restriction' =>$value['choice'] ?? null,
-                'required' => $value['required'] ?? $options['required'] ?? false
+                'required' => $value['required'] ?? $options['required'] ?? false,
+                'length' => $value['length'] ?? null
             ]);
         }
 

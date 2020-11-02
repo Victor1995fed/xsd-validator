@@ -52,6 +52,28 @@ class XsdParser extends \DOMDocument
     }
 
     /**
+     * Функция возвращает массив дочерних полей(если они есть) и тип поля
+     * @param $type
+     * @return array|string[]
+     */
+    protected function getArrayType($type) : array
+    {
+        if(is_array($type)){
+            return [
+                'type'=>'parentField',
+                'fields' => $type
+            ];
+
+        }
+        else
+            return [
+                'type' => $this->trimName($this->trimNameHyphen($type)),
+                'length' => $this->getLengthField($type)
+            ];
+    }
+
+
+    /**
      * Сортировка массива элементов в удобный вид
      * @param $arr
      * @return array
@@ -73,12 +95,14 @@ class XsdParser extends \DOMDocument
                         $type = $this->searchTypeIntoElement($v);
                     }
                     $newArr[$k] =
+                        array_merge(
                         [
                             'title' => $title,
                             'name' => $this->trimName($v->getAttribute('name')),
-                            'type' =>$type ,
                             'tag'=>$v->nodeName
-                        ];
+                        ],
+                        $this->getArrayType($type)
+);
                 }
                 elseif (in_array($this->trimName($v->nodeName),['group', 'choice'])){
 
@@ -112,6 +136,13 @@ class XsdParser extends \DOMDocument
             }
     }
 
+
+    protected function getLengthField($name)
+    {
+        $expName = explode('-',$name);
+            return $expName[1] ?? null;
+    }
+
     /**
      * Ищет тип и описание элемента
      * @param $name
@@ -124,16 +155,18 @@ class XsdParser extends \DOMDocument
         //Дублируются клонируемые панели
         if($name === null)
             return null;
-        $name = $this->trimName($name);
-        $name = $this->trimNameHyphen($name);
 
-        if(method_exists(new Map(),$name))
+
+        $trimName = $this->trimName($name);
+        $trimName = $this->trimNameHyphen($trimName);
+
+
+        if(method_exists(new Map(),$trimName))
             return $name;
 
         else{
-
             //Иначе ищем описание типа в xsd
-            $elem = $this->getElementsByAttrName($this->trimName($name));
+            $elem = $this->getElementsByAttrName($this->trimName($trimName));
 
             if($elem){
                 return $this->processType($elem);
@@ -174,7 +207,7 @@ class XsdParser extends \DOMDocument
         $elements = $elem->getElementsByTagName('element');
         if($elements->length > 0){
             return [
-                'type'=>'fields',
+                'type'=>'parentField',
                 'fields' => $this->getFields($elements)
             ];
         }
@@ -226,14 +259,14 @@ class XsdParser extends \DOMDocument
         }
 
 
-        return
+        return array_merge(
+            $this->getArrayType($type),
             [
                 'title' => $this->getAnnotation($elemnts),
                 'name' => $this->trimName($elemnts->getAttribute('name')),
-                'type' => $type,
                 'cloneablePanel' => $cloneablePanel,
                 'required' => $required,
-            ];
+            ]);
 
 
 
@@ -379,10 +412,12 @@ class XsdParser extends \DOMDocument
         }
 
         foreach ($group->getElementsByTagName('element') as $k => $v){
-            $newArr[$k] = [
+            $newArr[$k] = array_merge(
+                $this->getArrayType($this->getTypes($v->getAttribute('type'))),
+                [
                 'name' => $this->trimName($v->getAttribute('name')),
-                'type' => $this->getTypes($v->getAttribute('type')),
-            ];
+
+            ]);
         }
         return  $newArr;
     }

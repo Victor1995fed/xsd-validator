@@ -31,7 +31,7 @@
 
                    <div class="card">
                        <div class="card-body">
-                        Контент не готов (
+                        Контент не готов (wqe
                        </div>
                    </div>
                 </div>

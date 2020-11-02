@@ -23,21 +23,85 @@ class Map extends BaseMap
 
     public static function string($option)
     {
-        if( isset($option['count']) && $option['count'] > 255)
-            $type = "textarea";
-        else
-            $type = "textfield";
+        $maxLength = [];
+        if(isset($option['length'])){
+            if($option['length'] > 255)
+                $type = 'textarea';
+            else
+                $type = "textfield";
+
+            $maxLength = ['maxLength' => $option['length']];
+        }
+
+
 
         return array_merge([
-            "xtype"=> $type,
+            "xtype"=> $type ?? 'textfield',
             "allowBlank" => !$option['required']
         ],
+        $maxLength,
         self::getBaseTitleLabel($option),
         self::getBaseRequesterSettings()
         );
 
     }
 
+    public static function FullAddress($option)
+    {
+        return self::addressKLADR($option);
+    }
+
+    public static function PostalAddress($option)
+    {
+        return self::addressKLADR($option);
+    }
+
+    public static function LegalAddress($option)
+    {
+        return  self::addressKLADR($option);
+    }
+
+    public static function LandAddress($option)
+    {
+        return self::addressKLADR($option);
+    }
+
+    public static function PhoneNumber($option)
+    {
+        return array_merge([
+        "xtype"=> 'textfield',
+        "vtype" => "validatePhone",
+        "allowBlank" => !$option['required']
+    ],
+        self::getBaseTitleLabel($option),
+        self::getBaseRequesterSettings()
+    );
+
+    }
+
+    public static function EmailAddressType($option)
+    {
+        return array_merge([
+            "xtype"=> 'textfield',
+            "vtype" => "email",
+            "allowBlank" => !$option['required']
+        ],
+            self::getBaseTitleLabel($option),
+            self::getBaseRequesterSettings()
+        );
+    }
+
+
+    public static function addressKLADR($option)
+    {
+        return array_merge([
+            "xtype"=> 'KLADR',
+            "allowBlank" => !$option['required']
+        ],
+            self::getBaseTitleLabel($option),
+            self::getBaseRequesterSettings()
+        );
+    }
     public static function boolean($option)
     {
 
