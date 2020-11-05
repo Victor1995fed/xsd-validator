@@ -11,29 +11,19 @@ use PHPUnit\Framework\TestCase;
 class ParserXsdTest extends TestCase
 {
 
-    protected $pathXsd = __DIR__.'/xsd/imushestvo/1_sogl/main.xsd';
+    protected $pathXsdImushestvo = __DIR__.'/xsd/imushestvo/1_sogl/main.xsd';
+    protected $pathXsdBuildning = __DIR__.'/xsd/xsd_test_1/application.xsd';
+    protected $pathXsdBuildning_2 = __DIR__.'/xsd/xsd_test_2/application.xsd';
 
     public function testCreateArray()
     {
 
-        $main = new XsdParserV2("1.0", 'UTF-8',file_get_contents($this->pathXsd));
-        $main->joinImportXsd($this->pathXsd);
-        $elements = $main->getArrayNodes($main->getElementsByAttrName('RequestDataType'));
-        //Поиск всех ссылок и вставка
-        if($mainTag = $main->getElementsByAttrName('RequestDataType')){
-            $searchElemAndGroup = $main->searchElemAndGroup($main->getElementsByAttrName('RequestDataType'));
-
-//            $res =  $main->getRef($searchElemAndGroup);
-//            $res = $main->sortArray($searchElemAndGroup);
-        }
-        else {
-            throw new \Exception('Не найден элемент с таким именем ');
-        }
-
-//        print_r($res);
+        $main = new XsdParserV2("1.0", 'UTF-8',file_get_contents($this->pathXsdImushestvo));
+        $main->joinImportXsd($this->pathXsdImushestvo);
+        $elements = $main->getArrayNodes($main->getElementsByAttrName('RequestData'));
 
 
-        $form = new FormOldAis($res);
+        $form = new FormOldAis($elements);
         $arrResult = $form->getJsonForm();
         print_r( json_encode($arrResult, JSON_UNESCAPED_UNICODE));
 

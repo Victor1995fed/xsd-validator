@@ -145,7 +145,6 @@ trait HelperXsd
         if($name === null)
             return null;
 
-
         $trimName = $this->trimName($name);
         $trimName = $this->trimNameHyphen($trimName);
 
@@ -154,14 +153,7 @@ trait HelperXsd
             return $name;
 
         else{
-            //Иначе ищем описание типа в xsd
-            $elem = $this->getElementsByAttrName($this->trimName($trimName));
-
-            if($elem){
-                return $this->processType($elem);
-            }
-            else
-                return 'string';
+            return false;
         }
     }
 

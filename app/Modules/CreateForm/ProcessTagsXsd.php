@@ -7,7 +7,7 @@ namespace App\Modules\CreateForm;
 class ProcessTagsXsd extends XsdParserV2
 {
 
-    //TODO:: Возможно сделать трейт
+
     public function annotation($node)
     {
         return [
@@ -19,27 +19,33 @@ class ProcessTagsXsd extends XsdParserV2
     public function sequence($node)
     {
         return [
-            'type'=>'parentField',
+            'type'=>'sequence',
             'fields'=> $this->getArrayNodes($node),
         ];
     }
 
     public function element($node)
     {
-        //Ищем тип, если он есть и известен, то просто возвращаем
-        //Иначе, если он есть, но не известен, то пытаемся найти его в xsd и в текущий массив ставим тип "parentField" и label, если есть
 
-        return [
-            'type'=>'element',
-            'label' => '',
-        ];
+        return array_merge(
+            [
+                'tag'=>'element',
+                'title' => $this->getAnnotation($node)
+            ],
+            $this->getDataField($node),
+            ['fields' =>$this->getArrayNodes($node)]
+        );
     }
 
     public function choice($node)
     {
-
         return [
-            'type'=>'choice'
+
+            'type'=>'choice',
+            'fields' => $this->getArrayNodes($node),
+            'title' => $this->getAnnotation($node)
         ];
     }
+
+
 }
