@@ -22,9 +22,13 @@ abstract class BaseMap
     }
     protected static function getBaseTitleLabel($option, $nameLabel='fieldLabel')
     {
+        $title = $option['title'] ?? $option['name'];
+        $title = empty($title) ? 'Имя не задано' : $title;
+        $name = $option['name'] ?? 'unknown';
+        $name = empty($name) ? 'textfield' : $name;
         return [
-            "$nameLabel"=> $option['title'] ?? $option['name'] ?? 'Имя не задано!',
-            "name"=> $option['name'] ?? 'unknown'
+            "$nameLabel"=> $title,
+            "name"=> $name
         ];
     }
 }

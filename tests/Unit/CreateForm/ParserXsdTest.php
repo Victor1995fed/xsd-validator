@@ -21,7 +21,7 @@ class ParserXsdTest extends TestCase
     {
         $main = new XsdParserV2("1.0", 'UTF-8',file_get_contents($this->pathXsdImushestvo));
         $main->joinImportXsd($this->pathXsdImushestvo);
-        $elements = $main->getArrayNodes($main->getElementsByAttrName('Applicant'));
+        $elements = $main->getArrayNodes($main->getElementsByAttrName('RequestData'));
 
 
         $form = new FormOldAisV2();

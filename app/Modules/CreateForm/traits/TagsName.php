@@ -68,6 +68,40 @@ trait TagsName
         );
     }
 
+    public function simpleContent($node)
+    {
+        $type = $node->getAttribute('type');
+        $getTypes = $this->getTypes($type);
+        if(!$getTypes){
+            $fields = $this->getArrayNodes($node);
+        }
+        return array_merge(
+            $this->getDataField($node),
+            ['fields' => $fields ?? []]
+        );
+    }
+
+    public function extension($node)
+    {
+        $type = $node->getAttribute('base');
+        $getTypes = $this->getTypes($type);
+        if(!$getTypes){
+            $fields = $this->getArrayNodes($node);
+        }
+        return array_merge(
+            [
+                'type'=>$this->trimName($this->trimNameHyphen($type)),
+                'tag' => $this->removeNamespace($node->nodeName),
+                'name'=>$node->getAttribute('name'),
+                'title' => $this->getAnnotation($node),
+                'length' => $this->getLengthField($type),
+                'required' => ($node->getAttribute("minOccurs") == '0') ? false : true,
+                'cloneablePanel' => false
+                ],
+            ['fields' => $fields ?? []]
+        );
+    }
+
     public function choice($node)
     {
         return array_merge(

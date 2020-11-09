@@ -112,6 +112,16 @@ class FormOldAisV2 extends BaseCreateForm
     }
 
 
+    public function simpleContent($element)
+    {
+        $this->element($element);
+    }
+
+    public function extension($element)
+    {
+        $this->element($element);
+    }
+
     public function element($element)
     {
         if ($element['cloneablePanel']) {
