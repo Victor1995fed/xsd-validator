@@ -61,6 +61,11 @@ class Map extends BaseMap
         return  self::addressKLADR($option);
     }
 
+    public function AppliedDocumentsType($option)
+    {
+        return [];
+    }
+
     public static function LandAddress($option)
     {
         return self::addressKLADR($option);
@@ -201,6 +206,27 @@ class Map extends BaseMap
 
     }
 
+
+    /*
+    * В старой АИС эти поля есть по умолчанию, поэтому их не добавляем
+     * ApplicantType - Данные заявителя
+     * RepresentativeType - Данные представителя
+    */
+
+//    public static function ApplicantType()
+//    {
+//        return [];
+//    }
+
+
+    public function stringNN($option)
+    {
+        return self::string($option);
+    }
+    public static function RepresentativeType()
+    {
+        return [];
+    }
 
     public static function digits($option)
     {

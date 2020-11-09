@@ -54,66 +54,6 @@ trait HelperXsd
             ];
     }
 
-    //Обработка типа choice
-
-    protected function processChoice($elem)
-    {
-
-    }
-
-    /**
-     * Сортировка массива элементов в удобный вид
-     * @param $arr
-     * @return array
-     */
-
-    public function sortArray($arr)
-    {
-        $newArr = [];
-        foreach ($arr as $k => $v){
-            if(is_a($v,\DOMElement::class)){
-
-                $title = $this->getAnnotation($v);
-
-                if(in_array($this->trimName($v->nodeName),['element', 'complexType'])){
-                    if($v->getAttribute('type')){
-                        $type = $this->getTypes($v->getAttribute('type'));
-                    }
-                    else {
-                        $type = $this->searchTypeIntoElement($v);
-                    }
-                    $newArr[$k] =
-                        array_merge(
-                            [
-                                'title' => $title,
-                                'name' => $this->trimName($v->getAttribute('name')),
-                                'tag'=>$v->nodeName
-                            ],
-                            $this->getArrayType($type)
-                        );
-                }
-                elseif (in_array($this->trimName($v->nodeName),['group', 'choice'])){
-
-                    $newArr[$k] =
-                        [
-                            'type' => 'choiceField',
-                            'title' => $title,
-                            'name' => $this->trimName($v->getAttribute('name')),
-                            'fields' => $this->processGroup($v),
-                            'tag'=>$v->nodeName
-                        ];
-                }
-
-
-            }
-            elseif (is_array($v)){
-                $newArr[$k] = $this->sortArray($v);
-            }
-            else
-                continue;
-        }
-        return $newArr;
-    }
 
     public function getAnnotation($elem)
     {
@@ -121,7 +61,7 @@ trait HelperXsd
         if($title = $this->getCurrentAnnotation($elem))
             return $title;
         else {
-            return $elem->getAttribute('name');
+            return null;
         }
     }
 
@@ -275,37 +215,6 @@ trait HelperXsd
     }
 
     /**
-     * Ищет тип в дочерних элементах
-     * @param $elem
-     * @return array|string|null
-     */
-    public function searchTypeIntoElement($elem)
-    {
-        if($result = $this->getRestriction($elem))
-            return $result;
-        elseif($result = $this->processComplexType($elem))
-            return $result;
-        else
-            return 'unknown';
-    }
-
-    /**
-     * Обработка простых типов - simpleType
-     * @param $elem
-     * @return array|null
-     */
-    public function processSimpleType($elem)
-    {
-        $restriction = $elem->getElementsByTagName('restriction');
-        if($restriction->length > 0){
-            return $this->getRestriction($restriction->item(0));
-        }
-
-        return null;
-
-    }
-
-    /**
      * Поиск правил  ограничений в типах
      * @param $restriction
      * @return array|null
@@ -391,7 +300,15 @@ trait HelperXsd
      */
     public function getCurrentAnnotation($node)
     {
-        return $node->getElementsByTagName('documentation')->item(0)->nodeValue ?? null;
+        foreach ($node->childNodes as $singleNode)
+        {
+            $nodeName = $this->removeNamespace($singleNode->nodeName);
+            if($nodeName == 'annotation'){
+                return $singleNode->getElementsByTagName('documentation')->item(0)->nodeValue ?? null;
+            }
+        }
+        return null;
+//        return $node->getElementsByTagName('documentation')->item(0)->nodeValue ?? null;
     }
 
     /**

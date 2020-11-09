@@ -35,7 +35,7 @@ class XsdParserV2 extends \DOMDocument
             if($typeElement) {
                 $fields = $this->getArrayNodes($typeElement);
                 return array_merge(
-                    $this->getDataField($node),
+                    $this->getDataField($typeElement),
                     ['fields' => $fields]
                 );
             }
@@ -43,15 +43,12 @@ class XsdParserV2 extends \DOMDocument
         else {
             return null;
         }
-
     }
-
 
 
     public function getArrayNodes($node)
     {
         $elementsList = [];
-        $name = $node->getAttribute('name');
         if($node->hasAttribute('type')){
             $searchType = $this->searchType($node);
             if(!empty($searchType)){
@@ -59,12 +56,19 @@ class XsdParserV2 extends \DOMDocument
             }
         }
         else {
-            foreach ($node->childNodes as $singleNode)
-            {
-                $nodeName = $this->removeNamespace($singleNode->nodeName);
-                if(method_exists($this, $nodeName)){
-                    $elementsList[] = $this->$nodeName($singleNode);
-                }
+            $elementsList = $this->getChildren($node);
+        }
+        return $elementsList;
+    }
+
+    protected function getChildren($node)
+    {
+        $elementsList = [];
+        foreach ($node->childNodes as $singleNode)
+        {
+            $nodeName = $this->removeNamespace($singleNode->nodeName);
+            if(method_exists($this, $nodeName)){
+                $elementsList[] = $this->$nodeName($singleNode);
             }
         }
 
@@ -74,13 +78,15 @@ class XsdParserV2 extends \DOMDocument
     protected function getDataField($node)
     {
         $type = $node->getAttribute('type');
+        $cloneablePanel = ($node->getAttribute('maxOccurs') == 'unbounded') ? true : false;
         return [
+            'tag' => $this->removeNamespace($node->nodeName),
             'name'=>$node->getAttribute('name'),
             'title' => $this->getAnnotation($node),
             'type' => $this->trimName($this->trimNameHyphen($type)),
             'length' => $this->getLengthField($type),
             'required' => ($node->getAttribute("minOccurs") == '0') ? false : true,
-            'cloneablePanel' => ($node->getAttribute('maxOccurs') == 'unbounded') ? true : false
+            'cloneablePanel' => $cloneablePanel
         ];
     }
 

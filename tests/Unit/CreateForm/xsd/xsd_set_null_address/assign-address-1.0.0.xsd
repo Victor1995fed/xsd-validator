@@ -157,7 +157,7 @@
                     <xs:documentation>Телефон</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="Email" type="tns:string-255"/>
+            <xs:element name="Email" type="tns:string-255" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="LiderDataType">
@@ -218,126 +218,204 @@
                     <xs:documentation>Вид адресации</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element maxOccurs="1" minOccurs="0" name="MunStateLandCreateParcels">
-                <xs:annotation>
-                    <xs:documentation>Образованием земельного участка(ов) из земель, находящихся в государственной или муниципальной собственности</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" name="MunStateLandCreateParcel"
-                            type="tns:MunStateLandCreateParcelsType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element minOccurs="0" name="SplitParcels">
-                <xs:annotation>
-                    <xs:documentation>Образованием земельного участка(ов) путем раздела земельного участка</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" name="SplitParcel"
-                            type="tns:CreateParcelType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="UnionParcels">
-                <xs:annotation>
-                    <xs:documentation>Образованием земельного участка путем объединения земельных участков</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" name="UnionParcel"
-                            type="tns:CreateParcelType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="AllotmentParcels">
-                <xs:annotation>
-                    <xs:documentation>Образованием земельного участка(ов) путем выдела из земельного участка</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" name="AllotmentParcel"
-                            type="tns:CreateParcelType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="RedistributionParcels">
-                <xs:annotation>
-                    <xs:documentation>Образованием земельного участка(ов) путем перераспределения земельных участков</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="1" name="RedistributionParcel"
-                            type="tns:RedistributionParcelType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="BuildReconsructionObject"
-                type="tns:BuildReconsructionObjectType">
-                <xs:annotation>
-                    <xs:documentation>Строительством, реконструкцией здания, сооружения</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element minOccurs="0" name="DocForEGRNRegistration"
-                type="tns:DocForEGRNRegistrationType">
-                <xs:annotation>
-                    <xs:documentation>Подготовкой в отношении следующего объекта адресации документов, необходимых для осуществления государственного кадастрового учета указанного объекта адресации, в случае, если в соответствии с Градостроительным кодексом Российской Федерации, законодательством субъектов Российской Федерации о градостроительной деятельности для его строительства, реконструкции выдача разрешения на строительство не требуется</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element minOccurs="0" name="ResidentalNonResidentalRoom"
-                type="tns:ResidentalNonResidentalRoomType">
-                <xs:annotation>
-                    <xs:documentation>Переводом жилого помещения в нежилое помещение и нежилого помещения в жилое помещение</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element minOccurs="0" name="SplitBuildCreateRooms">
-                <xs:annotation>
-                    <xs:documentation>Образованием помещения(ий) в здании, сооружении путем раздела здания, сооружения</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="1" name="SplitBuildCreateRoom"
-                            type="tns:CreateRoomType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="SplitRoomCreateRooms">
-                <xs:annotation>
-                    <xs:documentation>Образованием помещения(ий) в здании, сооружении путем раздела помещения</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="1" name="SplitRoomCreateRoom"
-                            type="tns:SplitRoomCreateRoomType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="UnionRoomCreateRooms">
-                <xs:annotation>
-                    <xs:documentation>Образованием помещения(ий) в здании, сооружении путем объединения помещений в здании, сооружении</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="1" name="UnionRoomCreateRoom"
-                            type="tns:CreateRoomType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element minOccurs="0" name="RedistributionRoomCreateRooms">
-                <xs:annotation>
-                    <xs:documentation>Образованием помещения(ий) в здании, сооружении путем , переустройства и (или) перепланировки
+            <xs:choice>
+                <xs:element maxOccurs="1" minOccurs="1" name="MunStateLandCreateParcels"
+                    type="tns:MunStateLandCreateParcelsType">
+                    <xs:annotation>
+                        <xs:documentation>Образованием земельного участка(ов) из земель, находящихся в государственной или муниципальной собственности</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="SplitParcels">
+                    <xs:annotation>
+                        <xs:documentation>Образованием земельного участка(ов) путем раздела земельного участка</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NumberOfParcel" type="tns:string-10">
+                                <xs:annotation>
+                                    <xs:documentation>Количество образуемых земельных участков</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element maxOccurs="unbounded" name="SplitParcel"
+                                type="tns:CreateParcelType"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="UnionParcels">
+                    <xs:annotation>
+                        <xs:documentation>Образованием земельного участка путем объединения земельных участков</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NumberOfParcel" type="tns:string-10">
+                                <xs:annotation>
+                                    <xs:documentation>Количество объединяемых земельных участков</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element form="unqualified" name="LandCadastralNumber"
+                                type="tns:string-23">
+                                <xs:annotation>
+                                    <xs:documentation>Кадастровый номер земельного участка</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element form="unqualified" name="LandAddress" type="tns:string-1024">
+                                <xs:annotation>
+                                    <xs:documentation>Адрес земельного участка</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="AllotmentParcels">
+                    <xs:annotation>
+                        <xs:documentation>Образованием земельного участка(ов) путем выдела из земельного участка</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NumberOfParcel" type="tns:string-10">
+                                <xs:annotation>
+                                    <xs:documentation>Количество образуемых земельных
+участков (за исключением земельного
+участка, из которого осуществляется
+выдел)
+</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element maxOccurs="unbounded" name="AllotmentParcel"
+                                type="tns:CreateParcelType"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="RedistributionParcels">
+                    <xs:annotation>
+                        <xs:documentation>Образованием земельного участка(ов) путем перераспределения земельных участков</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NumberOfParcel" type="tns:string-10">
+                                <xs:annotation>
+                                    <xs:documentation>Количество образуемых земельных участков</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="NumberOfRedistributionParcel" type="tns:string-10">
+                                <xs:annotation>
+                                    <xs:documentation>Количество земельных участков, которые перераспределяются</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                name="RedistributionParcel" type="tns:RedistributionParcelType"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="BuildReconsructionObject"
+                    type="tns:BuildReconsructionObjectType">
+                    <xs:annotation>
+                        <xs:documentation>Строительством, реконструкцией здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="DocForEGRNRegistration"
+                    type="tns:DocForEGRNRegistrationType">
+                    <xs:annotation>
+                        <xs:documentation>Подготовкой в отношении следующего объекта адресации документов, необходимых для осуществления государственного кадастрового учета указанного объекта адресации, в случае, если в соответствии с Градостроительным кодексом Российской Федерации, законодательством субъектов Российской Федерации о градостроительной деятельности для его строительства, реконструкции выдача разрешения на строительство не требуется</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="ResidentalNonResidentalRoom"
+                    type="tns:ResidentalNonResidentalRoomType">
+                    <xs:annotation>
+                        <xs:documentation>Переводом жилого помещения в нежилое помещение и нежилого помещения в жилое помещение</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="SplitBuildCreateRooms">
+                    <xs:annotation>
+                        <xs:documentation>Образованием помещения(ий) в здании, сооружении путем раздела здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                name="SplitBuildCreateRoom" type="tns:CreateRoomType"/>
+                            <xs:element form="unqualified" name="ObjectCadastralNumber"
+                                type="tns:string-23">
+                                <xs:annotation>
+                                    <xs:documentation>Кадастровый номер </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element form="unqualified" name="ObjectAddress"
+                                type="tns:string-1024">
+                                <xs:annotation>
+                                    <xs:documentation>Адрес</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="AdditionalInfo" type="tns:string-255" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Дополнительная информация</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="SplitRoomCreateRooms">
+                    <xs:annotation>
+                        <xs:documentation>Образованием помещения(ий) в здании, сооружении путем раздела помещения</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                name="SplitRoomCreateRoom" type="tns:SplitRoomCreateRoomType"/>
+                            <xs:element form="unqualified" name="ObjectCadastralNumber"
+                                type="tns:string-23">
+                                <xs:annotation>
+                                    <xs:documentation>Кадастровый номер помещения, раздел которого осуществляется</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element form="unqualified" name="ObjectAddress"
+                                type="tns:string-1024">
+                                <xs:annotation>
+                                    <xs:documentation>Адрес помещения, раздел которого осуществляется</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="AdditionalInfo" type="tns:string-255" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Дополнительная информация</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="UnionRoomCreateRooms">
+                    <xs:annotation>
+                        <xs:documentation>Образованием помещения(ий) в здании, сооружении путем объединения помещений в здании, сооружении</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TypeRoom" type="tns:dTypeRoom">
+                                <xs:annotation>
+                                    <xs:documentation>Тип помещения</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="NumberOfRoom" type="tns:string-10">
+                                <xs:annotation>
+                                    <xs:documentation>Количество помещений</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                name="UnionRoomCreateRoom" type="tns:UnionRoomCreateRoomsType"/>
+                            <xs:element name="AdditionalInfo" type="tns:string-255" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Дополнительная информация</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="1" name="RedistributionRoomCreateRooms"
+                    type="tns:RedistributionRoomCreateRoomsType">
+                    <xs:annotation>
+                        <xs:documentation>Образованием помещения(ий) в здании, сооружении путем , переустройства и (или) перепланировки
 мест общего пользования
 </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="1"
-                            name="RedistributionRoomCreateRoom" type="tns:CreateRoomType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
             <xs:element name="Owner" type="tns:OwnerType" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Собственник объекта адресации или лицо, обладающее иными вещным правом на объект адресации</xs:documentation>
@@ -406,7 +484,7 @@
                     <xs:documentation>СНИЛС</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="AuthorityDocument" type="tns:DocumentDataType">
+            <xs:element name="AuthorityDocument" type="tns:DocumentDataType" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Сведения о документе, подтверждающем полномочия представителя</xs:documentation>
                 </xs:annotation>
@@ -429,11 +507,6 @@
     </xs:complexType>
     <xs:complexType name="CreateParcelType">
         <xs:sequence>
-            <xs:element name="NumberOfParcel" type="tns:string-10">
-                <xs:annotation>
-                    <xs:documentation>Количество образуемых земельных участков</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element form="unqualified" name="LandCadastralNumber" type="tns:string-23">
                 <xs:annotation>
                     <xs:documentation>Кадастровый номер земельного участка</xs:documentation>
@@ -448,16 +521,6 @@
     </xs:complexType>
     <xs:complexType name="RedistributionParcelType">
         <xs:sequence>
-            <xs:element name="NumberOfRedistributionParcel" type="tns:string-10">
-                <xs:annotation>
-                    <xs:documentation>Количество земельных участков, которые перераспределяются</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="NumberOfParcel" type="tns:string-10">
-                <xs:annotation>
-                    <xs:documentation>Количество образуемых земельных участков</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element form="unqualified" name="LandCadastralNumber" type="tns:string-23">
                 <xs:annotation>
                     <xs:documentation>Кадастровый номер земельного участка</xs:documentation>
@@ -539,21 +602,6 @@
                     <xs:documentation>Количество помещений</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element form="unqualified" name="ObjectCadastralNumber" type="tns:string-23">
-                <xs:annotation>
-                    <xs:documentation>Кадастровый номер </xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element form="unqualified" name="ObjectAddress" type="tns:string-1024">
-                <xs:annotation>
-                    <xs:documentation>Адрес</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="AdditionalInfo" type="tns:string-255" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>Дополнительная информация</xs:documentation>
-                </xs:annotation>
-            </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="SplitRoomCreateRoomType">
@@ -571,21 +619,6 @@
             <xs:element name="NumberOfRoom" type="tns:string-10">
                 <xs:annotation>
                     <xs:documentation>Количество помещений</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element form="unqualified" name="ObjectCadastralNumber" type="tns:string-23">
-                <xs:annotation>
-                    <xs:documentation>Кадастровый номер помещения, раздел которого осуществляется</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element form="unqualified" name="ObjectAddress" type="tns:string-1024">
-                <xs:annotation>
-                    <xs:documentation>Адрес помещения, раздел которого осуществляется</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="AdditionalInfo" type="tns:string-255" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>Дополнительная информация</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
@@ -721,27 +754,27 @@
                     <xs:documentation>Государственная принадлежность юридического лица</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="INN" type="tns:string-10">
+            <xs:element name="INN" type="tns:string-10" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>ИНН</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="KPP" type="tns:string-9">
+            <xs:element name="KPP" type="tns:string-9" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>КПП</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="Country" type="tns:string-255">
+            <xs:element name="Country" type="tns:string-255" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Страна регистрации (инкорпорации) </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="RegDate" type="tns:date">
+            <xs:element name="RegDate" type="tns:date" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Дата регистрации</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="RegNumber" type="tns:string-255">
+            <xs:element name="RegNumber" type="tns:string-255" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Номер регистрации</xs:documentation>
                 </xs:annotation>
@@ -758,4 +791,47 @@
             <xs:maxLength value="9"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:complexType name="UnionRoomCreateRoomsType">
+        <xs:sequence>
+            <xs:element form="unqualified" name="ObjectCadastralNumber" type="tns:string-23">
+                <xs:annotation>
+                    <xs:documentation>Кадастровый номер помещения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element form="unqualified" name="ObjectAddress" type="tns:string-1024">
+                <xs:annotation>
+                    <xs:documentation>Адрес помещения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RedistributionRoomCreateRoomsType">
+        <xs:sequence>
+            <xs:element name="TypeRoom" type="tns:dTypeRoom">
+                <xs:annotation>
+                    <xs:documentation>Тип помещения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="NumberOfRoom" type="tns:string-10">
+                <xs:annotation>
+                    <xs:documentation>Количество помещений</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element form="unqualified" name="ObjectCadastralNumber" type="tns:string-23">
+                <xs:annotation>
+                    <xs:documentation>Кадастровый номер помещения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element form="unqualified" name="ObjectAddress" type="tns:string-1024">
+                <xs:annotation>
+                    <xs:documentation>Адрес помещения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AdditionalInfo" type="tns:string-255" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Дополнительная информация</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
