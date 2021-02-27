@@ -2,7 +2,7 @@
 
 
 
-## Check XML from XSD
+## Check XML for XSD
 
 This is a web application for check xml use xsd scheme
 
