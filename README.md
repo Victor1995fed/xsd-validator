@@ -26,7 +26,7 @@ $ composer install
 $ php artisan migrate
 $ php artisan serve
 ```
-- Done! [localhost:8000](localhost:8000)
+- Done! [localhost:8000](http://localhost:8000)
 
 
 
