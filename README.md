@@ -8,6 +8,8 @@ This is a web application for check xml use xsd scheme
 
 Install from docker [here](https://github.com/Victor1995fed/xsd-validator-docker)
 
+![image](https://github.com/Victor1995fed/xsd-validator/raw/media/image/xsd.png)
+
 ## System requirements
 For local application starting (for development) make sure that you have locally installed next applications:
 
