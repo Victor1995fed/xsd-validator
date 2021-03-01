@@ -11,7 +11,7 @@ Install from docker [here](https://github.com/Victor1995fed/xsd-validator-docker
 ## System requirements
 For local application starting (for development) make sure that you have locally installed next applications:
 
--   `PHP >= 7.4` _(install: `curl -fsSL get.docker.com | sudo sh`)_
+-   `PHP >= 7.4`
 -   `GIT >= 2.9`
 -   `Composer >= 1.10`
 -   `Mysql >= 5.7`
